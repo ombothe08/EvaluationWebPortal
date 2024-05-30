@@ -9,9 +9,3 @@ cd PerformanceAssistant\server
 
 `npm i`
 `npm run start`
-
-
-
-
-
-
