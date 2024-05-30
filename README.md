@@ -1,4 +1,7 @@
 # PerformanceAssistant
+# How to Run 
+## npm install
+## npm run dev
 
 ## How to run Server
 
