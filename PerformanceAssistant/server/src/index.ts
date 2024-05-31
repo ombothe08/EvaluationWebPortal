@@ -1,14 +1,13 @@
 import express, { Request, Response } from 'express';
+import {OpenAIService} from "./OpenAIService";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.post('/login', (req: Request, res: Response) => {
-    console.log(req.body);
-
-    res.send('Hello, xTypeScript Express!');
+app.get('/xxx', (req: Request, res: Response) => {
+    res.send('Hello, TypeScript Express!');
   });
 
-  app.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-  });
+});

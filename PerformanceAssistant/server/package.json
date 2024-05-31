@@ -12,6 +12,10 @@
     "serve": "node dist/index.js"
   },
   "dependencies": {
+<<<<<<< HEAD
     "nodemon": "^3.1.2"
+=======
+    "openai": "^4.47.2"
+>>>>>>> a904fcebc4fd3a693ac8b7b975dde6ea873756b6
   }
 }
