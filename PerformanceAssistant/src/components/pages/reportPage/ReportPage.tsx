@@ -11,71 +11,85 @@ const ReportPage: React.FC = () => {
       areaOfImprovement: "Communication Skills",
       inputForMentors: "Needs more practice with presentations",
     },
-    {
-      name: "Person 2",
-      module: "Module 10",
-      strengths: "Quick Learner",
-      areaOfImprovement: "Communication Skills",
-      inputForMentors: "Needs more practice with presentations",
-    },
   ];
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-r from-green-400 via-blue-500 to-purple-600"
-      style={{
-        minHeight: "100vh",
-      }}
-    >
-      <Navbar></Navbar>
+    <div className="min-h-screen bg-gradient-to-r from-green-400 via-blue-500 to-purple-600">
+      <Navbar />
+
       <div
-        style={{
-          backgroundColor: "#f0f0f0",
-          padding: "20px",
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          margin: "20px",
-        }}
+        className="p-5 rounded-lg shadow-lg m-5"
+        style={{ backgroundColor: "whitesmoke" }}
       >
-        <h1 style={{ textAlign: "center", fontSize: 30 }}>Team: {teamName}</h1>
-        <br></br>
-        <div style={{ overflowY: "auto", maxHeight: "70vh" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
+        <h1
+          className="text-2xl mb-4"
+          style={{
+            fontSize: "30px",
+            fontWeight: "bold",
+          }}
+        >
+          Evaluation Report
+        </h1>
+
+        <h1
+          className="text-2xl mb-4"
+          style={{
+            fontSize: "25px",
+            fontWeight: "bold",
+          }}
+        >
+          Team: {teamName}
+        </h1>
+
+        <div className="overflow-y-auto max-h-[70vh]">
+          <table className="w-full border-collapse">
+            <thead
+              className="sticky top-0"
+              style={{
+                backgroundColor: "papayawhip",
+                fontSize: "25px",
+                fontWeight: "bold",
+              }}
+            >
               <tr>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Candidate Name
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Module
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Strengths
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Area of Improvement
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Input for Mentors
-                </th>
+                <th className="border border-black p-2">Candidate Name</th>
+                <th className="border border-black p-2">Module</th>
+                <th className="border border-black p-2">Strengths</th>
+                <th className="border border-black p-2">Area of Improvement</th>
+                <th className="border border-black p-2">Input for Mentors</th>
               </tr>
             </thead>
             <tbody>
               {candidates.map((candidate, index) => (
                 <tr key={index}>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  <td
+                    className="border border-black p-2"
+                    style={{ backgroundColor: "white" }}
+                  >
                     {candidate.name}
                   </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  <td
+                    className="border border-black p-2"
+                    style={{ backgroundColor: "white" }}
+                  >
                     {candidate.module}
                   </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  <td
+                    className="border border-black p-2"
+                    style={{ backgroundColor: "palegreen" }}
+                  >
                     {candidate.strengths}
                   </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  <td
+                    className="border border-black p-2"
+                    style={{ backgroundColor: "pink" }}
+                  >
                     {candidate.areaOfImprovement}
                   </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  <td
+                    className="border border-black p-2"
+                    style={{ backgroundColor: "skyblue" }}
+                  >
                     {candidate.inputForMentors}
                   </td>
                 </tr>
