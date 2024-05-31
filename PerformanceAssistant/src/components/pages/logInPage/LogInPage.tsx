@@ -1,26 +1,25 @@
 import React, { useState } from "react";
 import CCTech from "../../images/CCTech.png";
+import { TextField, Button, Typography, Box } from "@mui/material";
+
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
 
   const handleLogin: () => Promise<void> = async () => {
-    
     try {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        
         body: JSON.stringify({ email, password }),
       });
       console.log("in handlelogin 1");
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         alert("Login successful!");
       } else {
@@ -30,42 +29,57 @@ const LoginPage: React.FC = () => {
       console.error("Error submitting data:", error);
     }
   };
-  
+
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center">
+    <Box
+      minHeight="100vh"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       <img
         src={CCTech}
         alt="CCTech Logo"
-        className="mb-8"
-        style={{ width: "150px", height: "auto" }}
+        style={{ width: "150px", height: "auto", marginBottom: "8px" }}
       />
-      <h1 className="text-3xl font-bold mb-4">Login</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <div className="w-64 mb-4">
-        <input
+      <Typography variant="h4" gutterBottom>
+        Login
+      </Typography>
+      {error && (
+        <Typography variant="body1" color="error" gutterBottom>
+          {error}
+        </Typography>
+      )}
+      <Box width="300px" marginBottom="4px">
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Email"
           type="email"
-          placeholder="Email"
-          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-      </div>
-      <div className="w-64 mb-4">
-        <input
+      </Box>
+      <Box width="300px" marginBottom="4px">
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Password"
           type="password"
-          placeholder="Password"
-          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-      </div>
-      <button
-        className="w-64 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+      </Box>
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
         onClick={handleLogin}
       >
         Login
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 };
 
