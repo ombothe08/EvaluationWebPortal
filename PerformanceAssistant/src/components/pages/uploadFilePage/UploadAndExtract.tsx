@@ -5,14 +5,12 @@ const UploadAndExtract: React.FC = () => {
   const {
     parameters,
     selectedParameters,
-    handleFileUpload,
     handleCheckboxChange,
     submitData,
   } = useExcelParameters();
  
   return (
     <div>
-      <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
       {parameters.length > 0 && (
         <div>
           <h3>Select Parameters:</h3>

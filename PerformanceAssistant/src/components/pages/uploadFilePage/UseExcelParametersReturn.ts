@@ -1,8 +1,7 @@
 // src/useExcelParameters.ts
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
-import axios from 'axios';
-import {BatchDataModel, CandidateDataModel} from '../../../model/evaluationData'
+import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationData'
 
 interface UseExcelParametersReturn {
   parameters: string[];
@@ -54,9 +53,13 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   const transformData = (jsonSheet: any[][], batchName: string): BatchDataModel => {
     const headers = jsonSheet[0];
     const rows = jsonSheet.slice(1);
-
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+    const currentDate = month + "/" + date + "/" + year;
     const candidateDataModel: CandidateDataModel[] = rows.map(row => ({
-      CandidateName: row[0] as string,
+      Name: row[0] as string,
       Data: headers.slice(1).map((header, index) => ({
         Parameter: header,
         Data: row[index + 1] as string,
@@ -64,10 +67,10 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     }));
 
     const batchDataModel: BatchDataModel = {
-      BatchData: {
-        BatchName: batchName,
-        CandidateDataModel: candidateDataModel,
-      }
+      
+        Name: batchName,
+        Date: currentDate,
+        Data: candidateDataModel,
     };
 
     return batchDataModel;
@@ -76,16 +79,32 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   const submitData = async () => {
     try {
       const batchDataModel: BatchDataModel = transformData(jsonSheet, fileName);
+      const batchDataModelString = JSON.stringify(batchDataModel);
+      console.log(batchDataModelString);
       console.log(batchDataModel);
-      const response = await axios.post('/api/other-api', {
-        selectedParameters,
-        transformedData: batchDataModel,
+  
+      const response = await fetch('/api/evaluation-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          selectedParameters,
+          transformedData: batchDataModelString,
+        }),
       });
-      console.log(response.data);
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const responseData = await response.json();
+      console.log(responseData);
     } catch (error) {
       console.error('Error submitting data:', error);
     }
   };
+  
 
   return {
     parameters,

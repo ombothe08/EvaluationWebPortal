@@ -1,10 +1,18 @@
 import React, { useState, ChangeEvent } from "react";
 import Navbar from "../Navbar";
+import useExcelParameters from './../uploadFilePage/UseExcelParametersReturn';
+
+  
 const HomePage: React.FC = () => {
+  const {
+    handleFileUpload
+      } = useExcelParameters();
+
   const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
+      handleFileUpload(event);
       setFile(event.target.files[0]);
     }
   };
