@@ -5,7 +5,6 @@ import AboutPage from "./AboutPage";
 import ContactPage from "./ContactPage";
 import LoginPage from "../logInPage/LogInPage";
 
-
 const AppRouter: React.FC = () => {
   return (
     <Router>
@@ -13,7 +12,7 @@ const AppRouter: React.FC = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
-        <Route path="/login" element={<LoginPage />} />    
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );
