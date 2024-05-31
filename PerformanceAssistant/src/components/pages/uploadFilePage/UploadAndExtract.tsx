@@ -1,15 +1,15 @@
-// src/UploadAndExtract.tsx
 import React from 'react';
 import useExcelParameters from './UseExcelParametersReturn';
-
+ 
 const UploadAndExtract: React.FC = () => {
   const {
     parameters,
     selectedParameters,
     handleFileUpload,
     handleCheckboxChange,
+    submitData,
   } = useExcelParameters();
-
+ 
   return (
     <div>
       <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
@@ -36,10 +36,11 @@ const UploadAndExtract: React.FC = () => {
               <li key={index}>{param}</li>
             ))}
           </ul>
+          <button onClick={submitData}>Submit Data</button>
         </div>
       )}
     </div>
   );
 };
-
+ 
 export default UploadAndExtract;
