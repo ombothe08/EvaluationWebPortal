@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './Navbar';
+import Navbar from './LandingPageNavbar';
 import big from "../../images/bigpicture.jpg";
 
 const LandingPage: React.FC = () => {
