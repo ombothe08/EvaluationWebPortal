@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import {OpenAIService} from "./OpenAIService";
 import { Authenticator, UserCredentials } from './Authenticator/Authenticator';
 
 const app = express();
@@ -22,6 +23,17 @@ app.post('/login', (req: Request, res: Response) =>
       if(ans)
         res.send('Valid Crendtials!');
   });
+
+app.use(express.json());
+
+app.get('/evaluvate', async (req: Request, res: Response) => {
+    let oaiService = new OpenAIService();
+    oaiService.evaluate().then((response)=>{
+        res.send(response);
+    }).catch((error)=>{
+        res.send(error);
+    });
+});
 
   app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
