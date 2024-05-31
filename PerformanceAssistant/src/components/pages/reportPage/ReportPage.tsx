@@ -1,5 +1,16 @@
 import React from "react";
 import Navbar from "../Navbar";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Paper,
+} from "@mui/material";
 
 const ReportPage: React.FC = () => {
   const teamName = "Code Monks";
@@ -11,80 +22,219 @@ const ReportPage: React.FC = () => {
       areaOfImprovement: "Communication Skills",
       inputForMentors: "Needs more practice with presentations",
     },
-    {
-      name: "Person 2",
-      module: "Module 10",
-      strengths: "Quick Learner",
-      areaOfImprovement: "Communication Skills",
-      inputForMentors: "Needs more practice with presentations",
-    },
   ];
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-r from-green-400 via-blue-500 to-purple-600"
-      style={{
+    <Box
+      sx={{
         minHeight: "100vh",
+        background: "linear-gradient(to right, #38ef7d, #11998e)",
+        py: 5,
       }}
     >
-      <Navbar></Navbar>
-      <div
-        style={{
-          backgroundColor: "#f0f0f0",
-          padding: "20px",
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          margin: "20px",
+      <Navbar />
+      <Box
+        component={Paper}
+        sx={{
+          p: 5,
+          borderRadius: 2,
+          boxShadow: 3,
+          m: 5,
+          backgroundColor: "whitesmoke",
         }}
       >
-        <h1 style={{ textAlign: "center", fontSize: 30 }}>Team: {teamName}</h1>
-        <br></br>
-        <div style={{ overflowY: "auto", maxHeight: "70vh" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Candidate Name
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Module
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Strengths
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Area of Improvement
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Input for Mentors
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{
+            fontSize: 30,
+            fontWeight: "bold",
+            mb: 2,
+            fontFamily: "sans-serif",
+          }}
+        >
+          Evaluation Report
+        </Typography>
+
+        <Typography
+          variant="h5"
+          component="h2"
+          sx={{
+            fontSize: 25,
+            fontWeight: "bold",
+            mb: 4,
+            fontFamily: "sans-serif",
+          }}
+        >
+          Team: {teamName}
+        </Typography>
+
+        <TableContainer sx={{ maxHeight: "70vh" }}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "papayawhip" }}>
+                <TableCell
+                  sx={{
+                    backgroundColor: "papayawhip",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    sx={{
+                      fontSize: 25,
+                      fontWeight: "bold",
+                      mb: 2,
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Candidate Name
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: "papayawhip",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    sx={{
+                      fontSize: 25,
+                      fontWeight: "bold",
+                      mb: 2,
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Module
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: "papayawhip",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    sx={{
+                      fontSize: 25,
+                      fontWeight: "bold",
+                      mb: 2,
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Strengths
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: "papayawhip",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    sx={{
+                      fontSize: 25,
+                      fontWeight: "bold",
+                      mb: 2,
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Area of Improvements
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: "papayawhip",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    sx={{
+                      fontSize: 25,
+                      fontWeight: "bold",
+                      mb: 2,
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Input
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {candidates.map((candidate, index) => (
-                <tr key={index}>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                <TableRow key={index}>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "white",
+                      border: "1px solid black",
+                      padding: "8px",
+                    }}
+                  >
                     {candidate.name}
-                  </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "white",
+                      border: "1px solid black",
+                      padding: "8px",
+                    }}
+                  >
                     {candidate.module}
-                  </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "palegreen",
+                      border: "1px solid black",
+                      padding: "8px",
+                    }}
+                  >
                     {candidate.strengths}
-                  </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "pink",
+                      border: "1px solid black",
+                      padding: "8px",
+                    }}
+                  >
                     {candidate.areaOfImprovement}
-                  </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "skyblue",
+                      border: "1px solid black",
+                      padding: "8px",
+                    }}
+                  >
                     {candidate.inputForMentors}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Box>
   );
 };
 
