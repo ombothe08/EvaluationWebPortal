@@ -1,13 +1,11 @@
 import './App.css'
-import UploadAndExtract from './components/pages/uploadFilePage/UploadAndExtract'
+import Router from "./components/pages/MainPage/Router";
 
 function App() {
   
   return (
     <>
-    <UploadAndExtract></UploadAndExtract>
-     <h1 className="text-3xl font-bold underline">
-    </h1>
+     <Router/>
     </>
   )
 }
