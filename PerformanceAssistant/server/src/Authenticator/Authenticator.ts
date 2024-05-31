@@ -11,7 +11,7 @@ export class Authenticator {
 
   // Method to authenticate a user
   authenticate(userCredentials: UserCredentials): boolean {
-    // Example authentication logic - replace this with your actual logic
+    //  authentication logic - needs to be replaced  with  actual logic
     if (1) {
       return true;
     } else {
