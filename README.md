@@ -8,6 +8,7 @@
 cd PerformanceAssistant\server
 
 `npm i`
+<<<<<<< HEAD
 `npm run start`
 
 
@@ -24,3 +25,6 @@ cd PerformanceAssistant\server
 ```sh
 npm install
 npm run dev
+=======
+`npm run start`
+>>>>>>> 0b45edde93c9a69971588054edc2467ce6cdeac3
