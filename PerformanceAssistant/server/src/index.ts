@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import {OpenAIService} from "./OpenAIService";
-import { Authenticator, UserCredentials } from './Authenticator/Authenticator';
+import { Authenticator } from './Authenticator/Authenticator';
+import { UserCredentials } from './Interfaces/UserCredentials';
 
 const app = express();
 const port = process.env.PORT || 3000;
