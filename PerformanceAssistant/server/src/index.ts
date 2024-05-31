@@ -6,6 +6,11 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.post('/login', async (req: Request, res: Response) => {
+   console.log(req);
+   
+});
+
 app.get('/evaluvate', async (req: Request, res: Response) => {
     let oaiService = new OpenAIService();
     oaiService.evaluate().then((response)=>{
