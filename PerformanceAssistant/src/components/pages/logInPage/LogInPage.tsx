@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import CCTech from "../../images/CCTech.png";
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [error, setError] = useState("");
   
 
   const handleLogin: () => Promise<void> = async () => {
     
+    let UserName = email;
+    let Password = password;
+
     try {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
@@ -15,7 +18,7 @@ const LoginPage: React.FC = () => {
           "Content-Type": "application/json",
         },
         
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ UserName, Password }),
       });
       console.log("in handlelogin 1");
       
