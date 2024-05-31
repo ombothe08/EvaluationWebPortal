@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import CCTech from "../../images/CCTech.png";
-import axios from "axios";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -8,28 +7,19 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState("");
   
 
-  const handleLogin: () =>Promise<void> = async () => {
-    // const response = await fetch("http://localhost:3000/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ email, password }),
-    // });
-
-    
+  const handleLogin: () => Promise<void> = async () => {
     try {
-      // Make the request using axios
-      const response = await axios.post("/api/other-api", {
-        email,
-        password,
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
       
-      // Process the response
-      console.log(response.data);
-
-      // Check if login was successful based on the response
-      if (response.data.success) {
+      const data = await response.json();
+      
+      if (data.success) {
         alert("Login successful!");
       } else {
         setError("Incorrect email or password");
@@ -38,6 +28,27 @@ const LoginPage: React.FC = () => {
       console.error("Error submitting data:", error);
     }
   };
+  
+    // try {
+    //   // Make the request using axios
+    //   const response = await axios.post("/api/other-api", {
+    //     email,
+    //     password,
+    //   });
+      
+    //   // Process the response
+    //   console.log(response.data);
+
+    //   // Check if login was successful based on the response
+    //   if (response.data.success) {
+    //     alert("Login successful!");
+    //   } else {
+    //     setError("Incorrect email or password");
+    //   }
+    // } catch (error) {
+    //   console.error("Error submitting data:", error);
+    // }
+  // };
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
