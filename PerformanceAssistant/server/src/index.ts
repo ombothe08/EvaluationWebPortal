@@ -3,8 +3,10 @@ import express, { Request, Response } from 'express';
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get('/xxx', (req: Request, res: Response) => {
-    res.send('Hello, TypeScript Express!');
+app.post('/login', (req: Request, res: Response) => {
+    console.log(req.body);
+
+    res.send('Hello, xTypeScript Express!');
   });
 
   app.listen(port, () => {

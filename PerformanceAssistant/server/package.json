@@ -10,5 +10,8 @@
     "start": "ts-node src/index.ts node",
     "build": "tsc",
     "serve": "node dist/index.js"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.2"
   }
 }
