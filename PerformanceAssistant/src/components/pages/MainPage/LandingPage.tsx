@@ -45,7 +45,7 @@ const LandingPage: React.FC = () => {
           </button>
         </div>
         <div className="w-1/2 flex justify-center">
-          <img src={big} alt="CCTECH Image" className="rounded-full shadow-lg" style={{ width: '600px', height: '600px', objectFit: 'cover' }} />
+          <img src={big} alt="CCTECH Image" className="rounded-full shadow-lg" style={{ width: '500px', height: '500px', objectFit: 'cover' }} />
         </div>
       </div>
     </div>

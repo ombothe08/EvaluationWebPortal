@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import CCTech from "../../images/CCTech.png";
+import CCTech_HomePage from "../../images/CCTech_HomePage.png";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,13 +13,13 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center">
           <img
-            src={CCTech}
+            src={CCTech_HomePage}
             alt="Logo"
-            className="w-16 h-16 rounded-full mr-3 shadow-lg"
-            style={{ marginLeft: '-120px' }}
+            className="w-16 h-16 mr-3 shadow-lg"
+            style={{ marginLeft: '-100px' }}
           />
           <div className="text-3xl font-extrabold text-white tracking-wide">
-            CCTECH
+            Performance Assistant
           </div>
         </div>
         <div className="hidden md:flex space-x-8" style={{ marginRight: '-120px' }}>
