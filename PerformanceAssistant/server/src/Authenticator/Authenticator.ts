@@ -1,20 +1,16 @@
-import { UserCredentials } from "../Interfaces/UserCredentials";
-
+import { UserCredentials } from "../Interfaces/Interface";
+import { Database } from "../database/database";
 
 // Authenticator.ts
 export class Authenticator {
-  constructor() {
-    // Initialize users array or perform any necessary setup
-  }
+  private database: Database | undefined;
 
-  // Method to authenticate a user
-  authenticate(userCredentials: UserCredentials): boolean 
-  {
-    //  authentication logic - needs to be replaced  with  actual logic
-    if (1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  public async authenticate(userCredentials: UserCredentials): Promise<boolean | any> {
+
+    this.database = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+    await this.database.connectToDatabase();
+
+    let result = await this.database.verifyUserCredentials(userCredentials);
+    return result;
+   }  
 }
