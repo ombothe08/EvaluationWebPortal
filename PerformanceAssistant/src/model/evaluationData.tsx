@@ -1,26 +1,25 @@
 
 export interface CandidateDataModel {
-    CandidateName: string;
-    Module: string;
-    Data: {Parameter:string, Data:string};
-  }
+  CandidateName: string;
+  Data: { Parameter: string; Data: string }[];
+}
 
-interface BatchDataModel {
+
+export interface BatchDataModel {
     BatchData: {
         BatchName:string;
         CandidateDataModel: CandidateDataModel[];
     }
   }
 
-  interface CandidateAnalysisModel {
+export interface CandidateAnalysisModel {
     CandidateName: string;
-    Module: string;
     Stregths: {Parameter:string, Data:string};
     AreasOfImprovement: {Parameter:string, Data:string};
     InputForMentors: {Parameter:string, Data:string};
   }
 
-interface BatchAnalysisModel {
+export interface BatchAnalysisModel {
     BatchData: {
         BatchName:string;
         CandidateAnalysisModel: CandidateAnalysisModel[];

@@ -2,12 +2,7 @@
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
-
-interface CandidateDataModel {
-  CandidateName: string;
-  Module: string;
-  Data: { Parameter: string; Data: string }[];
-}
+import {BatchDataModel, CandidateDataModel} from '../../../model/evaluationData'
 
 interface UseExcelParametersReturn {
   parameters: string[];
@@ -21,10 +16,14 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   const [parameters, setParameters] = useState<string[]>([]);
   const [selectedParameters, setSelectedParameters] = useState<string[]>([]);
   const [jsonSheet, setJsonSheet] = useState<any[][]>([]); // Array of arrays representing the JSON sheet data
+  const [fileName, setFileName] = useState<string>('');
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
+    const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
+    setFileName(nameWithoutExtension);
 
     const reader = new FileReader();
 
@@ -35,7 +34,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
       const worksheet = workbook.Sheets[sheetName];
       const jsonSheet = XLSX.utils.sheet_to_json<any[]>(worksheet, { header: 1 });
       const headers = jsonSheet[0]; // Assuming first row contains headers
-      setParameters(headers);
+      setParameters(headers.slice(1)); // Exclude the first column (CandidateName)
       setJsonSheet(jsonSheet);
       console.log(jsonSheet);
     };
@@ -52,26 +51,35 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     }
   };
 
-  const transformData = (jsonSheet: any[][]): CandidateDataModel[] => {
+  const transformData = (jsonSheet: any[][], batchName: string): BatchDataModel => {
     const headers = jsonSheet[0];
     const rows = jsonSheet.slice(1);
 
-    return rows.map(row => ({
-      CandidateName: row[0],
-      Module: row[1],
-      Data: headers.slice(2).map((header, index) => ({
+    const candidateDataModel: CandidateDataModel[] = rows.map(row => ({
+      CandidateName: row[0] as string,
+      Data: headers.slice(1).map((header, index) => ({
         Parameter: header,
-        Data: row[index + 2],
+        Data: row[index + 1] as string,
       })),
     }));
+
+    const batchDataModel: BatchDataModel = {
+      BatchData: {
+        BatchName: batchName,
+        CandidateDataModel: candidateDataModel,
+      }
+    };
+
+    return batchDataModel;
   };
 
   const submitData = async () => {
     try {
-      const transformedData = transformData(jsonSheet);
+      const batchDataModel: BatchDataModel = transformData(jsonSheet, fileName);
+      console.log(batchDataModel);
       const response = await axios.post('/api/other-api', {
         selectedParameters,
-        transformedData,
+        transformedData: batchDataModel,
       });
       console.log(response.data);
     } catch (error) {
