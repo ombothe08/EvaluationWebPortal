@@ -2,7 +2,7 @@ import { MongoClient, Db, Collection } from 'mongodb';
 import { UserCredentials } from '../Interfaces/Interface';
 
 interface User {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -38,10 +38,10 @@ export class Database {
 
       // Extract and log each user's data
       for (const [userId, userData] of Object.entries(users)) {
-        const db_username = userData.username;
+        const db_username = userData.email;
         const db_password = userData.password;
         let a = typeof(db_password);
-        if (db_username === userCredentials.UserName && db_password === userCredentials.Password) {
+        if (db_username === userCredentials.Email && db_password === userCredentials.Password) {
           return true;
         }
         
