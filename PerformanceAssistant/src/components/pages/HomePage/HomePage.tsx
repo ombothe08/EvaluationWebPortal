@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const DemoReportPage: React.FC = () => {
+const HomePage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [homepageData, setHomepageData] = useState([
     {
@@ -170,4 +170,4 @@ const DemoReportPage: React.FC = () => {
   );
 };
 
-export default DemoReportPage;
+export default HomePage;
