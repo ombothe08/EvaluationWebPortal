@@ -1,9 +1,8 @@
 import { UserCredentials } from "../Interfaces/Interface";
-import { Database } from "../Database/Database";
+import { Database } from "../database/database";
 
 // Authenticator.ts
-export class Authenticator 
-{
+export class Authenticator {
   private database: Database | undefined;
 
   public async authenticate(userCredentials: UserCredentials): Promise<boolean | any> {
