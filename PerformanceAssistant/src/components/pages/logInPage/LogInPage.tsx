@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import CCTech from "../../images/CCTech.png";
-import { TextField, Button, Typography, Box } from "@mui/material";
-
 const LoginPage: React.FC = () => {
-<<<<<<< HEAD
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [error, setError] = useState("");
@@ -14,90 +11,69 @@ const [error, setError] = useState("");
     let UserName = email;
     let Password = password;
 
-=======
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleLogin: () => Promise<void> = async () => {
->>>>>>> a3b6db95346c9c6514589ea274b3c16fb8593c28
     try {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-<<<<<<< HEAD
         
         body: JSON.stringify({ UserName, Password }),
-=======
-        body: JSON.stringify({ email, password }),
->>>>>>> a3b6db95346c9c6514589ea274b3c16fb8593c28
       });
-      console.log("in handlelogin 1");
-
+      
+      
       const data = await response.json();
-
-      if (data.success) {
+      
+      if (data) 
+      {
         alert("Login successful!");
-      } else {
+      } 
+      else 
+      {
         setError("Incorrect email or password");
       }
-    } catch (error) {
+
+    } catch (error) 
+    {
       console.error("Error submitting data:", error);
     }
   };
-
+  
   return (
-    <Box
-      minHeight="100vh"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <div className="min-h-screen flex flex-col justify-center items-center">
       <img
         src={CCTech}
         alt="CCTech Logo"
-        style={{ width: "150px", height: "auto", marginBottom: "8px" }}
+        className="mb-8"
+        style={{ width: "150px", height: "auto" }}
       />
-      <Typography variant="h4" gutterBottom>
-        Login
-      </Typography>
-      {error && (
-        <Typography variant="body1" color="error" gutterBottom>
-          {error}
-        </Typography>
-      )}
-      <Box width="300px" marginBottom="4px">
-        <TextField
-          fullWidth
-          variant="outlined"
-          label="Email"
+      <h1 className="text-3xl font-bold mb-4">Login</h1>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      <div className="w-64 mb-4">
+        <input
           type="email"
+          placeholder="Email"
+          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-      </Box>
-      <Box width="300px" marginBottom="4px">
-        <TextField
-          fullWidth
-          variant="outlined"
-          label="Password"
+      </div>
+      <div className="w-64 mb-4">
+        <input
           type="password"
+          placeholder="Password"
+          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-      </Box>
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
+      </div>
+      <button
+        className="w-64 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         onClick={handleLogin}
       >
         Login
-      </Button>
-    </Box>
+      </button>
+    </div>
   );
 };
 
