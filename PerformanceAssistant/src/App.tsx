@@ -6,8 +6,7 @@ function App() {
   
   return (
     <>
-    <UploadAndExtract></UploadAndExtract>
-     {/* <Router/> */}
+     <Router/>
     </>
   )
 }
