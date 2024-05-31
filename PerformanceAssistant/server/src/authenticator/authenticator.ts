@@ -1,9 +1,5 @@
 import { Database } from '../database/database';
-
-export interface UserCredentials {
-  username: string;
-  password: string;
-}
+import { UserCredentials } from '../Interfaces/Interface';
 
 export class Authenticator {
   private database: Database | undefined;

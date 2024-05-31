@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from 'mongodb';
-import { UserCredentials } from '../authenticator/authenticator';
+import { UserCredentials } from '../Interfaces/Interface';
 
 interface User {
   username: string;
@@ -40,10 +40,14 @@ export class Database {
       for (const [userId, userData] of Object.entries(users)) {
         const db_username = userData.username;
         const db_password = userData.password;
-        if (db_username === userCredentials.username && db_password === userCredentials.password) {
+        let a = typeof(db_password);
+        if (db_username === userCredentials.UserName && db_password === userCredentials.Password) {
           return true;
         }
+        
       }
+    return false;
+      
     } else {
       console.log('No users found in the collection');
     }
