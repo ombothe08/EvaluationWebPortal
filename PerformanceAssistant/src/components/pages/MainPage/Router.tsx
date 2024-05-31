@@ -4,7 +4,7 @@ import LandingPage from "./LandingPage";
 import AboutPage from "./AboutPage";
 import ContactPage from "./ContactPage";
 import LoginPage from "../logInPage/LogInPage";
-//import ReportPage from "../reportPage/ReportPage";
+// import ReportPage from "../reportPage/ReportPage";
 
 const AppRouter: React.FC = () => {
   return (
