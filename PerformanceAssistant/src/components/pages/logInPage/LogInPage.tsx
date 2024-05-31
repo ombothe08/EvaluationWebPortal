@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import CCTech from "../../images/CCTech.png";
-
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -8,14 +7,17 @@ const LoginPage: React.FC = () => {
   
 
   const handleLogin: () => Promise<void> = async () => {
+    
     try {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        
         body: JSON.stringify({ email, password }),
       });
+      console.log("in handlelogin 1");
       
       const data = await response.json();
       
@@ -29,27 +31,6 @@ const LoginPage: React.FC = () => {
     }
   };
   
-    // try {
-    //   // Make the request using axios
-    //   const response = await axios.post("/api/other-api", {
-    //     email,
-    //     password,
-    //   });
-      
-    //   // Process the response
-    //   console.log(response.data);
-
-    //   // Check if login was successful based on the response
-    //   if (response.data.success) {
-    //     alert("Login successful!");
-    //   } else {
-    //     setError("Incorrect email or password");
-    //   }
-    // } catch (error) {
-    //   console.error("Error submitting data:", error);
-    // }
-  // };
-
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
       <img

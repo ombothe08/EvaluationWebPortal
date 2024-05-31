@@ -16,31 +16,37 @@ const Navbar: React.FC = () => {
             src={CCTech}
             alt="Logo"
             className="w-16 h-16 rounded-full mr-3 shadow-lg"
-            style={{ marginLeft: '-120px' }}
+            style={{ marginLeft: "-120px" }}
           />
-          <div className="text-3xl font-extrabold text-white tracking-wide">
-            CCTECH
+          <div
+            className="text-3xl font-extrabold text-white tracking-wide"
+            style={{ fontSize: 50 }}
+          >
+            Performance Assistant
           </div>
         </div>
-        <div className="hidden md:flex space-x-8" style={{ marginRight: '-120px' }}>
+        <div
+          className="hidden md:flex space-x-8"
+          style={{ marginRight: "-120px" }}
+        >
           <Link
             to="/about"
             className="text-white hover:text-yellow-300 font-medium transition-colors duration-300"
-            style={{ fontSize: '1.5rem' }}
+            style={{ fontSize: "1.5rem" }}
           >
             About Us
           </Link>
           <Link
             to="/contact"
             className="text-white hover:text-yellow-300 font-medium transition-colors duration-300"
-            style={{ fontSize: '1.5rem' }}
+            style={{ fontSize: "1.5rem" }}
           >
             Contact Us
           </Link>
           <Link
             to="/login"
             className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full shadow-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-300"
-            style={{ fontSize: '1.25rem' }}
+            style={{ fontSize: "1.25rem" }}
           >
             Login
           </Link>
