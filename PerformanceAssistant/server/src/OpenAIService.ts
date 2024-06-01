@@ -18,6 +18,5 @@ export class OpenAIService {
             console.error('OpenAI Function exception:', error);
             return "";
         }
-        return "";
    }  
 }
