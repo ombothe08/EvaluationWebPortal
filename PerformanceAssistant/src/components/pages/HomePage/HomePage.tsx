@@ -181,7 +181,9 @@
 // export default HomePage;
 
 
-import React, { ChangeEvent, useState } from "react";
+
+
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import {
   Box,
@@ -200,26 +202,44 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
 import { useNavigate } from "react-router-dom";
 import { Upload } from "@mui/icons-material";
+import { ServerData } from "../../../model/evaluationData";
 
 interface HomePageProps {
   useExcelParameters: UseExcelParametersReturn; // Pass UseExcelParametersReturn as a prop
 }
 
+// interface ServerData {
+//   objectid: string;
+//   BatchData: {
+//     Date: string;
+//     // other fields...
+//   };
+// }
+
 const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
   const navigate = useNavigate(); // Initialize navigate function
   const [file, setFile] = useState<File | null>(null);
-  const [homepageData, setHomepageData] = useState([
-    {
-      analysis: "Om 1",
-      date: "3-10-2000",
-      operation: "",
-    },
-  ]);
+  const [homepageData, setHomepageData] = useState<ServerData[]>([]);
+
+  useEffect(() => {
+    // Fetch data from the server
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/batchdata"); // Replace with your server endpoint
+        const data: ServerData[] = await response.json();
+        setHomepageData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       useExcelParameters.handleFileUpload(event);
-      navigate('/upload');
+      navigate("/upload");
       setFile(event.target.files[0]);
     }
   };
@@ -293,7 +313,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     width: "30%",
                   }}
                 >
-                  Analysis
+                  Analysis (Object ID)
                 </TableCell>
                 <TableCell
                   sx={{
@@ -331,7 +351,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {homepageData.map((candidate, index) => (
+              {homepageData.map((data, index) => (
                 <TableRow key={index}>
                   <TableCell
                     sx={{
@@ -340,7 +360,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       padding: "8px",
                     }}
                   >
-                    {candidate.analysis}
+                    {data.objectid}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -349,7 +369,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       padding: "8px",
                     }}
                   >
-                    {candidate.date}
+                    {data.BatchData.Date}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -370,9 +390,9 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
                     <IconButton
@@ -393,5 +413,3 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
 };
 
 export default HomePage;
-
-

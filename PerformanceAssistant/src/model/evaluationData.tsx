@@ -20,10 +20,28 @@ export interface CandidateAnalysisModel {
 }
 
 
-export interface BatchAnalysisModel {
+// export interface BatchAnalysisModel {
+//   BatchData: {
+//     Name: string;
+//     CandidateAnalysisModel: CandidateAnalysisModel[];
+//   }
+// }
+
+
+// export interface ServerData {
+//   objectid: string;
+//   BatchData: {
+//     Date: string;
+//     // other fields...
+//   };
+// }
+
+export interface ServerData {
+  objectid : string;
   BatchData: {
-    Name: string;
-    CandidateAnalysisModel: CandidateAnalysisModel[];
+      BatchName:string;
+      Module: string;
+      Date:string;
+      CandidateAnalysisModel: CandidateAnalysisModel[];
   }
 }
-
