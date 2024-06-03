@@ -1,33 +1,59 @@
+//Login credentials
 export interface UserCredentials {
     Email: string;
     Password: string;
   }
 
+//Db user Credentials
+  export interface dbuser {
+    email: string;
+    password: string;
+  }
+
+//Database model
+export interface BatchDbModel {
+  objectid : string | null;
+  BatchData: {
+      Name:string;
+      Module: string;
+      Date:string;
+      AnalysisModel: CandidateAnalysisModel[];
+  }
+}
+
+//Analysis Mode is the output from OpenAI
 export interface CandidateAnalysisModel {
-    CandidateName: string;
-    Stregths: {Parameter:string, Data:string};
-    AreasOfImprovement: {Parameter:string, Data:string};
-    RecomendationForMentor: {Parameter:string, Data:string};
-  }
-
+  Name: string;
+  Strengths: { Parameter: string, Data: string }[];
+  AreasOfImprovement: { Parameter: string, Data: string }[];
+  InputForMentors: { Parameter: string, Data: string }[];
+}
+ 
+ 
 export interface BatchAnalysisModel {
-    BatchData: {
-        BatchName:string;
-        Module: string;
-        CandidateAnalysisModel: CandidateAnalysisModel[];
-    }
+  BatchData: {
+    Name: string;
+    Module: string;
+    AnalysisModel: CandidateAnalysisModel[];
   }
+}
 
-  export interface CandidateDataModel {
-    CandidateName: string;
-    Data: {Parameter:string, Data:string};
-  }
 
+// DataModel is the input for analysis 
+export interface CandidateDataModel {
+  Name: string;
+  Data: { Parameter: string; Data: string }[];
+}
+ 
 export interface BatchDataModel {
-    BatchData: {
-        BatchName:string;
-        Module: string;
-        CandidateDataModel: CandidateDataModel[];
-    }
-  }
-  
+  Name: string;
+  Module: string;
+  Data: CandidateDataModel[];
+}
+
+export interface StrengthAnalysisModel {
+  Name: string;
+  Strengths: { Parameter: string, Data: string }[];
+}
+
+
