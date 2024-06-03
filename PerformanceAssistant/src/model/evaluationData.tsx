@@ -23,6 +23,7 @@ export interface CandidateAnalysisModel {
 export interface BatchAnalysisModel {
   BatchData: {
     Name: string;
+    Module:string;
     CandidateAnalysisModel: CandidateAnalysisModel[];
   }
 }
