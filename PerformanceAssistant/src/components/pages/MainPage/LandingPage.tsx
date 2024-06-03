@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from './LandingPageNavbar';
+import React, { useEffect, useState } from "react";
+import Navbar from "./LandingPageNavbar";
 import big from "../../images/bigpicture.jpg";
 
 const LandingPage: React.FC = () => {
-  const [typedText, setTypedText] = useState('');
+  const [typedText, setTypedText] = useState("");
   const [lineBreakIndex, setLineBreakIndex] = useState(0);
-  const fullText = 'Unleashing\nExcellence Through\nDetailed Insights';
+  const fullText = "Unleashing\nExcellence Through\nDetailed Insights";
   const typingSpeed = 100; // Adjust the typing speed as needed
 
   useEffect(() => {
@@ -13,14 +13,16 @@ const LandingPage: React.FC = () => {
     const typingInterval = setInterval(() => {
       if (currentIndex < fullText.length) {
         const nextChar = fullText[currentIndex];
-        setTypedText(prevText => {
-          if (nextChar === '\n') {
-            setLineBreakIndex(prevIndex => prevIndex + 1);
-            return prevText + '\n';
+        setTypedText((prevText) => {
+          if (nextChar === "\n") {
+            setLineBreakIndex((prevIndex) => prevIndex + 1);
+            return prevText + "\n";
           } else if (lineBreakIndex === 0 || lineBreakIndex === 1) {
             return prevText + nextChar;
           } else {
-            return prevText.substr(0, prevText.lastIndexOf('\n') + 1) + nextChar;
+            return (
+              prevText.substr(0, prevText.lastIndexOf("\n") + 1) + nextChar
+            );
           }
         });
         currentIndex++;
@@ -39,13 +41,17 @@ const LandingPage: React.FC = () => {
       <Navbar />
       <div className="flex items-center justify-center h-screen">
         <div className="w-1/2 flex flex-col items-center justify-center text-white p-8">
-          <h1 className="text-7xl font-bold text-center leading-tight whitespace-pre-line shadow-lg">{typedText}</h1>
-          <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full mt-8 hover:from-yellow-500 hover:to-orange-600 transition-all duration-300 shadow-lg">
-            Get Started
-          </button>
+          <h1 className="text-7xl font-bold text-center leading-tight whitespace-pre-line shadow-lg">
+            {typedText}
+          </h1>
         </div>
         <div className="w-1/2 flex justify-center">
-          <img src={big} alt="CCTECH Image" className="rounded-full shadow-lg" style={{ width: '500px', height: '500px', objectFit: 'cover' }} />
+          <img
+            src={big}
+            alt="CCTECH Image"
+            className="rounded-full shadow-lg"
+            style={{ width: "500px", height: "500px", objectFit: "cover" }}
+          />
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
-import { MongoClient, Db, Collection } from 'mongodb';
+import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
 import { UserCredentials } from '../Interfaces/Interface';
-//import {v4 as uuidv4} from 'uuid';
+import { dbuser } from '../Interfaces/Interface';
 
-interface User {
-  email: string;
-  password: string;
-}
+
+
+
+
 
 export class Database {
   private uri: string;
@@ -38,7 +38,7 @@ export class Database {
     if (collection.length > 0 && Array.isArray(collection[0].users)) 
     { 
       
-      const users: User[] = collection[0].users;
+      const users: dbuser[] = collection[0].users;
 
       // Extract and log each user's data
       for (const userData of users) {
@@ -58,20 +58,47 @@ export class Database {
   }
 
   public async addReport(report: any): Promise<void> {
-    if (!this.db) {
+    if (!this.db) 
+    {
       throw new Error('Database connection is not established');
     }
 
     const collection: Collection = this.db.collection('reports');
     console.log(collection);
-    try {
+    try 
+    {
       await collection.insertOne(report);
       console.log('Report added successfully');
-      }
-    catch (error) {
+    }
+    catch (error) 
+    {
       console.error('Failed to add report', error);
-      } 
+    } 
   }
+
+  
+  public  getReportById(reportId: string): any {
+    if (!this.db) {
+      throw new Error('Database connection is not established');
+    }
+
+    const collection: Collection = this.db.collection('reports');
+    try {
+      const objectId = new ObjectId(reportId); // Convert string to ObjectId
+      const report =  collection.findOne({ _id: objectId }); // Find document by ObjectId
+      if (report) {
+        console.log('Report found:', report);
+        return report;
+      } else {
+        console.log('No report found with the given ID');
+        return null;
+      }
+    } catch (error) {
+      console.error('Failed to get report', error);
+      throw error;
+    }
+  }
+}
 
   public getAllRecords(collectionName: string): any {
     if (!this.db) {

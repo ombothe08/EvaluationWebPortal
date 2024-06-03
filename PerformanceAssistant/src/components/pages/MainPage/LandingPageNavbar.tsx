@@ -30,20 +30,6 @@ const Navbar: React.FC = () => {
           style={{ marginRight: "-120px" }}
         >
           <Link
-            to="/about"
-            className="text-white hover:text-yellow-300 font-medium transition-colors duration-300"
-            style={{ fontSize: "1.5rem" }}
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="text-white hover:text-yellow-300 font-medium transition-colors duration-300"
-            style={{ fontSize: "1.5rem" }}
-          >
-            Contact Us
-          </Link>
-          <Link
             to="/login"
             className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full shadow-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-300"
             style={{ fontSize: "1.25rem" }}
@@ -74,28 +60,6 @@ const Navbar: React.FC = () => {
           </button>
         </div>
       </div>
-      {isOpen && (
-        <div className="md:hidden bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 shadow-lg rounded-lg mt-2">
-          <Link
-            to="/about"
-            className="block text-white hover:text-yellow-300 px-4 py-2 transition-colors duration-300"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="block text-white hover:text-yellow-300 px-4 py-2 transition-colors duration-300"
-          >
-            Contact Us
-          </Link>
-          <Link
-            to="/login"
-            className="block bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full shadow-lg mx-4 my-2 hover:from-yellow-500 hover:to-orange-600 transition-all duration-300"
-          >
-            Signup/Login
-          </Link>
-        </div>
-      )}
     </nav>
   );
 };
