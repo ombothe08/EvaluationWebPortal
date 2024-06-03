@@ -16,7 +16,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
 import { useNavigate } from "react-router-dom";
-import { Upload } from "@mui/icons-material";
 import { ServerData } from "../../../model/evaluationData";
 
 interface HomePageProps {
@@ -57,9 +56,20 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
     }
   };
 
-  const handleDelete = (index: number) => {
-    const updatedData = homepageData.filter((_, i) => i !== index);
-    setHomepageData(updatedData);
+  const handleDelete = async (objectid: string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/delete/${objectid}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        const updatedData = homepageData.filter((data) => data.objectid !== objectid);
+        setHomepageData(updatedData);
+      } else {
+        console.error(`Failed to delete record with ID ${objectid}`);
+      }
+    } catch (error) {
+      console.error("Error deleting record:", error);
+    }
   };
 
   const handleDownload = (index: number) => {
@@ -116,7 +126,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     width: "30%",
                   }}
                 >
-                  Analysis (Object ID)
+                  Analysis
                 </TableCell>
                 <TableCell
                   sx={{
@@ -138,7 +148,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     width: "20%",
                   }}
                 >
-                  Operation
+                  Delete
                 </TableCell>
                 <TableCell
                   sx={{
@@ -183,7 +193,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                   >
                     <IconButton
                       color="error"
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(data.objectid)}
                     >
                       <DeleteIcon />
                     </IconButton>
