@@ -124,37 +124,53 @@ export class Database {
     }
   }
 
-  public getAllRecords(collectionName: string): Promise<BatchDbModel[]> {
+  public async getAllRecords(collectionName: string): Promise<BatchDbModel[]> {
     if (!this.db) {
-      return Promise.reject(new Error('Database connection is not established'));
+      throw new Error('Database connection is not established');
     }
-
+  
     const collection: Collection = this.db.collection(collectionName);
-    return collection.find({}).toArray()
-      .then((records) => {
-        const formattedRecords: BatchDbModel[] = records.map(record => ({
+    try {
+      const records = await collection.find({}).toArray();
+        if (records.length > 0) {
+        console.log("Records found:", records);
+        const formattedRecords: BatchDbModel[] = records.map(record => ({ 
           objectid: record._id.toString(),
           BatchData: {
-            Name: record.report.Name,
-            Module: record.report.Module,
-            Date: record.report.Date,
-            AnalysisModel: record.report.analyzedData.map((data: any) => ({
-              Name: data.CandidateName, // Change to Name
-              Strengths: data.Strengths,
-              AreasOfImprovement: data.AreasOfImprovement,
-              InputForMentors: data.InputForMentore // Change to InputForMentors
+            Name: record.BatchData.name, // Keep the original case
+            Module: record.BatchData.module, // Keep the original case
+            Date: record.BatchData.Date,
+            AnalysisModel: record.BatchData.CandidateAnalysisModel.map((data: any) => ({
+              Name: data.Name,
+              Strengths: data.Strengths.map((strength: any) => ({
+                Parameter: strength.Parameter,
+                Data: strength.Data
+              })),
+              AreasOfImprovement: data.AreasOfImprovement.map((improvement: any) => ({
+                Parameter: improvement.Parameter,
+                Data: improvement.Data
+              })),
+              InputForMentors: data.InputForMentors.map((input: any) => ({
+                Parameter: input.Parameter,
+                Data: input.Data
+              }))
             }))
           }
         }));
         console.log(`Fetched ${records.length} records from ${collectionName} collection`);
         return formattedRecords;
-      })
-      .catch((error) => {
-        console.error('Failed to fetch records', error);
+      } else {
+        console.log('No records found');
         return [];
-      });
+      }
+    } catch (error) {
+      console.error('Failed to fetch records', error);
+      throw error;
+    }
   }
+  
 
+  
   public  deleteReportById(reportId: string): any {
     if (!this.db) {
       throw new Error('Database connection is not established');
