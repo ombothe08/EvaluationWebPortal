@@ -49,7 +49,7 @@ const ReportPage: React.FC = () => {
           sx={{
             fontSize: 30,
             fontWeight: "bold",
-            mb: 2,
+            mb: 1,
             fontFamily: "sans-serif",
           }}
         >
@@ -87,7 +87,6 @@ const ReportPage: React.FC = () => {
                     sx={{
                       fontSize: 25,
                       fontWeight: "bold",
-                      mb: 2,
                       fontFamily: "sans-serif",
                     }}
                   >
@@ -108,7 +107,6 @@ const ReportPage: React.FC = () => {
                     sx={{
                       fontSize: 25,
                       fontWeight: "bold",
-                      mb: 2,
                       fontFamily: "sans-serif",
                     }}
                   >
@@ -129,7 +127,6 @@ const ReportPage: React.FC = () => {
                     sx={{
                       fontSize: 25,
                       fontWeight: "bold",
-                      mb: 2,
                       fontFamily: "sans-serif",
                     }}
                   >
@@ -150,7 +147,6 @@ const ReportPage: React.FC = () => {
                     sx={{
                       fontSize: 25,
                       fontWeight: "bold",
-                      mb: 2,
                       fontFamily: "sans-serif",
                     }}
                   >
@@ -171,7 +167,6 @@ const ReportPage: React.FC = () => {
                     sx={{
                       fontSize: 25,
                       fontWeight: "bold",
-                      mb: 2,
                       fontFamily: "sans-serif",
                     }}
                   >
