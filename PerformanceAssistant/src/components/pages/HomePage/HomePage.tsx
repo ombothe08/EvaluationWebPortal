@@ -22,7 +22,6 @@ const HomePage: React.FC = () => {
       date: "3-10-2000",
       operation: "",
     },
-    // Add more candidate data as needed
   ]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
