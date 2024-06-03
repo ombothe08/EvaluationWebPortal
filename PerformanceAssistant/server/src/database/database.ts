@@ -1,5 +1,8 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 import { UserCredentials } from '../Interfaces/Interface';
+//import {v4 as uuidv4} from 'uuid';
+
+
 
 interface User {
   email: string;
@@ -26,21 +29,23 @@ export class Database {
 
   public async verifyUserCredentials(userCredentials: UserCredentials): Promise<boolean | any> {
     if (!this.db) {
-      console.log(this.db);
+      
       throw new Error('Database connection is not established');
     }
 
-    const usersCollection: Collection = this.db.collection('PerformanceAssistance');
+    const usersCollection: Collection = this.db.collection('users');
+    console.log(usersCollection);
 
     let collection = await usersCollection.find({}).toArray();
-    if (collection.length > 0 && collection[0].users) {
-      const users: Record<string, User> = collection[0].users;
+    if (collection.length > 0 && Array.isArray(collection[0].users)) 
+    { 
+      
+      const users: User[] = collection[0].users;
 
       // Extract and log each user's data
-      for (const [userId, userData] of Object.entries(users)) {
+      for (const userData of users) {
         const db_username = userData.email;
         const db_password = userData.password;
-        let a = typeof(db_password);
         if (db_username === userCredentials.Email && db_password === userCredentials.Password) {
           return true;
         }
@@ -51,5 +56,27 @@ export class Database {
     } else {
       console.log('No users found in the collection');
     }
+  
   }
+
+  public async addReport(report: any): Promise<void> {
+    if (!this.db) {
+      throw new Error('Database connection is not established');
+    }
+
+    const collection: Collection = this.db.collection('reports');
+    console.log(collection);
+    try {
+      await collection.insertOne(report);
+      console.log('Report added successfully');
+      }
+    catch (error) {
+      console.error('Failed to add report', error);
+      } 
+  }
+
 }
+  
+
+
+
