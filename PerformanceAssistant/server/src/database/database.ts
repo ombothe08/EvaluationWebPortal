@@ -63,10 +63,10 @@ export class Database {
         objectid: new ObjectId().toHexString(),
         
         BatchData: {
-          BatchName: batchAnalysis.BatchData.Name,
+          Name: batchAnalysis.BatchData.Name,
           Module: batchAnalysis.BatchData.Module,
           Date: new Date().toISOString(),
-          CandidateAnalysisModel: batchAnalysis.BatchData.AnalysisModel
+          AnalysisModel: batchAnalysis.BatchData.AnalysisModel
         }
       };
       await collection.insertOne(batchDbModel);
@@ -86,18 +86,18 @@ export class Database {
     try {
       const objectId = new ObjectId(reportId); // Convert string to ObjectId
       const report = await collection.findOne({ _id: objectId }); // Find document by ObjectId
-     
+
       if (report) {
         console.log('Report found:', report);
         // Transform the retrieved document to BatchDbModel
         const batchDbModel: BatchDbModel = {
           objectid: report._id.toString(),
           BatchData: {
-            BatchName: report.report.name,
-            Module: report.report.module,
-            Date: report.report.date,
-            CandidateAnalysisModel: report.report.analyzedData.map((data: any) => ({
-              Name: data.CandidateName,
+            Name: report.BatchData.Name,
+            Module: report.BatchData.Module,
+            Date: report.BatchData.Date,
+            AnalysisModel: report.BatchData.CandidateAnalysisModel.map((data: any) => ({
+              Name: data.Name,
               Strengths: data.Strengths.map((strength: any) => ({
                 Parameter: strength.Parameter,
                 Data: strength.Data
@@ -106,7 +106,7 @@ export class Database {
                 Parameter: improvement.Parameter,
                 Data: improvement.Data
               })),
-              RecomendationForMentor: data.InputForMentore.map((input: any) => ({
+              InputForMentors: data.InputForMentors.map((input: any) => ({
                 Parameter: input.Parameter,
                 Data: input.Data
               }))
@@ -135,10 +135,10 @@ export class Database {
         const formattedRecords: BatchDbModel[] = records.map(record => ({
           objectid: record._id.toString(),
           BatchData: {
-            BatchName: record.report.name,
-            Module: record.report.module,
+            Name: record.report.Name,
+            Module: record.report.Module,
             Date: record.report.Date,
-            CandidateAnalysisModel: record.report.analyzedData.map((data: any) => ({
+            AnalysisModel: record.report.analyzedData.map((data: any) => ({
               Name: data.CandidateName, // Change to Name
               Strengths: data.Strengths,
               AreasOfImprovement: data.AreasOfImprovement,
