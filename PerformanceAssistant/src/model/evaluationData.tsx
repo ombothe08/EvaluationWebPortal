@@ -28,14 +28,6 @@ export interface CandidateAnalysisModel {
 // }
 
 
-// export interface ServerData {
-//   objectid: string;
-//   BatchData: {
-//     Date: string;
-//     // other fields...
-//   };
-// }
-
 export interface ServerData {
   objectid : string;
   BatchData: {
