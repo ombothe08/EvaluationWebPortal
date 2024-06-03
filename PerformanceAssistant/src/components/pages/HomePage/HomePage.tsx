@@ -17,106 +17,9 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
 import { useNavigate } from "react-router-dom";
 import { Upload } from "@mui/icons-material";
-import * as XLSX from 'xlsx';
-
-// Define an interface for the analyzedData object
-interface AnalyzedData {
-  CandidateName: string;
-  Strengths: { Parameter: string; Data: string }[];
-  AreasOfImprovement: { Parameter: string; Data: string }[];
-  InputForMentore: { Parameter: string; Data: string }[];
-}
-
-// Define an interface for the report object
-interface Report {
-  name: string;
-  module: string;
-  Date: string;
-  analyzedData: AnalyzedData[];
-}
-
-// Define an interface for the entire data structure
-interface Data {
-  _id: { $oid: string };
-  report: Report;
-}
-
-// Assuming you have the data as a variable called 'myData' of type 'Data'
-const myData: Data = {
-  "_id": {
-    "$oid": "665d73f74948933eb9e9225d"
-  },
-  "report": {
-    "name": "Quarterly Performance Analysis",
-    "module": "Sales",
-    "Date": "2023-04-01",
-    "analyzedData": [
-      {
-        "CandidateName": "John Doe",
-        "Strengths": [
-          {
-            "Parameter": "Communication",
-            "Data": "Excellent"
-          },
-          {
-            "Parameter": "Sales Skills",
-            "Data": "Very Good"
-          }
-        ],
-        "AreasOfImprovement": [
-          {
-            "Parameter": "Time Management",
-            "Data": "Needs Improvement"
-          }
-        ],
-        "InputForMentore": [
-          {
-            "Parameter": "Focus on advanced sales techniques",
-            "Data": "Recommend attending advanced sales training sessions."
-          }
-        ]
-      },
-      {
-        "CandidateName": "Jane Smith",
-        "Strengths": [
-          {
-            "Parameter": "Customer Service",
-            "Data": "Outstanding"
-          },
-          {
-            "Parameter": "Product Knowledge",
-            "Data": "Excellent"
-          }
-        ],
-        "AreasOfImprovement": [
-          {
-            "Parameter": "Punctuality",
-            "Data": "Needs Improvement"
-          }
-        ],
-        "InputForMentore": [
-          {
-            "Parameter": "Time Management Workshops",
-            "Data": "Encourage participation in time management workshops."
-          }
-        ]
-      }
-    ]
-  }
-}
+import { convertDataToExcel } from "../../utils/excelUtils";
 
 
-
-const convertDataToExcel = (data:number) => {
-  const worksheet = XLSX.utils.json_to_sheet(myData.report.analyzedData);
-const workbook = XLSX.utils.book_new();
-
-XLSX.utils.book_append_sheet(workbook, worksheet, "Report Data");
-
-const fileName:string = myData.report.name;
-XLSX.writeFile(workbook, fileName+".xlsx");
-
-}; 
 
 
 interface HomePageProps {
@@ -157,7 +60,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
   };
  
   const handleDownload = (index: number) => {
-    convertDataToExcel(index);
+    convertDataToExcel(0);
   };
  
   return (
