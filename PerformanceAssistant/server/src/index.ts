@@ -43,7 +43,7 @@ app.post('/getSelectedRecord',async(req:Request,res:Response) => {
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
     let a = typeof(dbreport);
-    res.send(dbreport);
+    res.send(JSON.stringify(dbreport));
 });
 
 

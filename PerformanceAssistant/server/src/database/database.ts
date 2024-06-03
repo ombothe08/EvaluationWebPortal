@@ -137,8 +137,8 @@ export class Database {
         const formattedRecords: BatchDbModel[] = records.map(record => ({ 
           objectid: record._id.toString(),
           BatchData: {
-            Name: record.BatchData.Name, // Keep the original case
-            Module: record.BatchData.Module, // Keep the original case
+            Name: record.BatchData.Name, 
+            Module: record.BatchData.Module, 
             Date: record.BatchData.Date,
             AnalysisModel: record.BatchData.CandidateAnalysisModel.map((data: any) => ({
               Name: data.Name,
