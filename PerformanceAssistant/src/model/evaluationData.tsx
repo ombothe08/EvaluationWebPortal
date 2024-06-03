@@ -21,9 +21,11 @@ export interface CandidateAnalysisModel {
   InputForMentors: { Parameter: string, Data: string };
 }
 
+
 export interface BatchAnalysisModel {
   BatchData: {
     Name: string;
     CandidateAnalysisModel: CandidateAnalysisModel[];
   }
 }
+
