@@ -1,4 +1,3 @@
-
 export interface CandidateDataModel {
   Name: string;
   Data: { Parameter: string; Data: string }[];
@@ -7,14 +6,12 @@ export interface CandidateDataModel {
 export interface BatchDataModel {
 
   Name: string;
-  Date: string;
   Data: CandidateDataModel[];
   Module: string;
 }
 
 export interface CandidateAnalysisModel {
   Name: string;
-  Module: string;
   Stregths: { Parameter: string, Data: string };
   AreasOfImprovement: { Parameter: string, Data: string };
   InputForMentors: { Parameter: string, Data: string };
@@ -24,7 +21,7 @@ export interface CandidateAnalysisModel {
 export interface BatchAnalysisModel {
   BatchData: {
     Name: string;
+    Module: string;
     CandidateAnalysisModel: CandidateAnalysisModel[];
   }
 }
-

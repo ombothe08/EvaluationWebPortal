@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
-import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationData'
+import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationData';
 
 export interface UseExcelParametersReturn {
   parameters: string[];
@@ -68,7 +68,6 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     const batchDataModel: BatchDataModel = {
       
         Name: batchName,
-        Date: currentDate,
         Data: candidateDataModel,
         Module: "cpp"
     };
@@ -79,9 +78,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   const submitData = async () => {
     try {
       const batchDataModel: BatchDataModel = transformData(jsonSheet, fileName);
-      const batchDataModelString = JSON.stringify(batchDataModel);
-      // console.log(batchDataModelString);
-      console.log(batchDataModel);
+      console.log('Submitting the following batch data model:', batchDataModel);
   
       const response = await fetch('http://localhost:3000/evaluate', {
         method: 'POST',
@@ -93,15 +90,22 @@ const useExcelParameters = (): UseExcelParametersReturn => {
           transformedData: batchDataModel,
         }),
       });
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
+  
+      console.log(response);
       const responseData = await response.json();
-      console.log(responseData);
+
+// Map the response data to BatchAnalysisModel
+//onst batchAnalysisModel: BatchAnalysisModel = mapResponseToBatchAnalysisModel(responseData);
+// console.log('Batch Analysis Model:', batchAnalysisModel);
     } catch (error) {
       console.error('Error submitting data:', error);
     }
   };
+  
   
 
   return {
