@@ -35,8 +35,6 @@ app.post('/evaluate', async (req: Request, res: Response) => {
 });
 
 
-
-
 app.post('/getselectedrecord',async(req:Request,res:Response) => {
 
     const objid = req.body.Key;

@@ -5,6 +5,7 @@ import LoginPage from "../logInPage/LogInPage";
 import HomePage from "../homePage/HomePage";
 import useExcelParameters from "../uploadFilePage/UseExcelParametersReturn";
 import ParameterListPage from "../parameterListPage/ParameterListPage";
+import ReportPage from "../reportPage/ReportPage";
 
 const AppRouter: React.FC = () => {
   const excelParameters = useExcelParameters();
@@ -15,12 +16,13 @@ const AppRouter: React.FC = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/homepage"
-          element={<HomePage useExcelParameters={excelParameters} />} // Pass excelParameters as a prop
+          element={<HomePage useExcelParameters={excelParameters} />} 
         />
         <Route
           path="/upload"
           element={<ParameterListPage useExcelParameters={excelParameters} />}
         />
+        <Route path="/report" element={<ReportPage />} />
       </Routes>
     </Router>
   );
