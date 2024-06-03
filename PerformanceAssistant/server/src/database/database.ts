@@ -1,8 +1,5 @@
-import { MongoClient, Db, Collection } from 'mongodb';
+import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
 import { UserCredentials } from '../Interfaces/Interface';
-//import {v4 as uuidv4} from 'uuid';
-
-
 
 interface User {
   email: string;
@@ -74,9 +71,27 @@ export class Database {
       console.error('Failed to add report', error);
       } 
   }
+  
+  public  deleteReportById(reportId: string): any {
+    if (!this.db) {
+      throw new Error('Database connection is not established');
+    }
+
+    const collection: Collection = this.db.collection('reports');
+    try {
+      const objectId = new ObjectId(reportId); // Convert string to ObjectId
+      const report =  collection.deleteOne({ _id: objectId }); // Find document by ObjectId
+      if (report) {
+        console.log('Report found:', report);
+        return report;
+      } else {
+        console.log('No report found with the given ID');
+        return null;
+      }
+    } catch (error) {
+      console.error('Failed to get report', error);
+      throw error;
+    }
+  }
 
 }
-  
-
-
-
