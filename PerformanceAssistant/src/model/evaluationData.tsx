@@ -30,7 +30,7 @@ export interface BatchAnalysisModel {
 export interface ServerData {
   objectid : string;
   BatchData: {
-      BatchName:string;
+      Name:string;
       Module: string;
       Date:string;
       CandidateAnalysisModel: CandidateAnalysisModel[];

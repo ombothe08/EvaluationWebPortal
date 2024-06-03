@@ -453,7 +453,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     <span
                       style={{ textDecoration: "underline", color: "blue" }}
                     >
-                      {data.BatchData.BatchName}
+                      {data.BatchData.Name}
                     </span>
                   </TableCell>
                   <TableCell
