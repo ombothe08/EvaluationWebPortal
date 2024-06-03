@@ -7,10 +7,9 @@ export interface CandidateDataModel {
 export interface BatchDataModel {
 
   Name: string;
-  Module: string;
   Date: string;
   Data: CandidateDataModel[];
-
+  Module: string;
 }
 
 export interface CandidateAnalysisModel {

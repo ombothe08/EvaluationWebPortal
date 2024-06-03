@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
-import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationData';
+import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationData'
 
 export interface UseExcelParametersReturn {
   parameters: string[];
@@ -32,7 +32,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
       const worksheet = workbook.Sheets[sheetName];
       const jsonSheet = XLSX.utils.sheet_to_json<any[]>(worksheet, { header: 1 });
       const headers = jsonSheet[0]; // Assuming first row contains headers
-      setParameters(headers.slice(1)); // Exclude the first column (Module Name)
+      setParameters(headers.slice(1)); // Exclude the first column (CandidateName)
       setJsonSheet(jsonSheet);
       console.log(jsonSheet);
     };
@@ -52,26 +52,25 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   const transformData = (jsonSheet: any[][], batchName: string): BatchDataModel => {
     const headers = jsonSheet[0];
     const rows = jsonSheet.slice(1);
-    const moduleName = headers[0] as string; // Assuming the module name is the first header
     const today = new Date();
     const month = today.getMonth() + 1;
     const year = today.getFullYear();
     const date = today.getDate();
-    const currentDate = `${month}/${date}/${year}`;
-
+    const currentDate = month + "/" + date + "/" + year;
     const candidateDataModel: CandidateDataModel[] = rows.map(row => ({
       Name: row[0] as string,
       Data: headers.slice(1).map((header, index) => ({
         Parameter: header,
         Data: row[index + 1] as string,
-      })).filter(paramData => selectedParameters.includes(paramData.Parameter)), // Filter based on selected parameters
+      })),
     }));
 
     const batchDataModel: BatchDataModel = {
-      Name: batchName,
-      Module: moduleName,
-      Date: currentDate,
-      Data: candidateDataModel,
+      
+        Name: batchName,
+        Date: currentDate,
+        Data: candidateDataModel,
+        Module: "cpp"
     };
 
     return batchDataModel;
@@ -81,9 +80,9 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     try {
       const batchDataModel: BatchDataModel = transformData(jsonSheet, fileName);
       const batchDataModelString = JSON.stringify(batchDataModel);
-      console.log(batchDataModelString);
+      // console.log(batchDataModelString);
       console.log(batchDataModel);
-
+  
       const response = await fetch('http://localhost:3000/evaluate', {
         method: 'POST',
         headers: {
@@ -91,7 +90,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
         },
         body: JSON.stringify({
           selectedParameters,
-          transformedData: batchDataModelString,
+          transformedData: batchDataModel,
         }),
       });
       if (!response.ok) {
@@ -103,6 +102,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
       console.error('Error submitting data:', error);
     }
   };
+  
 
   return {
     parameters,
