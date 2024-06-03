@@ -1,7 +1,5 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
-import { UserCredentials } from '../Interfaces/Interface';
-import { dbuser } from '../Interfaces/Interface';
-import {BatchDbModel} from '../Interfaces/Interface';
+import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel } from '../Interfaces/Interface';
 
 export class Database {
   private uri: string;
@@ -52,28 +50,34 @@ export class Database {
     }
   
   }
-
-  public async addReport(report: any): Promise<void> {
-    if (!this.db) 
-    {
+  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<void> {
+    if (!this.db) {
       throw new Error('Database connection is not established');
     }
 
     const collection: Collection = this.db.collection('reports');
-    console.log(collection);
-    try 
-    {
-      await collection.insertOne(report);
+  
+    let a = new Date().toISOString();
+    try {
+      const batchDbModel: BatchDbModel = {
+        objectid: new ObjectId().toHexString(),
+        
+        BatchData: {
+          BatchName: batchAnalysis.BatchData.Name,
+          Module: batchAnalysis.BatchData.Module,
+          Date: new Date().toISOString(),
+          CandidateAnalysisModel: batchAnalysis.BatchData.AnalysisModel
+        }
+      };
+      await collection.insertOne(batchDbModel);
       console.log('Report added successfully');
-    }
-    catch (error) 
-    {
+    } catch (error) {
       console.error('Failed to add report', error);
-    } 
+    }
   }
 
   
-  public  getReportById(reportId: string): any {
+  public async getReportById(reportId: string): Promise<BatchDbModel | null> {
     if (!this.db) {
       throw new Error('Database connection is not established');
     }
@@ -81,10 +85,35 @@ export class Database {
     const collection: Collection = this.db.collection('reports');
     try {
       const objectId = new ObjectId(reportId); // Convert string to ObjectId
-      const report =  collection.findOne({ _id: objectId }); // Find document by ObjectId
+      const report = await collection.findOne({ _id: objectId }); // Find document by ObjectId
+     
       if (report) {
         console.log('Report found:', report);
-        return report;
+        // Transform the retrieved document to BatchDbModel
+        const batchDbModel: BatchDbModel = {
+          objectid: report._id.toString(),
+          BatchData: {
+            BatchName: report.report.name,
+            Module: report.report.module,
+            Date: report.report.date,
+            CandidateAnalysisModel: report.report.analyzedData.map((data: any) => ({
+              Name: data.CandidateName,
+              Strengths: data.Strengths.map((strength: any) => ({
+                Parameter: strength.Parameter,
+                Data: strength.Data
+              })),
+              AreasOfImprovement: data.AreasOfImprovement.map((improvement: any) => ({
+                Parameter: improvement.Parameter,
+                Data: improvement.Data
+              })),
+              RecomendationForMentor: data.InputForMentore.map((input: any) => ({
+                Parameter: input.Parameter,
+                Data: input.Data
+              }))
+            }))
+          }
+        };
+        return batchDbModel;
       } else {
         console.log('No report found with the given ID');
         return null;
