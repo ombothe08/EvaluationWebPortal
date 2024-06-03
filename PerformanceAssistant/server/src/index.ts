@@ -25,6 +25,9 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   let oaiService = new OpenAIService();
   
   oaiService.evaluate(req.body).then((response)=>{
+      let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+      db.connectToDatabase();
+      db.addReport(response);
       res.send(response);
   }).catch((error)=>{
       res.send(error);
