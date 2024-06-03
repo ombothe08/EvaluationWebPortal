@@ -3,6 +3,7 @@ import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
 import { UserCredentials } from './Interfaces/Interface';
 import cors from "cors";
+import { Database } from './Database/Database';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -28,6 +29,16 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   }).catch((error)=>{
       res.send(error);
   });
+});
+
+app.post('/getselectedrecord',async(req:Request,res:Response) => {
+
+    let obj = '665d70618f493d33be5ae23b';
+
+    let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+    db.connectToDatabase();
+    let a =  db.getReportById(obj); 
+    console.log(a);
 });
 
 app.listen(port, () => {

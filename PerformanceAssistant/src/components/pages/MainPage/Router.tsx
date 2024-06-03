@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import LoginPage from "../logInPage/LogInPage";
-import HomePage from "../HomePage/HomePage";
+import HomePage from "../homePage/HomePage";
 import useExcelParameters from "../uploadFilePage/UseExcelParametersReturn";
 import ParameterListPage from "../parameterListPage/ParameterListPage";
 
