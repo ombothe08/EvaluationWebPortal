@@ -3,8 +3,7 @@ import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
 import { UserCredentials } from './Interfaces/Interface';
 import cors from "cors";
-import { Database } from './Database/Database';
-
+import { Database } from './Database/database';
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
@@ -21,6 +20,7 @@ app.post('/login', async (req: Request, res: Response) => {
   
 });
 
+
 app.post('/evaluate', async (req: Request, res: Response) => {
   let oaiService = new OpenAIService();
   
@@ -32,9 +32,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {
 });
 
 app.post('/getselectedrecord',async(req:Request,res:Response) => {
-
     let obj = '665d70618f493d33be5ae23b';
-
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
     let a =  db.getReportById(obj); 
@@ -43,4 +41,16 @@ app.post('/getselectedrecord',async(req:Request,res:Response) => {
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+
+app.get("/getAllRecords", async (req: Request, res: Response) => {
+  try {
+    const database = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+    await database.connectToDatabase();
+    const records = await database.getAllRecords("reports");
+    res.send(records);
+  } catch (error) {
+    console.error('Failed to get records', error);
+    res.status(500).send('Failed to get records');
+  }
 });
