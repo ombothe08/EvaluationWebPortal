@@ -4,7 +4,9 @@ import { Authenticator } from './Authenticator/Authenticator';
 import { BatchAnalysisModel, UserCredentials} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
-import { json } from 'body-parser';
+
+
+
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
