@@ -11,7 +11,7 @@ export interface BatchDataModel {
 
 export interface CandidateAnalysisModel {
   Name: string;
-  Strengths: { Parameter: string, Data: string };
+  Strengths: { Parameter: string, Data: string }[];
   AreasOfImprovement: { Parameter: string, Data: string }[];
   InputForMentors: { Parameter: string, Data: string }[];
 }
@@ -21,6 +21,6 @@ export interface BatchAnalysisModel {
   BatchData: {
     Name: string;
     Module: string;
-    AnalysisModel: CandidateAnalysisModel[];
+    CandidateAnalysisModel: CandidateAnalysisModel[];
   }
 }
