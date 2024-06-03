@@ -1,11 +1,7 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
 import { UserCredentials } from '../Interfaces/Interface';
 import { dbuser } from '../Interfaces/Interface';
-
-
-
-
-
+import {BatchDbModel} from '../Interfaces/Interface';
 
 export class Database {
   private uri: string;
@@ -98,7 +94,37 @@ export class Database {
       throw error;
     }
   }
-}
+
+  public getAllRecords(collectionName: string): Promise<BatchDbModel[]> {
+    if (!this.db) {
+      return Promise.reject(new Error('Database connection is not established'));
+    }
+
+    const collection: Collection = this.db.collection(collectionName);
+    return collection.find({}).toArray()
+      .then((records) => {
+        const formattedRecords: BatchDbModel[] = records.map(record => ({
+          objectid: record._id.toString(),
+          BatchData: {
+            BatchName: record.report.name,
+            Module: record.report.module,
+            Date: record.report.Date,
+            CandidateAnalysisModel: record.report.analyzedData.map((data: any) => ({
+              CandidateName: data.CandidateName,
+              Strengths: data.Strengths,
+              AreasOfImprovement: data.AreasOfImprovement,
+              InputForMentore: data.InputForMentore
+            }))
+          }
+        }));
+        console.log(`Fetched ${records.length} records from ${collectionName} collection`);
+        return formattedRecords;
+      })
+      .catch((error) => {
+        console.error('Failed to fetch records', error);
+        return [];
+      });
+  }}
 
   
 
