@@ -332,8 +332,6 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
 
   const handleAnalysisClick = async (objectid: string) => {
     try {
-      console.log("1");
-      
       const response = await fetch("http://localhost:3000/getselectedrecord", {
         method: "POST",
         headers: {
