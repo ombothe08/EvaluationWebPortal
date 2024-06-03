@@ -12,5 +12,5 @@ export class Authenticator {
 
     let result = await this.database.verifyUserCredentials(userCredentials);
     return result;
-   }  
+  }
 }

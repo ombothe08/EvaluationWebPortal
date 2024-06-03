@@ -3,7 +3,7 @@ import { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationData'
 
-interface UseExcelParametersReturn {
+export interface UseExcelParametersReturn {
   parameters: string[];
   selectedParameters: string[];
   handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -83,7 +83,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
       console.log(batchDataModelString);
       console.log(batchDataModel);
   
-      const response = await fetch('/api/evaluation-data', {
+      const response = await fetch('http://localhost:3000/evaluate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,11 +93,9 @@ const useExcelParameters = (): UseExcelParametersReturn => {
           transformedData: batchDataModelString,
         }),
       });
-  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-  
       const responseData = await response.json();
       console.log(responseData);
     } catch (error) {
