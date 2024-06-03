@@ -5,7 +5,7 @@ import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationDat
 export interface UseExcelParametersReturn {
   parameters: string[];
   selectedParameters: string[];
-  responseData1: string[];
+  apiData: string[];
   handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   submitData: () => Promise<boolean>;
@@ -16,7 +16,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   const [selectedParameters, setSelectedParameters] = useState<string[]>([]);
   const [jsonSheet, setJsonSheet] = useState<any[][]>([]); // Array of arrays representing the JSON sheet data
   const [fileName, setFileName] = useState<string>('');
-  const [responseData1, setResponseData1] = useState<string[]>([]);
+  const [apiData, setResponseData] = useState<string[]>([]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -97,8 +97,15 @@ const useExcelParameters = (): UseExcelParametersReturn => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      setResponseData1(responseData); // Set the response data in state
-      console.log("responsedata", responseData1);
+      setResponseData(responseData); // Set the response data in state
+      console.log("responsedata",apiData );
+      responseData.BatchData.AnalysisModel.forEach((candidate: { Name: any; Strengths: any; AreasOfImprovement: any; InputForMentors: any; }, index: number) => {
+        console.log(`Candidate ${index + 1}: ${candidate.Name}`);
+        console.log("Strengths:", candidate.Strengths);
+        console.log("Areas of Improvement:", candidate.AreasOfImprovement);
+        console.log("Input for Mentors:", candidate.InputForMentors);
+      });
+
       return true; 
     } catch (error) {
       console.error('Error submitting data:', error);
@@ -108,7 +115,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   return {
     parameters,
     selectedParameters,
-    responseData1,
+    apiData,
     handleFileUpload,
     handleCheckboxChange,
     submitData,
