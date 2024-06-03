@@ -20,13 +20,12 @@ export interface CandidateAnalysisModel {
 }
 
 
-// export interface BatchAnalysisModel {
-//   BatchData: {
-//     Name: string;
-//     CandidateAnalysisModel: CandidateAnalysisModel[];
-//   }
-// }
-
+export interface BatchAnalysisModel {
+  BatchData: {
+    Name: string;
+    CandidateAnalysisModel: CandidateAnalysisModel[];
+  }
+}
 
 export interface ServerData {
   objectid : string;
@@ -35,8 +34,5 @@ export interface ServerData {
       Module: string;
       Date:string;
       CandidateAnalysisModel: CandidateAnalysisModel[];
-    Name: string;
-    Module:string;
-    CandidateAnalysisModel: CandidateAnalysisModel[];
   }
 }
