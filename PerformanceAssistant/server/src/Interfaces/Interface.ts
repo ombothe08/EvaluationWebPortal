@@ -28,9 +28,9 @@ export interface BatchDbModel {
 //Analysis Mode is the output from OpenAI
 export interface CandidateAnalysisModel {
   Name: string;
-  Stregths: {Parameter:string, Data:string};
-  AreasOfImprovement: {Parameter:string, Data:string};
-  RecomendationForMentor: {Parameter:string, Data:string};
+  Strengths: { Parameter: string; Data: string }[];
+  AreasOfImprovement: { Parameter: string; Data: string }[];
+  RecomendationForMentor: { Parameter: string; Data: string }[];
 }
 
 export interface BatchAnalysisModel {

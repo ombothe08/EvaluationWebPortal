@@ -1,6 +1,7 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
-import { UserCredentials } from '../Interfaces/Interface';
-import { dbuser } from '../Interfaces/Interface';
+
+import { dbuser,UserCredentials,BatchDbModel,BatchAnalysisModel } from '../Interfaces/Interface';
+
 
 
 
@@ -77,7 +78,7 @@ export class Database {
   }
 
   
-  public  getReportById(reportId: string): any {
+  public async getReportById(reportId: string): Promise<any> {
     if (!this.db) {
       throw new Error('Database connection is not established');
     }
@@ -85,7 +86,7 @@ export class Database {
     const collection: Collection = this.db.collection('reports');
     try {
       const objectId = new ObjectId(reportId); // Convert string to ObjectId
-      const report =  collection.findOne({ _id: objectId }); // Find document by ObjectId
+      const report = await collection.findOne({ _id: objectId }); // Find document by ObjectId
       if (report) {
         console.log('Report found:', report);
         return report;

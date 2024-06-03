@@ -37,8 +37,8 @@ app.post('/getselectedrecord',async(req:Request,res:Response) => {
 
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
-    let a =  db.getReportById(obj); 
-    console.log(a);
+    let a =  await db.getReportById(obj); 
+    res.send(a);
 });
 
 app.listen(port, () => {
