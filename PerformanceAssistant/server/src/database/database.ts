@@ -110,10 +110,10 @@ export class Database {
             Module: record.report.module,
             Date: record.report.Date,
             CandidateAnalysisModel: record.report.analyzedData.map((data: any) => ({
-              CandidateName: data.CandidateName,
+              Name: data.CandidateName, // Change to Name
               Strengths: data.Strengths,
               AreasOfImprovement: data.AreasOfImprovement,
-              InputForMentore: data.InputForMentore
+              InputForMentors: data.InputForMentore // Change to InputForMentors
             }))
           }
         }));
@@ -124,7 +124,30 @@ export class Database {
         console.error('Failed to fetch records', error);
         return [];
       });
-  }}
+  }
+
+  public  deleteReportById(reportId: string): any {
+    if (!this.db) {
+      throw new Error('Database connection is not established');
+    }
+    const collection: Collection = this.db.collection('reports');
+    try {
+      const objectId = new ObjectId(reportId); // Convert string to ObjectId
+      const report =  collection.deleteOne({ _id: objectId }); // Find document by ObjectId
+      if (report) {
+        console.log('Report found:', report);
+        return report;
+      } else {
+        console.log('No report found with the given ID');
+        return null;
+      }
+    } catch (error) {
+      console.error('Failed to get report', error);
+      throw error;
+    }
+  }
+
+}
 
   
 
