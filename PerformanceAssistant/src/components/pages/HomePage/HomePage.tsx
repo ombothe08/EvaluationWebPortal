@@ -13,8 +13,16 @@ import {
   TableRow,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {UseExcelParametersReturn} from "../uploadFilePage/UseExcelParametersReturn";
+import { useNavigate } from "react-router-dom";
+import { Upload } from "@mui/icons-material";
 
-const HomePage: React.FC = () => {
+interface HomePageProps {
+  useExcelParameters: UseExcelParametersReturn; // Pass UseExcelParametersReturn as a prop
+}
+
+const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
+  const navigate = useNavigate(); // Initialize navigate function
   const [file, setFile] = useState<File | null>(null);
   const [homepageData, setHomepageData] = useState([
     {
@@ -27,6 +35,8 @@ const HomePage: React.FC = () => {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
+      useExcelParameters.handleFileUpload(event);
+      navigate('/upload');
       setFile(event.target.files[0]);
     }
   };
