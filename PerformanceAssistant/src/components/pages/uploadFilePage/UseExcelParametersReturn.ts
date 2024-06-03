@@ -79,7 +79,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     try {
       const batchDataModel: BatchDataModel = transformData(jsonSheet, fileName);
       console.log('Submitting the following batch data model:', batchDataModel);
-  
+  console.log(JSON.stringify(batchDataModel));
       const response = await fetch('http://localhost:3000/evaluate', {
         method: 'POST',
         headers: {
@@ -90,14 +90,14 @@ const useExcelParameters = (): UseExcelParametersReturn => {
           transformedData: batchDataModel,
         }),
       });
-  
+  console.log(response.body);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
   
       console.log(response);
       const responseData = await response.json();
-
+      console.log(responseData);
 // Map the response data to BatchAnalysisModel
 //onst batchAnalysisModel: BatchAnalysisModel = mapResponseToBatchAnalysisModel(responseData);
 // console.log('Batch Analysis Model:', batchAnalysisModel);
