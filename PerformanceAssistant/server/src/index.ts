@@ -4,6 +4,7 @@ import { Authenticator } from './Authenticator/Authenticator';
 import { UserCredentials} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
+import { json } from 'body-parser';
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
@@ -44,8 +45,9 @@ app.post('/getSelectedRecord',async(req:Request,res:Response) => {
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
-    let a = typeof(dbreport);
-    res.send(dbreport);
+    console.log("before");
+    console.log(dbreport);
+    res.send(JSON.stringify(dbreport));
 });
 
 

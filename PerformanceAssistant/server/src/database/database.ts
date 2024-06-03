@@ -84,9 +84,8 @@ export class Database {
 
     const collection: Collection = this.db.collection('reports');
     try {
-      const objectId = new ObjectId(reportId); // Convert string to ObjectId
-      const report = await collection.findOne({ _id: objectId }); // Find document by ObjectId
-
+      const objectId = new ObjectId(reportId); 
+      const report = await collection.findOne({ _id: objectId });
       if (report) {
         console.log('Report found:', report);
         // Transform the retrieved document to BatchDbModel
