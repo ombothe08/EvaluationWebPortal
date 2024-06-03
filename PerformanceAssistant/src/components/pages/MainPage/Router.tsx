@@ -15,9 +15,12 @@ const AppRouter: React.FC = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/homepage"
-          element={<HomePage useExcelParameters={ excelParameters } />} // Pass excelParameters as a prop
+          element={<HomePage useExcelParameters={excelParameters} />} // Pass excelParameters as a prop
         />
-        <Route path="/upload" element={<ParameterListPage useExcelParameters={ excelParameters } />} />
+        <Route
+          path="/upload"
+          element={<ParameterListPage useExcelParameters={excelParameters} />}
+        />
       </Routes>
     </Router>
   );
