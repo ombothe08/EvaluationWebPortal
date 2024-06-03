@@ -137,7 +137,7 @@ export class Database {
           BatchData: {
             Name: record.report.Name,
             Module: record.report.Module,
-            Date: record.report.Date,
+            Date: record.Date,
             AnalysisModel: record.report.analyzedData.map((data: any) => ({
               Name: data.CandidateName, // Change to Name
               Strengths: data.Strengths,
