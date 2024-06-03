@@ -10,8 +10,6 @@ export interface UserCredentials {
     password: string;
   }
 
-
-
 //Database model
 export interface BatchDbModel {
   objectid : string;
@@ -22,8 +20,6 @@ export interface BatchDbModel {
       CandidateAnalysisModel: CandidateAnalysisModel[];
   }
 }
-
-
 
 //Analysis Mode is the output from OpenAI
 export interface CandidateAnalysisModel {
