@@ -105,26 +105,7 @@ const myData: Data = {
   }
 }
 
-// Print the report name
-// console.log("Report Name:", myData.report.name);
 
-// Loop through analyzedData and print details for each candidate
-// for (const candidate of myData.report.analyzedData) {
-//   console.log("Candidate Name:", candidate.CandidateName);
-//   console.log("Strengths:");
-//   for (const strength of candidate.Strengths) {
-//     console.log(`  * ${strength.Parameter}: ${strength.Data}`);
-//   }
-//   console.log("Areas of Improvement:");
-//   for (const improvement of candidate.AreasOfImprovement) {
-//     console.log(`  * ${improvement.Parameter}: ${improvement.Data}`);
-//   }
-//   console.log("Input for Mentor:");
-//   for (const input of candidate.InputForMentore) {
-//     console.log(`  * ${input.Parameter}: ${input.Data}`);
-//   }
-//   console.log("---"); // Separator between candidates
-// }
 
 const convertDataToExcel = (data:number) => {
   const worksheet = XLSX.utils.json_to_sheet(myData.report.analyzedData);
