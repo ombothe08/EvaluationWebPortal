@@ -25,20 +25,17 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   let oaiService = new OpenAIService();
   
   oaiService.evaluate(req.body).then((response)=>{
+      let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+      db.connectToDatabase();
+      db.addReport(response);
       res.send(response);
   }).catch((error)=>{
       res.send(error);
   });
 });
 
-app.get('/addrecord',async(req : Request ,res : Response) => {
-  let db =  new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
-  db.connectToDatabase();
-  
-  
-  db.addReport(req.body);
-  
-});
+
+
 
 app.post('/getselectedrecord',async(req:Request,res:Response) => {
 
@@ -51,9 +48,6 @@ app.post('/getselectedrecord',async(req:Request,res:Response) => {
     res.send(dbreport);
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
 
 app.get("/getAllRecords", async (req: Request, res: Response) => {
   try {
@@ -82,4 +76,8 @@ app.delete("/delete/:id", async (req: Request, res: Response) => {
     console.error('Failed to delete record', error);
     res.status(500).send('Failed to delete record');
   }
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
