@@ -12,7 +12,8 @@ export interface UserCredentials {
 
 //Database model
 export interface BatchDbModel {
-  objectid : string;
+  objectid : string | null;
+  
   BatchData: {
       BatchName:string;
       Module: string;
