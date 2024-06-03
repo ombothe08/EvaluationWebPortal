@@ -4,7 +4,7 @@ import LandingPage from "./LandingPage";
 import AboutPage from "./AboutPage";
 import ContactPage from "./ContactPage";
 import LoginPage from "../logInPage/LogInPage";
-import HomePage from "../HomePage/HomePage";
+import HomePage from "../homePage/HomePage";
 import useExcelParameters from "../uploadFilePage/UseExcelParametersReturn";
 import ParameterListPage from "../parameterListPage/ParameterListPage";
 
