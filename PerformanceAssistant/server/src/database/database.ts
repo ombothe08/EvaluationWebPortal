@@ -1,13 +1,7 @@
-import { MongoClient, Db, Collection } from 'mongodb';
+import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
 import { UserCredentials } from '../Interfaces/Interface';
-//import {v4 as uuidv4} from 'uuid';
-
-
-
-interface User {
-  email: string;
-  password: string;
-}
+import { dbuser } from '../Interfaces/Interface';
+import {BatchDbModel} from '../Interfaces/Interface';
 
 export class Database {
   private uri: string;
@@ -40,7 +34,7 @@ export class Database {
     if (collection.length > 0 && Array.isArray(collection[0].users)) 
     { 
       
-      const users: User[] = collection[0].users;
+      const users: dbuser[] = collection[0].users;
 
       // Extract and log each user's data
       for (const userData of users) {
@@ -60,22 +54,78 @@ export class Database {
   }
 
   public async addReport(report: any): Promise<void> {
-    if (!this.db) {
+    if (!this.db) 
+    {
       throw new Error('Database connection is not established');
     }
 
     const collection: Collection = this.db.collection('reports');
     console.log(collection);
-    try {
+    try 
+    {
       await collection.insertOne(report);
       console.log('Report added successfully');
-      }
-    catch (error) {
+    }
+    catch (error) 
+    {
       console.error('Failed to add report', error);
-      } 
+    } 
   }
 
-}
+  
+  public  getReportById(reportId: string): any {
+    if (!this.db) {
+      throw new Error('Database connection is not established');
+    }
+
+    const collection: Collection = this.db.collection('reports');
+    try {
+      const objectId = new ObjectId(reportId); // Convert string to ObjectId
+      const report =  collection.findOne({ _id: objectId }); // Find document by ObjectId
+      if (report) {
+        console.log('Report found:', report);
+        return report;
+      } else {
+        console.log('No report found with the given ID');
+        return null;
+      }
+    } catch (error) {
+      console.error('Failed to get report', error);
+      throw error;
+    }
+  }
+
+  public getAllRecords(collectionName: string): Promise<BatchDbModel[]> {
+    if (!this.db) {
+      return Promise.reject(new Error('Database connection is not established'));
+    }
+
+    const collection: Collection = this.db.collection(collectionName);
+    return collection.find({}).toArray()
+      .then((records) => {
+        const formattedRecords: BatchDbModel[] = records.map(record => ({
+          objectid: record._id.toString(),
+          BatchData: {
+            BatchName: record.report.name,
+            Module: record.report.module,
+            Date: record.report.Date,
+            CandidateAnalysisModel: record.report.analyzedData.map((data: any) => ({
+              CandidateName: data.CandidateName,
+              Strengths: data.Strengths,
+              AreasOfImprovement: data.AreasOfImprovement,
+              InputForMentore: data.InputForMentore
+            }))
+          }
+        }));
+        console.log(`Fetched ${records.length} records from ${collectionName} collection`);
+        return formattedRecords;
+      })
+      .catch((error) => {
+        console.error('Failed to fetch records', error);
+        return [];
+      });
+  }}
+
   
 
 
