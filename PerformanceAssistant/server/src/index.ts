@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
-import { UserCredentials } from './Interfaces/Interface';
+import { UserCredentials,BatchDbModel } from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/Database';
 
@@ -31,14 +31,19 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
+app.get('/addrecord',async(req : Request ,res : Response) => {
+  
+});
+
 app.post('/getselectedrecord',async(req:Request,res:Response) => {
 
-    let obj = '665d70618f493d33be5ae23b';
+    const objid = req.body.Key;
 
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
-    let a =  await db.getReportById(obj); 
-    res.send(a);
+    let dbreport =  await db.getReportById(objid); 
+    let a = typeof(dbreport);
+    res.send(dbreport);
 });
 
 app.listen(port, () => {

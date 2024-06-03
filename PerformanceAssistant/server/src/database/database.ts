@@ -58,27 +58,23 @@ export class Database {
   
   }
 
-  public async addReport(report: any): Promise<void> {
-    if (!this.db) 
-    {
+  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<void> {
+    if (!this.db) {
       throw new Error('Database connection is not established');
     }
 
     const collection: Collection = this.db.collection('reports');
     console.log(collection);
-    try 
-    {
-      await collection.insertOne(report);
+    try {
+      await collection.insertOne(batchAnalysis);
       console.log('Report added successfully');
-    }
-    catch (error) 
-    {
+    } catch (error) {
       console.error('Failed to add report', error);
-    } 
+    }
   }
 
   
-  public async getReportById(reportId: string): Promise<any> {
+  public async getReportById(reportId: string): Promise<BatchDbModel | null> {
     if (!this.db) {
       throw new Error('Database connection is not established');
     }
@@ -89,7 +85,31 @@ export class Database {
       const report = await collection.findOne({ _id: objectId }); // Find document by ObjectId
       if (report) {
         console.log('Report found:', report);
-        return report;
+        // Transform the retrieved document to BatchDbModel
+        const batchDbModel: BatchDbModel = {
+          objectid: report._id.toString(),
+          BatchData: {
+            BatchName: report.report.name,
+            Module: report.report.module,
+            Date: report.report.Date,
+            CandidateAnalysisModel: report.report.analyzedData.map((data: any) => ({
+              Name: data.CandidateName,
+              Strengths: data.Strengths.map((strength: any) => ({
+                Parameter: strength.Parameter,
+                Data: strength.Data
+              })),
+              AreasOfImprovement: data.AreasOfImprovement.map((improvement: any) => ({
+                Parameter: improvement.Parameter,
+                Data: improvement.Data
+              })),
+              RecomendationForMentor: data.InputForMentore.map((input: any) => ({
+                Parameter: input.Parameter,
+                Data: input.Data
+              }))
+            }))
+          }
+        };
+        return batchDbModel;
       } else {
         console.log('No report found with the given ID');
         return null;
