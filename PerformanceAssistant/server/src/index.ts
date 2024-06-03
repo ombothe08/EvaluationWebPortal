@@ -20,9 +20,10 @@ app.post('/login', async (req: Request, res: Response) => {
   
 });
 
-app.get('/evaluate', async (req: Request, res: Response) => {
+app.post('/evaluate', async (req: Request, res: Response) => {
   let oaiService = new OpenAIService();
-  oaiService.evaluate().then((response)=>{
+  
+  oaiService.evaluate(req.body).then((response)=>{
       res.send(response);
   }).catch((error)=>{
       res.send(error);

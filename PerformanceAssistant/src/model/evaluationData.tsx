@@ -12,7 +12,7 @@ interface BatchDataModel {
     }
   }
 
-  interface CandidateAnalysisModel {
+interface CandidateAnalysisModel {
     CandidateName: string;
     Module: string;
     Stregths: {Parameter:string, Data:string};
@@ -26,3 +26,4 @@ interface BatchAnalysisModel {
         CandidateAnalysisModel: CandidateAnalysisModel[];
     }
   }
+  
