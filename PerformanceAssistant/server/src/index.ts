@@ -37,15 +37,16 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-// app.post('/evaluate/strengths', async (req: Request, res: Response) => {
-//   let oaiService = new OpenAIService();
+app.post('/evaluate/strengths', async (req: Request, res: Response) => {
+  let oaiService = new OpenAIService();
   
-//   oaiService.evaluateStrength(req.body).then((response)=>{
-//       res.send(response);
-//   }).catch((error)=>{
-//       res.send(error);
-//   });
-// });
+  oaiService.evaluateStrength(req.body).then((response)=>{
+    
+      res.send(response);
+  }).catch((error)=>{
+      res.send(error);
+  });
+});
 
 
 
