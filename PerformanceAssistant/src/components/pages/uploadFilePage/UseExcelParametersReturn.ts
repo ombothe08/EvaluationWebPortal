@@ -5,9 +5,10 @@ import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationDat
 export interface UseExcelParametersReturn {
   parameters: string[];
   selectedParameters: string[];
+  responseData1: string[];
   handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  submitData: () => Promise<void>;
+  submitData: () => Promise<boolean>;
 }
 
 const useExcelParameters = (): UseExcelParametersReturn => {
@@ -15,6 +16,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   const [selectedParameters, setSelectedParameters] = useState<string[]>([]);
   const [jsonSheet, setJsonSheet] = useState<any[][]>([]); // Array of arrays representing the JSON sheet data
   const [fileName, setFileName] = useState<string>('');
+  const [responseData1, setResponseData1] = useState<string[]>([]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -66,7 +68,6 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     }));
 
     const batchDataModel: BatchDataModel = {
-      
         Name: batchName,
         Data: candidateDataModel,
         Module: "cpp"
@@ -75,12 +76,12 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     return batchDataModel;
   };
 
-  const submitData = async () => {
+  const submitData = async (): Promise<boolean> => {
     try {
       const batchDataModel: BatchDataModel = transformData(jsonSheet, fileName);
       const batchDataModelString = JSON.stringify(batchDataModel);
       console.log(batchDataModelString);
-      // console.log(batchDataModel);
+    console.log(batchDataModel);
  
       const response = await fetch('http://localhost:3000/evaluate', {
         method: 'POST',
@@ -96,17 +97,18 @@ const useExcelParameters = (): UseExcelParametersReturn => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("responsedata",responseData);
+      setResponseData1(responseData); // Set the response data in state
+      console.log("responsedata", responseData1);
+      return true; 
     } catch (error) {
       console.error('Error submitting data:', error);
+      return false;
     }
   };
-  
-  
-
   return {
     parameters,
     selectedParameters,
+    responseData1,
     handleFileUpload,
     handleCheckboxChange,
     submitData,
