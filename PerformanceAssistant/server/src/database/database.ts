@@ -112,11 +112,7 @@ export class Database {
                 Data: input.Data
               }))
              })),
-             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis.map((data: any) => ({
-              Name: data.Name,
-              Strengths: data.Strength
-              }))
-         
+             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis
           }
         };
         return batchDbModel;
@@ -160,10 +156,7 @@ export class Database {
                 Data: input.Data
               }))
             })),
-            CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis.map((data: any) => ({
-              Name: data.Name,
-              Strengths: data.Strength
-              }))
+            CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis
          
           }
         }));
