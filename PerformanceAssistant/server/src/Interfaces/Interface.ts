@@ -12,12 +12,12 @@ export interface UserCredentials {
 
 //Database model
 export interface BatchDbModel {
-  objectid : string;
+  objectid : string | null;
   BatchData: {
-      BatchName:string;
+      Name:string;
       Module: string;
       Date:string;
-      CandidateAnalysisModel: CandidateAnalysisModel[];
+      AnalysisModel: CandidateAnalysisModel[];
   }
 }
 
@@ -50,3 +50,10 @@ export interface BatchDataModel {
   Module: string;
   Data: CandidateDataModel[];
 }
+
+export interface StrengthAnalysisModel {
+  Name: string;
+  Strengths: { Parameter: string, Data: string }[];
+}
+
+

@@ -24,3 +24,13 @@ export interface BatchAnalysisModel {
     AnalysisModel: CandidateAnalysisModel[];
   }
 }
+
+export interface ServerData {
+  objectid : string;
+  BatchData: {
+      Name:string;
+      Module: string;
+      Date:string;
+      CandidateAnalysisModel: CandidateAnalysisModel[];
+  }
+}
