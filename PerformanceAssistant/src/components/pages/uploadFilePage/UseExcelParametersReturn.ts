@@ -70,7 +70,6 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     const batchDataModel: BatchDataModel = {
         Name: batchName,
         Data: candidateDataModel,
-        Module: "cpp"
     };
 
     return batchDataModel;

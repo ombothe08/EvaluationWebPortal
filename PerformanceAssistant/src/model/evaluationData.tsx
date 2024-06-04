@@ -5,7 +5,6 @@ export interface CandidateDataModel {
 
 export interface BatchDataModel {
   Name: string;
-  Module: string;
   Data: CandidateDataModel[];
 }
 
