@@ -15,13 +15,16 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";<<<<<<< frontend_downloadButton_harish
+import { Upload } from "@mui/icons-material";
+import { convertDataToExcel } from "../../utils/excelUtils";
 import { ServerData } from "../../../model/evaluationData";
+
 
 interface HomePageProps {
   useExcelParameters: UseExcelParametersReturn; // Pass UseExcelParametersReturn as a prop
 }
-
+ 
 const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
   const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
@@ -41,6 +44,8 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
     fetchData();
   }, []);
 
+  
+ 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       useExcelParameters.handleFileUpload(event);
@@ -48,14 +53,13 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
       setFile(event.target.files[0]);
     }
   };
-
+ 
   const handleUploadClick = () => {
     const fileInput = document.getElementById("fileInput") as HTMLInputElement;
     if (fileInput) {
       fileInput.click();
     }
   };
-
   const handleDelete = async (objectid: string) => {
     try {
       const response = await fetch(`http://localhost:3000/delete/${objectid}`, {
@@ -98,7 +102,11 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
       console.error("Error fetching record:", error);
     }
   };
-
+ 
+  const handleDownload = (index: number) => {
+    convertDataToExcel(0);
+  };
+ 
   return (
     <Box
       sx={{
@@ -168,9 +176,21 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     fontWeight: "bold",
                     border: "1px solid black",
                     width: "20%",
+
                   }}
                 >
                   Delete
+                </TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: "papayawhip",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                    width: "20%",
+                  }}
+                >
+                  Download
                 </TableCell>
                 <TableCell
                   sx={{
@@ -217,6 +237,11 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
+
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+
                     }}
                   >
                     <IconButton
@@ -252,5 +277,11 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
     </Box>
   );
 };
+ 
+export default HomePage;
+ 
+ 
+
+
 
 export default HomePage;

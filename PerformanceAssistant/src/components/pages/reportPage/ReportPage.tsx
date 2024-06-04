@@ -1,5 +1,7 @@
 import React from "react";
 import Navbar from "../Navbar";
+import IconButton from "@mui/material/IconButton";
+import DownloadIcon from '@mui/icons-material/Download';
 import {
   Box,
   Table,
@@ -11,6 +13,7 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
+import {convertDataToExcel} from '../../utils/excelUtils'
 
 const ReportPage: React.FC = () => {
   const teamName = "Code Monks";
@@ -24,6 +27,9 @@ const ReportPage: React.FC = () => {
     },
   ];
 
+  const handleDownload = (index: number) => {
+    convertDataToExcel(index);
+  };
   return (
     <Box
       sx={{
@@ -55,19 +61,29 @@ const ReportPage: React.FC = () => {
         >
           Evaluation Report
         </Typography>
-
-        <Typography
-          variant="h5"
-          component="h2"
-          sx={{
-            fontSize: 25,
-            fontWeight: "bold",
-            mb: 4,
-            fontFamily: "sans-serif",
-          }}
-        >
-          Team: {teamName}
-        </Typography>
+        <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        mb: 4,
+      }}
+    >
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{
+          fontSize: 25,
+          fontWeight: 'bold',
+          fontFamily: 'sans-serif',
+          flexGrow: 1,
+        }}
+      >
+        Team: {teamName}
+      </Typography>
+      <IconButton onClick={() => handleDownload(0)}>
+        <DownloadIcon fontSize="large" />
+      </IconButton>
+    </Box>
 
         <TableContainer sx={{ maxHeight: "70vh" }}>
           <Table stickyHeader>
