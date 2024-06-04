@@ -14,6 +14,7 @@ import {
   Paper,
 } from "@mui/material";
 import {convertDataToExcel} from '../../utils/excelUtils'
+import { ServerData } from "../../../model/evaluationData";
 
 const ReportPage: React.FC = () => {
   const teamName = "Code Monks";
@@ -27,8 +28,28 @@ const ReportPage: React.FC = () => {
     },
   ];
 
-  const handleDownload = (index: number) => {
-    convertDataToExcel(index);
+  const handleDownload = async (objectid:string) => {
+    try {
+        const response = await fetch("http://localhost:3000/getSelectedRecord", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ Key: objectid }),
+        });
+  
+        let data: ServerData;
+        data = await response.json();
+        console.log(data);
+  
+        if (response.ok) {
+          convertDataToExcel(data);
+        } else {
+          console.error(`Failed to fetch record with ID ${objectid}`);
+        }
+      } catch (error) {
+        console.error("Error fetching record:", error);
+      }
   };
   return (
     <Box
@@ -80,8 +101,9 @@ const ReportPage: React.FC = () => {
       >
         Team: {teamName}
       </Typography>
-      <IconButton onClick={() => handleDownload(0)}>
-        <DownloadIcon fontSize="large" />
+      <IconButton >
+        {/* onClick={() => handleDownload(data.objectid)}> */}
+        <DownloadIcon fontSize="large" color="primary" />
       </IconButton>
     </Box>
 

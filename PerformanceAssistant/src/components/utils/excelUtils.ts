@@ -114,7 +114,7 @@ export const convertDataToExcel = (newData:any) => {
   }
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, ws, "Report Details");
-    let fileName:string = newData.BatchData.Module+" Report.xlsx";
+    let fileName:string = newData.BatchData.Name+" Report.xlsx";
     XLSX.writeFile(workbook, fileName);
   
 }; 
