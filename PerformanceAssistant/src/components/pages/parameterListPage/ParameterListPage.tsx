@@ -1,4 +1,4 @@
-import { Grid, Checkbox, FormControlLabel, Button, Paper } from '@mui/material';
+import { Grid, Checkbox, FormControlLabel, Button, Paper, CircularProgress } from '@mui/material';
 import { UseExcelParametersReturn } from '../uploadFilePage/UseExcelParametersReturn';
 import React, { useState, useEffect } from 'react';
 
@@ -9,7 +9,7 @@ interface ParameterListPageProps {
 
 const ParameterListPage: React.FC<ParameterListPageProps> = ({ useExcelParameters }) => {
   const [boxHeight, setBoxHeight] = useState<number>(500);
- 
+  const [showLoader, setShowLoader] = useState(false);
 
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const ParameterListPage: React.FC<ParameterListPageProps> = ({ useExcelParameter
                   <Grid item key={index} xs={12} sm={6} md={4}>
                     <Paper elevation={2} style={{ padding: '16px', borderRadius: '8px', background: useExcelParameters.selectedParameters.includes(param) ? '#48BB78' : '#4299E1' }}>
                       <FormControlLabel
-                        control={<Checkbox color="primary" onChange={useExcelParameters.handleCheckboxChange} name={param} style={{ color: useExcelParameters.selectedParameters.includes(param) ? '#000000' : ' #000000' }} />}
+                        control={<Checkbox disabled={showLoader} color="primary" onChange={useExcelParameters.handleCheckboxChange} name={param} style={{ color: useExcelParameters.selectedParameters.includes(param) ? '#000000' : ' #000000' }} />}
                         label={<span style={{ fontSize: '18px' }}>{param}</span>}
                       />
                     </Paper>
@@ -62,12 +62,13 @@ const ParameterListPage: React.FC<ParameterListPageProps> = ({ useExcelParameter
             <Button
               variant="contained"
               color="primary"
-              onClick={useExcelParameters.submitData}
+              onClick={()=>{setShowLoader(true)}}
               style={{ fontSize: '18px' }}
+              disabled={showLoader}
             >
               Evaluate
             </Button>
-          </div>
+            </div>
         )}
       </div>
     </div>
