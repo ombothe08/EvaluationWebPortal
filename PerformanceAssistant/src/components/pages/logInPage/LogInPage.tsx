@@ -17,19 +17,15 @@ const LoginPage: React.FC = () => {
         },
         body: JSON.stringify({ Email, Password }),
       });
-      
+
       const data = await response.json();
-      
-      if (data) 
-      {
-        navigate("/homepage"); 
-      }
-      else 
-      {
+
+      if (data) {
+        navigate("/homepage"); // Redirect to homepage
+      } else {
         setError("Incorrect Email or Password");
       }
-    } catch (error) 
-    {
+    } catch (error) {
       console.error("Error submitting data:", error);
     }
   };

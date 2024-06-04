@@ -2,6 +2,7 @@ import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import CCTech from "../images/CCTech.png";
 
 const Navbar: React.FC = () => {
   return (
@@ -14,14 +15,15 @@ const Navbar: React.FC = () => {
         padding: 0,
       }}
     >
-      <Toolbar
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-          padding: 0,
-        }}
-      >
+      <Toolbar>
+        <div style={{ marginTop: 10, marginBottom: -10 }}>
+          <img
+            src={CCTech}
+            alt="CCTech Logo"
+            className="mb-8"
+            style={{ width: "60px", height: "60px" }}
+          />
+        </div>
         <Typography
           variant="h2"
           sx={{ fontWeight: "bold", fontSize: 50, color: "white", m: 1 }}
@@ -34,4 +36,3 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
-

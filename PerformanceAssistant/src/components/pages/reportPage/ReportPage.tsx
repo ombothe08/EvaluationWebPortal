@@ -239,7 +239,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 import IconButton from "@mui/material/IconButton";
-import DownloadIcon from '@mui/icons-material/Download';
+import DownloadIcon from "@mui/icons-material/Download";
 import {
   Box,
   Table,
@@ -252,20 +252,16 @@ import {
   Paper,
   Button,
 } from "@mui/material";
-import { BatchAnalysisModel } from '../../../model/evaluationData';
+import { BatchAnalysisModel } from "../../../model/evaluationData";
 
 const ReportPage: React.FC = () => {
   const location = useLocation();
-  const { apiResponseData } = location.state as { apiResponseData: BatchAnalysisModel };
+  const { apiResponseData } = location.state as {
+    apiResponseData: BatchAnalysisModel;
+  };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #38ef7d, #11998e)",
-        py: 5,
-      }}
-    >
+    <Box>
       <Navbar />
       <Box
         component={Paper}
@@ -274,7 +270,7 @@ const ReportPage: React.FC = () => {
           borderRadius: 2,
           boxShadow: 3,
           m: 5,
-          backgroundColor: "whitesmoke",
+          backgroundColor: "aliceblue",
         }}
       >
         <Typography
@@ -287,7 +283,7 @@ const ReportPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Evaluation Report
+          Team Performance Report for {apiResponseData?.BatchData.Name}
         </Typography>
 
         <Typography
@@ -300,7 +296,7 @@ const ReportPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Team: {apiResponseData.BatchData.Name}
+          Module: {apiResponseData?.BatchData.Module}
         </Typography>
 
         <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -344,7 +340,7 @@ const ReportPage: React.FC = () => {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    Module
+                    Strengths
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -364,12 +360,106 @@ const ReportPage: React.FC = () => {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    Score
+                    Areas of Improvement
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: "papayawhip",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    sx={{
+                      fontSize: 25,
+                      fontWeight: "bold",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    Input for Mentors
                   </Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
-    
+            <TableBody>
+              {apiResponseData?.BatchData.AnalysisModel.map(
+                (candidate, index) => (
+                  <TableRow key={index}>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "white",
+                        border: "1px solid black",
+                        padding: "8px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {candidate.Name}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "palegreen",
+                        border: "1px solid black",
+                        padding: "8px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {candidate.Strengths.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "pink",
+                        border: "1px solid black",
+                        padding: "8px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {candidate.AreasOfImprovement.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "skyblue",
+                        border: "1px solid black",
+                        padding: "8px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {candidate.InputForMentors.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>
+                  <br></br>
+                  <center>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      style={{ fontSize: "18px" }}
+                    >
+                      Compare Strengths
+                    </Button>
+                  </center>
+                </TableCell>
+              </TableRow>
+            </TableBody>
           </Table>
         </TableContainer>
       </Box>
