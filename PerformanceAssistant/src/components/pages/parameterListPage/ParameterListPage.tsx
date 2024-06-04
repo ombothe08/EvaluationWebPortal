@@ -100,6 +100,10 @@ if(!file) return;
       console.error('Error submitting data:', error);
     }
   };
+  function goBack(event: MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
    
     <div style={{ minHeight: '100vh', background: 'linear-gradient(to right, #4299E1, #48BB78, #9F7AEA)', display: 'flex', flexDirection: 'column' }}>
