@@ -14,18 +14,18 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
-import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
 import { useNavigate } from "react-router-dom";
 import { ServerData } from "../../../model/evaluationData";
 
 interface HomePageProps {
-  useExcelParameters: UseExcelParametersReturn; // Pass UseExcelParametersReturn as a prop
+  onfileName: (fileName: File | null) => void;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
+const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
   const navigate = useNavigate();
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<string | null>(null);
   const [homepageData, setHomepageData] = useState<ServerData[]>([]);
+  const [hfileName, setFileName] = useState<string | null>("om");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,9 +43,11 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      useExcelParameters.handleFileUpload(event);
+      // useExcelParameters.handleFileUpload(event);
+      // setFileName(event.target.files[0].name);
+      //setFileName(event.target.files[0].name);
+      onfileName(event.target.files[0]);
       navigate("/upload");
-      setFile(event.target.files[0]);
     }
   };
 
@@ -100,13 +102,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #38ef7d, #11998e)",
-        py: 5,
-      }}
-    >
+    <Box>
       <Navbar />
       <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
         <Button

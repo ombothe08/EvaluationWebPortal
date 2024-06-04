@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 import {
   Box,
@@ -10,28 +11,18 @@ import {
   TableRow,
   Typography,
   Paper,
+  Button,
 } from "@mui/material";
+import { BatchAnalysisModel } from "../../../model/evaluationData";
 
 const ReportPage: React.FC = () => {
-  const teamName = "Code Monks";
-  const candidates = [
-    {
-      name: "Person 1",
-      module: "Module 1",
-      strengths: "Quick Learner",
-      areaOfImprovement: "Communication Skills",
-      inputForMentors: "Needs more practice with presentations",
-    },
-  ];
+  const location = useLocation();
+  const { apiResponseData } = location.state as {
+    apiResponseData: BatchAnalysisModel;
+  };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #38ef7d, #11998e)",
-        py: 5,
-      }}
-    >
+    <Box>
       <Navbar />
       <Box
         component={Paper}
@@ -53,7 +44,7 @@ const ReportPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Evaluation Report
+          Team Performance Report for {apiResponseData?.BatchData.Name}
         </Typography>
 
         <Typography
@@ -66,7 +57,8 @@ const ReportPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Team: {teamName}
+          {/* TODO - update name to Module name */}
+          Module: {apiResponseData?.BatchData.Name}
         </Typography>
 
         <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -110,26 +102,6 @@ const ReportPage: React.FC = () => {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    Module
-                  </Typography>
-                </TableCell>
-                <TableCell
-                  sx={{
-                    backgroundColor: "papayawhip",
-                    fontSize: 25,
-                    fontWeight: "bold",
-                    border: "1px solid black",
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    component="h1"
-                    sx={{
-                      fontSize: 25,
-                      fontWeight: "bold",
-                      fontFamily: "sans-serif",
-                    }}
-                  >
                     Strengths
                   </Typography>
                 </TableCell>
@@ -150,7 +122,7 @@ const ReportPage: React.FC = () => {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    Area of Improvements
+                    Areas of Improvement
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -170,62 +142,67 @@ const ReportPage: React.FC = () => {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    Input
+                    Input for Mentors
                   </Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {candidates.map((candidate, index) => (
-                <TableRow key={index}>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "white",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.name}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "white",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.module}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "palegreen",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.strengths}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "pink",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.areaOfImprovement}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "skyblue",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.inputForMentors}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            {/* <TableBody>
+              {apiResponseData?.BatchData.CandidateAnalysisModel.map(
+                (candidate, index) => (
+                  <TableRow key={index}>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "white",
+                        border: "1px solid black",
+                        padding: "8px",
+                      }}
+                    >
+                      {candidate.Name}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "palegreen",
+                        border: "1px solid black",
+                        padding: "8px",
+                      }}
+                    >
+                      {candidate.Strengths.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "pink",
+                        border: "1px solid black",
+                        padding: "8px",
+                      }}
+                    >
+                      {candidate.AreasOfImprovement.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "skyblue",
+                        border: "1px solid black",
+                        padding: "8px",
+                      }}
+                    >
+                      {candidate.InputForMentors.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
+            </TableBody> */}
           </Table>
         </TableContainer>
       </Box>
