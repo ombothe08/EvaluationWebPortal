@@ -22,8 +22,7 @@ const LoginPage: React.FC = () => {
       
       if (data) 
       {
-        alert("Login successful!");
-        navigate("/homepage"); // Redirect to homepage
+        navigate("/homepage"); 
       }
       else 
       {
