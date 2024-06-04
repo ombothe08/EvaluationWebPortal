@@ -95,7 +95,7 @@ export class Database {
             Name: report.BatchData.Name,
             Module: report.BatchData.Module,
             Date: report.BatchData.Date,
-            AnalysisModel: report.BatchData.CandidateAnalysisModel.map((data: any) => ({
+            AnalysisModel: report.BatchData.AnalysisModel.map((data: any) => ({
               Name: data.Name,
               Strengths: data.Strengths.map((strength: any) => ({
                 Parameter: strength.Parameter,
@@ -138,7 +138,7 @@ export class Database {
             Name: record.BatchData.Name, 
             Module: record.BatchData.Module, 
             Date: record.BatchData.Date,
-            AnalysisModel: record.BatchData.CandidateAnalysisModel.map((data: any) => ({
+            AnalysisModel: record.BatchData.AnalysisModel.map((data: any) => ({
               Name: data.Name,
               Strengths: data.Strengths.map((strength: any) => ({
                 Parameter: strength.Parameter,
