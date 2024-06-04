@@ -82,7 +82,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ "Key" :objectid }),
+        body: JSON.stringify({ objectid }),
       });
       if (response.ok) {
         const reportData = await response.json();
@@ -94,30 +94,11 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
       console.error("Error fetching record:", error);
     }
   };
-/////////////////////////////////////////////////////////////////////////
-  const handleDownload = async (objectid:string) => {
-    
-    
-    try {
-      const response = await fetch("http://localhost:3000/getselectedrecord", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ "Key" :objectid }),
-      });
-      if (response.ok) {
-        const reportData = await response.json();
-        convertDataToExcel(reportData);
-      } else {
-        console.error(`Failed to fetch record with ID ${objectid}`);
-      }
-    } catch (error) {
-      console.error("Error fetching record:", error);
-    }
 
+  const handleDownload = (index: number) => {
+    convertDataToExcel(0);
   };
-/////////////////////////////////////////////////////////////////////////
+
   return (
     <Box
       sx={{
@@ -261,7 +242,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                   >
                     <IconButton
                       color="primary"
-                      onClick={() => handleDownload(data.objectid)}
+                      onClick={() => handleDownload(index)}
                     >
                       <DownloadIcon />
                     </IconButton>
