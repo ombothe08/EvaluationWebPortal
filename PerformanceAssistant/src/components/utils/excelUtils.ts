@@ -5,8 +5,8 @@ export const convertDataToExcel = (newData:any) => {
   var ws= XLSX.utils.aoa_to_sheet([[]]);
   XLSX.utils.sheet_add_aoa(ws, headers, {origin: "A1"});
 
-  const record =  newData.BatchData.AnalysisModel;//newData.BatchData.AnalysisModel;//myData.report.analyzedData;
-  //const l1: number = record.length;
+  const record =  newData.BatchData.AnalysisModel;
+  
   for(var i:number= 0;i<record.length;i++) {
     let oneCandidate:string[] = [];
     oneCandidate.push(record[i].Name);// .CandidateName);
