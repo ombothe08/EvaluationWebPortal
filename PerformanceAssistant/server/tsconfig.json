@@ -6,8 +6,9 @@
       "strict": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true
+      "forceConsistentCasingInFileNames": true,
+      "jsx": "react"
     },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts", "src/Authenticator/Authenticator.ts"],
     "exclude": ["node_modules"],
   }
