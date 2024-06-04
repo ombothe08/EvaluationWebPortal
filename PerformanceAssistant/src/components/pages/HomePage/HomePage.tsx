@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../Navbar";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {
   Box,
   Button,
@@ -16,7 +17,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
 import { useNavigate } from "react-router-dom";
-import { Upload } from "@mui/icons-material";
 import { convertDataToExcel } from "../../utils/excelUtils";
 import { ServerData } from "../../../model/evaluationData";
 
@@ -57,6 +57,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
       fileInput.click();
     }
   };
+
   const handleDelete = async (objectid: string) => {
     try {
       const response = await fetch(`http://localhost:3000/delete/${objectid}`, {
@@ -77,16 +78,20 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
 
   const handleAnalysisClick = async (objectid: string) => {
     try {
-      const response = await fetch("http://localhost:3000/getselectedrecord", {
+      const response = await fetch("http://localhost:3000/getSelectedRecord", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ objectid }),
+        body: JSON.stringify({ Key: objectid }),
       });
+
+      let data: ServerData;
+      data = await response.json();
+      console.log(data);
+
       if (response.ok) {
-        const reportData = await response.json();
-        navigate("/report", { state: { reportData } });
+        navigate("/report", { state: { data } });
       } else {
         console.error(`Failed to fetch record with ID ${objectid}`);
       }
@@ -113,6 +118,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
           variant="contained"
           color="warning"
           sx={{ fontSize: "1.25rem", py: 2, px: 4 }}
+          startIcon={<CloudUploadIcon />}
           onClick={handleUploadClick}
         >
           Upload data to analysis
@@ -237,7 +243,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       border: "1px solid black",
                       padding: "8px",
 
-                      textAlign:"center"
+                      textAlign: "center",
                     }}
                   >
                     <IconButton
