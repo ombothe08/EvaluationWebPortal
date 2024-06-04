@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import {
   Box,
@@ -13,29 +13,38 @@ import {
   TableRow,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {UseExcelParametersReturn} from "../uploadFilePage/UseExcelParametersReturn";
+import DownloadIcon from "@mui/icons-material/Download";
+import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
 import { useNavigate } from "react-router-dom";
-import { Upload } from "@mui/icons-material";
+import { ServerData } from "../../../model/evaluationData";
 
 interface HomePageProps {
   useExcelParameters: UseExcelParametersReturn; // Pass UseExcelParametersReturn as a prop
 }
 
 const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
-  const [homepageData, setHomepageData] = useState([
-    {
-      analysis: "Om 1",
-      date: "3-10-2000",
-      operation: "",
-    },
-  ]);
+  const [homepageData, setHomepageData] = useState<ServerData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/getAllRecords");
+        const data: ServerData[] = await response.json();
+        setHomepageData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       useExcelParameters.handleFileUpload(event);
-      navigate('/upload');
+      navigate("/upload");
       setFile(event.target.files[0]);
     }
   };
@@ -47,9 +56,47 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
     }
   };
 
-  const handleDelete = (index: number) => {
-    const updatedData = homepageData.filter((_, i) => i !== index);
-    setHomepageData(updatedData);
+  const handleDelete = async (objectid: string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/delete/${objectid}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        const updatedData = homepageData.filter(
+          (data) => data.objectid !== objectid
+        );
+        setHomepageData(updatedData);
+      } else {
+        console.error(`Failed to delete record with ID ${objectid}`);
+      }
+    } catch (error) {
+      console.error("Error deleting record:", error);
+    }
+  };
+
+  const handleDownload = (index: number) => {
+    console.log(`Download clicked for index ${index}`);
+    // Implement download logic here
+  };
+
+  const handleAnalysisClick = async (objectid: string) => {
+    try {
+      const response = await fetch("http://localhost:3000/getselectedrecord", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ objectid }),
+      });
+      if (response.ok) {
+        const reportData = await response.json();
+        navigate("/report", { state: { reportData } });
+      } else {
+        console.error(`Failed to fetch record with ID ${objectid}`);
+      }
+    } catch (error) {
+      console.error("Error fetching record:", error);
+    }
   };
 
   return (
@@ -61,7 +108,6 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
       }}
     >
       <Navbar />
-
       <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
         <Button
           variant="contained"
@@ -72,7 +118,6 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
           Upload data to analysis
         </Button>
       </Box>
-
       <input
         type="file"
         id="fileInput"
@@ -80,7 +125,6 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
         onChange={handleFileChange}
         style={{ display: "none" }}
       />
-
       <Box
         component={Paper}
         sx={{
@@ -101,7 +145,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "45%",
+                    width: "30%",
                   }}
                 >
                   Analysis
@@ -112,7 +156,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "45%",
+                    width: "30%",
                   }}
                 >
                   Date
@@ -123,49 +167,80 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "10%",
+                    width: "20%",
                   }}
                 >
-                  Operation
+                  Delete
+                </TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: "papayawhip",
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                    width: "20%",
+                  }}
+                >
+                  Download
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {homepageData.map((candidate, index) => (
+              {homepageData.map((data, index) => (
                 <TableRow key={index}>
                   <TableCell
                     sx={{
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-                      width: "33.33%",
+                      cursor: "pointer",
                     }}
+                    onClick={() => handleAnalysisClick(data.objectid)}
                   >
-                    {candidate.analysis}
+                    <span
+                      style={{ textDecoration: "underline", color: "blue" }}
+                    >
+                      {data.BatchData.Name}
+                    </span>
                   </TableCell>
                   <TableCell
                     sx={{
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-                      width: "33.33%",
                     }}
                   >
-                    {candidate.date}
+                    {data.BatchData.Date}
                   </TableCell>
                   <TableCell
                     sx={{
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-                      width: "33.33%",
                     }}
                   >
                     <IconButton
                       color="error"
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(data.objectid)}
                     >
                       <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "white",
+                      border: "1px solid black",
+                      padding: "8px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleDownload(index)}
+                    >
+                      <DownloadIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>

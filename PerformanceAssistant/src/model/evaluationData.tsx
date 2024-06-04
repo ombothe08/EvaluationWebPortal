@@ -23,8 +23,16 @@ export interface CandidateAnalysisModel {
 export interface BatchAnalysisModel {
   BatchData: {
     Name: string;
-    Module:string;
     CandidateAnalysisModel: CandidateAnalysisModel[];
   }
 }
 
+export interface ServerData {
+  objectid : string;
+  BatchData: {
+      Name:string;
+      Module: string;
+      Date:string;
+      CandidateAnalysisModel: CandidateAnalysisModel[];
+  }
+}
