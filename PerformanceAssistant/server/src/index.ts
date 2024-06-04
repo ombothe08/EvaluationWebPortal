@@ -1,7 +1,7 @@
 import express, { Request, Response, response } from 'express';
 import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
-import { BatchAnalysisModel, UserCredentials} from './Interfaces/Interface';
+import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, CandidateStrengthAnalysis} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
 
@@ -23,7 +23,6 @@ app.post('/login', async (req: Request, res: Response) => {
   
 });
 
-
 app.post('/evaluate', async (req: Request, res: Response) => {
   let oaiService = new OpenAIService();
   
@@ -31,9 +30,36 @@ app.post('/evaluate', async (req: Request, res: Response) => {
     const json = JSON.parse(response);
     const data = json as BatchAnalysisModel
 
+      
+      
+
+    let am = data.BatchData.AnalysisModel; // am = analysis model
+
+    let samList: StrengthAnalysisModel[] = []; // samList = strenght analysis model
+    am.forEach((cam: CandidateAnalysisModel) => { // cam = candidate analysis model
+      let sam :StrengthAnalysisModel = {
+        Name: cam.Name,
+        Strengths: cam.Strengths
+      }
+      samList.push(sam);
+    })
+
+    oaiService.evaluateStrength(samList).then((response) => {
+      //save to database
+      const strengthjson = JSON.parse(response);
+      const strengthdata = strengthjson as CandidateStrengthAnalysis
+      data.BatchData.CandidateStrengthAnalysis = strengthdata;
+      console.log("in index = "  );
+      console.log(strengthdata);
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
       db.connectToDatabase();
       db.addReport(data);
+
+
+    }).catch((error) => {
+      res.send(error);
+    });
+
       res.send(response);
   }).catch((error)=>{
       res.send(error);
@@ -41,16 +67,14 @@ app.post('/evaluate', async (req: Request, res: Response) => {
 });
 
 app.post('/evaluate/strengths', async (req: Request, res: Response) => {
-  let oaiService = new OpenAIService();
+  // let oaiService = new OpenAIService();
   
-  oaiService.evaluateStrength(req.body).then((response)=>{
+  // oaiService.evaluateStrength(req.body).then((response)=>{
     
-      res.send(response);
-  }).catch((error)=>{
-      res.send(error);
-  });
- 
-
+  //     res.send(response);
+  // }).catch((error)=>{
+  //     res.send(error);
+  // });
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {

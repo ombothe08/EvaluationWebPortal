@@ -5,33 +5,30 @@ export interface CandidateDataModel {
 
 export interface BatchDataModel {
   Name: string;
-  Module: string;
   Data: CandidateDataModel[];
 }
-
-
 
 export interface BatchAnalysisModel {
   BatchData: {
     Name: string;
     Module: string;
     AnalysisModel: CandidateAnalysisModel[];
-  }
+  };
 }
 
 export interface CandidateAnalysisModel {
   Name: string;
-  Strengths: { Parameter: string, Data: string }[];
-  AreasOfImprovement: { Parameter: string, Data: string }[];
-  InputForMentors: { Parameter: string, Data: string }[];
+  Strengths: { Parameter: string; Data: string }[];
+  AreasOfImprovement: { Parameter: string; Data: string }[];
+  InputForMentors: { Parameter: string; Data: string }[];
 }
 
 export interface ServerData {
-  objectid : string | null;
+  objectid: string | null;
   BatchData: {
-      Name:string;
-      Module: string;
-      Date:string;
-      AnalysisModel: CandidateAnalysisModel[];
-  }
+    Name: string;
+    Module: string;
+    Date: string;
+    AnalysisModel: CandidateAnalysisModel[];
+  };
 }
