@@ -26,7 +26,7 @@ export class Database {
     }
 
     const usersCollection: Collection = this.db.collection('users');
-    console.log(usersCollection);
+    
 
     let collection = await usersCollection.find({}).toArray();
     if (collection.length > 0 && Array.isArray(collection[0].users)) 
@@ -84,11 +84,10 @@ export class Database {
 
     const collection: Collection = this.db.collection('reports');
     try {
-      const objectId = new ObjectId(reportId); // Convert string to ObjectId
-      const report = await collection.findOne({ _id: objectId }); // Find document by ObjectId
-
+      const objectId = new ObjectId(reportId); 
+      const report = await collection.findOne({ _id: objectId });
       if (report) {
-        console.log('Report found:', report);
+        
         // Transform the retrieved document to BatchDbModel
         const batchDbModel: BatchDbModel = {
           objectid: report._id.toString(),
@@ -133,7 +132,6 @@ export class Database {
     try {
       const records = await collection.find({}).toArray();
         if (records.length > 0) {
-        console.log("Records found:", records);
         const formattedRecords: BatchDbModel[] = records.map(record => ({ 
           objectid: record._id.toString(),
           BatchData: {
@@ -177,8 +175,8 @@ export class Database {
     }
     const collection: Collection = this.db.collection('reports');
     try {
-      const objectId = new ObjectId(reportId); // Convert string to ObjectId
-      const report =  collection.deleteOne({ _id: objectId }); // Find document by ObjectId
+      const objectId = new ObjectId(reportId); 
+      const report =  collection.deleteOne({ _id: objectId }); 
       if (report) {
         console.log('Report found:', report);
         return report;

@@ -50,3 +50,10 @@ export interface BatchDataModel {
   Module: string;
   Data: CandidateDataModel[];
 }
+
+export interface StrengthAnalysisModel {
+  Name: string;
+  Strengths: { Parameter: string, Data: string }[];
+}
+
+
