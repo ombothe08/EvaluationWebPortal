@@ -17,10 +17,10 @@ export class OpenAIService {
                   "AnalysisModel": [
                     {
                       "Name": "string",
-                      "Strengths": {
+                      "Strengths": [{
                         "Parameter": "string",
                         "Data": "string"
-                      },
+                      }],
                       "AreasOfImprovement": [
                         {
                           "Parameter": "string",
