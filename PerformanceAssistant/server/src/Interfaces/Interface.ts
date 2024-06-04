@@ -18,6 +18,7 @@ export interface BatchDbModel {
       Module: string;
       Date:string;
       AnalysisModel: CandidateAnalysisModel[];
+      CandidateStrengthAnalysis: CandidateStrengthAnalysis;
 
   }
 }
@@ -36,8 +37,10 @@ export interface BatchAnalysisModel {
     Name: string;
     Module: string;
     AnalysisModel: CandidateAnalysisModel[];
+    CandidateStrengthAnalysis: CandidateStrengthAnalysis;
   }
 }
+
 
 
 // DataModel is the input for analysis 
@@ -51,10 +54,15 @@ export interface BatchDataModel {
   Module: string;
   Data: CandidateDataModel[];
 }
-
+//Store strengths 
 export interface StrengthAnalysisModel {
   Name: string;
   Strengths: { Parameter: string, Data: string }[];
 }
 
 
+
+
+export interface CandidateStrengthAnalysis{
+ Data : { Name : string , Strength : number}[]
+}

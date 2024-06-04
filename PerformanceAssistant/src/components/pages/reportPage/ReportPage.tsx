@@ -1,7 +1,8 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 import IconButton from "@mui/material/IconButton";
-import DownloadIcon from '@mui/icons-material/Download';
+import DownloadIcon from "@mui/icons-material/Download";
 import {
   Box,
   Table,
@@ -12,53 +13,18 @@ import {
   TableRow,
   Typography,
   Paper,
+  Button,
 } from "@mui/material";
-import {convertDataToExcel} from '../../utils/excelUtils'
-import { ServerData } from "../../../model/evaluationData";
+import { BatchAnalysisModel } from "../../../model/evaluationData";
 
 const ReportPage: React.FC = () => {
-  const teamName = "Code Monks";
-  const candidates = [
-    {
-      name: "Person 1",
-      module: "Module 1",
-      strengths: "Quick Learner",
-      areaOfImprovement: "Communication Skills",
-      inputForMentors: "Needs more practice with presentations",
-    },
-  ];
-
-  const handleDownload = async (objectid:string) => {
-    try {
-        const response = await fetch("http://localhost:3000/getSelectedRecord", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ Key: objectid }),
-        });
-  
-        let data: ServerData;
-        data = await response.json();
-        console.log(data);
-  
-        if (response.ok) {
-          convertDataToExcel(data);
-        } else {
-          console.error(`Failed to fetch record with ID ${objectid}`);
-        }
-      } catch (error) {
-        console.error("Error fetching record:", error);
-      }
+  const location = useLocation();
+  const { apiResponseData } = location.state as {
+    apiResponseData: BatchAnalysisModel;
   };
+
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #38ef7d, #11998e)",
-        py: 5,
-      }}
-    >
+    <Box>
       <Navbar />
       <Box
         component={Paper}
@@ -67,7 +33,7 @@ const ReportPage: React.FC = () => {
           borderRadius: 2,
           boxShadow: 3,
           m: 5,
-          backgroundColor: "whitesmoke",
+          backgroundColor: "aliceblue",
         }}
       >
         <Typography
@@ -80,32 +46,21 @@ const ReportPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Evaluation Report
+          Team Performance Report for {apiResponseData?.BatchData.Name}
         </Typography>
-        <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        mb: 4,
-      }}
-    >
-      <Typography
-        variant="h5"
-        component="h2"
-        sx={{
-          fontSize: 25,
-          fontWeight: 'bold',
-          fontFamily: 'sans-serif',
-          flexGrow: 1,
-        }}
-      >
-        Team: {teamName}
-      </Typography>
-      <IconButton >
-        {/* onClick={() => handleDownload(data.objectid)}> */}
-        <DownloadIcon fontSize="large" color="primary" />
-      </IconButton>
-    </Box>
+
+        <Typography
+          variant="h5"
+          component="h2"
+          sx={{
+            fontSize: 25,
+            fontWeight: "bold",
+            mb: 4,
+            fontFamily: "sans-serif",
+          }}
+        >
+          Module: {apiResponseData?.BatchData.Module}
+        </Typography>
 
         <TableContainer sx={{ maxHeight: "70vh" }}>
           <Table stickyHeader>
@@ -148,26 +103,6 @@ const ReportPage: React.FC = () => {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    Module
-                  </Typography>
-                </TableCell>
-                <TableCell
-                  sx={{
-                    backgroundColor: "papayawhip",
-                    fontSize: 25,
-                    fontWeight: "bold",
-                    border: "1px solid black",
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    component="h1"
-                    sx={{
-                      fontSize: 25,
-                      fontWeight: "bold",
-                      fontFamily: "sans-serif",
-                    }}
-                  >
                     Strengths
                   </Typography>
                 </TableCell>
@@ -188,7 +123,7 @@ const ReportPage: React.FC = () => {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    Area of Improvements
+                    Areas of Improvement
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -208,61 +143,85 @@ const ReportPage: React.FC = () => {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    Input
+                    Input for Mentors
                   </Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {candidates.map((candidate, index) => (
-                <TableRow key={index}>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "white",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.name}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "white",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.module}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "palegreen",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.strengths}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "pink",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.areaOfImprovement}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      backgroundColor: "skyblue",
-                      border: "1px solid black",
-                      padding: "8px",
-                    }}
-                  >
-                    {candidate.inputForMentors}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {apiResponseData?.BatchData.AnalysisModel.map(
+                (candidate, index) => (
+                  <TableRow key={index}>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "white",
+                        border: "1px solid black",
+                        padding: "8px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {candidate.Name}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "palegreen",
+                        border: "1px solid black",
+                        padding: "8px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {candidate.Strengths.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "pink",
+                        border: "1px solid black",
+                        padding: "8px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {candidate.AreasOfImprovement.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        backgroundColor: "skyblue",
+                        border: "1px solid black",
+                        padding: "8px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {candidate.InputForMentors.map((strength, idx) => (
+                        <div key={idx}>
+                          {strength.Parameter}: {strength.Data}
+                        </div>
+                      ))}
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>
+                  <br></br>
+                  <center>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      style={{ fontSize: "18px" }}
+                    >
+                      Compare Strengths
+                    </Button>
+                  </center>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>

@@ -11,12 +11,11 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 shadow-lg py-4 fixed w-full z-10 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center">
+        <div className="flex items-center" style={{ marginLeft: "300px" }}>
           <img
             src={CCTech}
             alt="Logo"
             className="w-16 h-16 rounded-full mr-3 shadow-lg"
-            style={{ marginLeft: "-120px" }}
           />
           <div
             className="text-3xl font-extrabold text-white tracking-wide"
@@ -27,7 +26,7 @@ const Navbar: React.FC = () => {
         </div>
         <div
           className="hidden md:flex space-x-8"
-          style={{ marginRight: "-120px" }}
+          style={{ marginRight: "-300px" }}
         >
           <Link
             to="/login"
