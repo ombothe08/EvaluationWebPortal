@@ -1,5 +1,7 @@
 import React from "react";
 import Navbar from "../Navbar";
+import IconButton from "@mui/material/IconButton";
+import DownloadIcon from '@mui/icons-material/Download';
 import {
   Box,
   Table,
@@ -11,6 +13,8 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
+import {convertDataToExcel} from '../../utils/excelUtils'
+import { ServerData } from "../../../model/evaluationData";
 
 const ReportPage: React.FC = () => {
   const teamName = "Code Monks";
@@ -24,6 +28,29 @@ const ReportPage: React.FC = () => {
     },
   ];
 
+  const handleDownload = async (objectid:string) => {
+    try {
+        const response = await fetch("http://localhost:3000/getSelectedRecord", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ Key: objectid }),
+        });
+  
+        let data: ServerData;
+        data = await response.json();
+        console.log(data);
+  
+        if (response.ok) {
+          convertDataToExcel(data);
+        } else {
+          console.error(`Failed to fetch record with ID ${objectid}`);
+        }
+      } catch (error) {
+        console.error("Error fetching record:", error);
+      }
+  };
   return (
     <Box
       sx={{
@@ -55,19 +82,30 @@ const ReportPage: React.FC = () => {
         >
           Evaluation Report
         </Typography>
-
-        <Typography
-          variant="h5"
-          component="h2"
-          sx={{
-            fontSize: 25,
-            fontWeight: "bold",
-            mb: 4,
-            fontFamily: "sans-serif",
-          }}
-        >
-          Team: {teamName}
-        </Typography>
+        <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        mb: 4,
+      }}
+    >
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{
+          fontSize: 25,
+          fontWeight: 'bold',
+          fontFamily: 'sans-serif',
+          flexGrow: 1,
+        }}
+      >
+        Team: {teamName}
+      </Typography>
+      <IconButton >
+        {/* onClick={() => handleDownload(data.objectid)}> */}
+        <DownloadIcon fontSize="large" color="primary" />
+      </IconButton>
+    </Box>
 
         <TableContainer sx={{ maxHeight: "70vh" }}>
           <Table stickyHeader>

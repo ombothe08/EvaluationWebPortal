@@ -51,12 +51,9 @@ app.post('/evaluate/strengths', async (req: Request, res: Response) => {
   });
 });
 
+app.post("/getSelectedRecord",async(req:Request,res:Response) => {
 
-
-app.post('/getSelectedRecord',async(req:Request,res:Response) => {
-
-    const objid = req.body.Key;
-
+    let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
@@ -82,7 +79,7 @@ app.delete("/delete/:id", async (req: Request, res: Response) => {
   try {
     const database = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     await database.connectToDatabase();
-    const reportId = req.params.id; // Get the report ID from the request params
+    const reportId = req.params.id;
     const result = await database.deleteReportById(reportId);
     if (result.deletedCount === 1) {
       res.send(`Report with ID ${reportId} deleted successfully`);

@@ -1,15 +1,22 @@
-
 export interface CandidateDataModel {
   Name: string;
   Data: { Parameter: string; Data: string }[];
 }
 
 export interface BatchDataModel {
-
   Name: string;
-  Date: string;
+  Module: string;
   Data: CandidateDataModel[];
+}
 
+
+
+export interface BatchAnalysisModel {
+  BatchData: {
+    Name: string;
+    Module: string;
+    AnalysisModel: CandidateAnalysisModel[];
+  }
 }
 
 export interface CandidateAnalysisModel {
@@ -19,12 +26,12 @@ export interface CandidateAnalysisModel {
   InputForMentors: { Parameter: string, Data: string }[];
 }
 
-
-export interface BatchAnalysisModel {
+export interface ServerData {
+  objectid : string | null;
   BatchData: {
-    Name: string;
-    Module:string;
-    CandidateAnalysisModel: CandidateAnalysisModel[];
+      Name:string;
+      Module: string;
+      Date:string;
+      AnalysisModel: CandidateAnalysisModel[];
   }
 }
-
