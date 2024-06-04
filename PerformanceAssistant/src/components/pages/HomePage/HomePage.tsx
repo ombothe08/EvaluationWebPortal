@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../Navbar";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {
   Box,
   Button,
@@ -16,7 +17,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
 import { useNavigate } from "react-router-dom";
-import { Upload } from "@mui/icons-material";
 import { convertDataToExcel } from "../../utils/excelUtils";
 import { ServerData } from "../../../model/evaluationData";
 
@@ -113,6 +113,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
           variant="contained"
           color="warning"
           sx={{ fontSize: "1.25rem", py: 2, px: 4 }}
+          startIcon={<CloudUploadIcon />}
           onClick={handleUploadClick}
         >
           Upload data to analysis
