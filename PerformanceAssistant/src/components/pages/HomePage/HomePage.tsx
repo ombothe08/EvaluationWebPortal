@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../Navbar";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
   Box,
   Button,
@@ -15,19 +15,19 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
-import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
 import { useNavigate } from "react-router-dom";
 import { convertDataToExcel } from "../../utils/excelUtils";
 import { ServerData } from "../../../model/evaluationData";
 
 interface HomePageProps {
-  useExcelParameters: UseExcelParametersReturn; // Pass UseExcelParametersReturn as a prop
+  onfileName: (fileName: File | null) => void;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
+const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
   const navigate = useNavigate();
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<string | null>(null);
   const [homepageData, setHomepageData] = useState<ServerData[]>([]);
+  const [hfileName, setFileName] = useState<string | null>("om");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,9 +45,11 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      useExcelParameters.handleFileUpload(event);
+      // useExcelParameters.handleFileUpload(event);
+      // setFileName(event.target.files[0].name);
+      //setFileName(event.target.files[0].name);
+      onfileName(event.target.files[0]);
       navigate("/upload");
-      setFile(event.target.files[0]);
     }
   };
 
@@ -100,38 +102,32 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
     }
   };
 
-  const handleDownload = async (objectid:string) => {
+  const handleDownload = async (objectid: string) => {
     try {
-        const response = await fetch("http://localhost:3000/getSelectedRecord", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ Key: objectid }),
-        });
-  
-        let data: ServerData;
-        data = await response.json();
-        console.log(data);
-  
-        if (response.ok) {
-          convertDataToExcel(data);
-        } else {
-          console.error(`Failed to fetch record with ID ${objectid}`);
-        }
-      } catch (error) {
-        console.error("Error fetching record:", error);
+      const response = await fetch("http://localhost:3000/getSelectedRecord", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Key: objectid }),
+      });
+
+      let data: ServerData;
+      data = await response.json();
+      console.log(data);
+
+      if (response.ok) {
+        convertDataToExcel(data);
+      } else {
+        console.error(`Failed to fetch record with ID ${objectid}`);
       }
+    } catch (error) {
+      console.error("Error fetching record:", error);
+    }
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #38ef7d, #11998e)",
-        py: 5,
-      }}
-    >
+    <Box>
       <Navbar />
       <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
         <Button
@@ -141,7 +137,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
           startIcon={<CloudUploadIcon />}
           onClick={handleUploadClick}
         >
-          Upload data to analysis
+          Upload File for Analysis
         </Button>
       </Box>
       <input
@@ -158,7 +154,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
           borderRadius: 2,
           boxShadow: 3,
           m: 5,
-          backgroundColor: "whitesmoke",
+          backgroundColor: "aliceblue",
         }}
       >
         <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -171,7 +167,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "30%",
+                    width: "40%",
                   }}
                 >
                   Analysis
@@ -182,7 +178,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "30%",
+                    width: "20%",
                   }}
                 >
                   Date
@@ -193,7 +189,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "20%",
+                    width: "10%",
                   }}
                 >
                   Delete
@@ -204,7 +200,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "20%",
+                    width: "10%",
                   }}
                 >
                   Download
@@ -220,6 +216,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       border: "1px solid black",
                       padding: "8px",
                       cursor: "pointer",
+                      fontSize: "20px",
                     }}
                     onClick={() => handleAnalysisClick(data.objectid)}
                   >
@@ -234,6 +231,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
+                      fontSize: "20px",
                     }}
                   >
                     {data.BatchData.Date}
@@ -243,7 +241,6 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -262,7 +259,6 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-
                       textAlign: "center",
                     }}
                   >
