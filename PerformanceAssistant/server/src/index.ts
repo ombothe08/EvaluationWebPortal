@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, response } from 'express';
 import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
 import { BatchAnalysisModel, UserCredentials} from './Interfaces/Interface';
@@ -49,6 +49,8 @@ app.post('/evaluate/strengths', async (req: Request, res: Response) => {
   }).catch((error)=>{
       res.send(error);
   });
+ 
+
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {
