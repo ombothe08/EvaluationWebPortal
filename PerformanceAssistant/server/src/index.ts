@@ -60,7 +60,7 @@ app.post('/getSelectedRecord',async(req:Request,res:Response) => {
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
-    console.log("before");
+    
     console.log(dbreport);
     res.send(JSON.stringify(dbreport));
 });
