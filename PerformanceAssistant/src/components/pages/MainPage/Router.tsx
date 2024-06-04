@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import LoginPage from "../logInPage/LogInPage";
 import HomePage from "../homePage/HomePage";
-import useExcelParameters from "../uploadFilePage/UseExcelParametersReturn";
 import ParameterListPage from "../parameterListPage/ParameterListPage";
 import ReportPage from "../reportPage/ReportPage";
 
@@ -15,9 +14,7 @@ const AppRouter: React.FC = () => {
 
   const handleFileName = (name : File | null) =>
     {
-     
-      setFileName(name);
-      
+      setFileName(name);      
     };
   return (
     <Router>

@@ -11,11 +11,9 @@ const ParameterListPage: React.FC<{ pFileName: File | null ;}> = ({pFileName : a
   const [selectedParameters, setSelectedParameters] = useState<string[]>([]);
   const [jsonSheet, setJsonSheet] = useState<any[][]>([]); // Array of arrays representing the JSON sheet data
   const [fileName, setFileName] = useState<File | null >(null);
-  // const [apiResponseData, setAPIResponseData] = useState<BatchAnalysisModel|null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Replace with your program flow condition to activate handleFileUpload
     setFileName(afileName);
     console.log(" The file is = " + afileName);    
     handleFileUpload(afileName); 
@@ -100,9 +98,10 @@ if(!file) return;
       console.error('Error submitting data:', error);
     }
   };
-  function goBack(event: MouseEvent<HTMLButtonElement, MouseEvent>): void {
-    throw new Error('Function not implemented.');
-  }
+
+  const goBack = () => {
+    window.history.back(); // Go back to previous page
+  };
 
   return (
    

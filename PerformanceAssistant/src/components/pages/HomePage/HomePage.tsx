@@ -47,9 +47,6 @@ const HomePage: React.FC<HomePageProps> = ({onfileName}) => {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      // useExcelParameters.handleFileUpload(event);
-      // setFileName(event.target.files[0].name);
-      //setFileName(event.target.files[0].name);
       onfileName(event.target.files[0]);
       navigate("/upload");
       
