@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
-import { BatchAnalysisModel, UserCredentials} from './Interfaces/Interface';
+import { BatchAnalysisModel, CandidateAnalysisModel, StrengthAnalysisModel, UserCredentials} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
 
@@ -33,7 +33,27 @@ app.post('/evaluate', async (req: Request, res: Response) => {
 
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
       db.connectToDatabase();
-      db.addReport(data);
+      
+
+    let am = data.BatchData.AnalysisModel;
+
+    let samList: StrengthAnalysisModel[] = []; 
+    am.forEach((cam: CandidateAnalysisModel) => {
+      let sam :StrengthAnalysisModel = {
+        Name: cam.Name,
+        Strengths: cam.Strengths
+      }
+      samList.push(sam);
+    })
+
+    oaiService.evaluateStrength(samList).then((response) => {
+      //save to database
+
+      s
+    }).catch((error) => {
+      res.send(error);
+    });
+
       res.send(response);
   }).catch((error)=>{
       res.send(error);

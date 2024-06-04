@@ -52,7 +52,7 @@ export class OpenAIService {
             return "";
         }
    }  
-   public async evaluateStrength(strengthData:StrengthAnalysisModel): Promise<string | any> {
+   public async evaluateStrength(strengthData:StrengthAnalysisModel[]): Promise<string | any> {
 
     const api_key = process.env.OAI_API_KEY;
         try {

@@ -18,6 +18,7 @@ export interface BatchDbModel {
       Module: string;
       Date:string;
       AnalysisModel: CandidateAnalysisModel[];
+
   }
 }
 
