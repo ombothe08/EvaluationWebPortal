@@ -57,6 +57,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
       fileInput.click();
     }
   };
+
   const handleDelete = async (objectid: string) => {
     try {
       const response = await fetch(`http://localhost:3000/delete/${objectid}`, {
@@ -77,16 +78,20 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
 
   const handleAnalysisClick = async (objectid: string) => {
     try {
-      const response = await fetch("http://localhost:3000/getselectedrecord", {
+      const response = await fetch("http://localhost:3000/getSelectedRecord", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ objectid }),
+        body: JSON.stringify({ Key: objectid }),
       });
+
+      let data: ServerData;
+      data = await response.json();
+      console.log(data);
+
       if (response.ok) {
-        const reportData = await response.json();
-        navigate("/report", { state: { reportData } });
+        navigate("/report", { state: { data } });
       } else {
         console.error(`Failed to fetch record with ID ${objectid}`);
       }
@@ -238,7 +243,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                       border: "1px solid black",
                       padding: "8px",
 
-                      textAlign:"center"
+                      textAlign: "center",
                     }}
                   >
                     <IconButton

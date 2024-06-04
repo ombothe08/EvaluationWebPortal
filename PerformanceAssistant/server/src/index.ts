@@ -49,14 +49,14 @@ app.post('/evaluate/strengths', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/getSelectedRecord',async(req:Request,res:Response) => {
+app.post("/getSelectedRecord",async(req:Request,res:Response) => {
 
-    const objid = req.body.Key;
-
+    let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
-    let a = typeof(dbreport);
+    let a = JSON.stringify(dbreport);
+    console.log("selected = " + a);
     res.send(JSON.stringify(dbreport));
 });
 
