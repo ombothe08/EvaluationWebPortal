@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx';
+import { CandidateAnalysisModel, ServerData } from '../../model/evaluationData';
 
 // Define an interface for the analyzedData object
 interface AnalyzedData {
@@ -87,16 +88,16 @@ const myData: Data = {
 }
 
 
-export const convertDataToExcel = (reportId:number) => {
+export const convertDataToExcel = (newData:any) => {
   var headers = [["Candidate Name", "Strengths", "Area of improvements", "Notes from Mentor"]];
   var ws= XLSX.utils.aoa_to_sheet([[]]);
   XLSX.utils.sheet_add_aoa(ws, headers, {origin: "A1"});
 
-  let record = myData.report.analyzedData;
-
+  const record =  newData.BatchData.AnalysisModel;//newData.BatchData.AnalysisModel;//myData.report.analyzedData;
+  //const l1: number = record.length;
   for(var i:number= 0;i<record.length;i++) {
     let oneCandidate:string[] = [];
-    oneCandidate.push(record[i].CandidateName);
+    oneCandidate.push(record[i].Name);// .CandidateName);
 
     let strengthCell:string =record[i].Strengths[0].Parameter +":"+  record[i].Strengths[0].Data+";\n";
     strengthCell += record[i].Strengths[1].Parameter + ":"+ record[i].Strengths[1].Data;
@@ -105,7 +106,7 @@ export const convertDataToExcel = (reportId:number) => {
     let improvCell:string = record[i].AreasOfImprovement[0].Parameter + ":"+record[i].AreasOfImprovement[0].Data;
     oneCandidate.push(improvCell);
 
-    let notesCell:string = record[i].InputForMentore[0].Parameter+":"+ record[i].InputForMentore[0].Data;
+    let notesCell:string = record[i].InputForMentors[0].Parameter+":"+ record[i].InputForMentors[0].Data;
     oneCandidate.push(notesCell);
 
     let rowNum:number = i+2;
@@ -113,7 +114,7 @@ export const convertDataToExcel = (reportId:number) => {
   }
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, ws, "Report Details");
-    let fileName:string = myData.report.module+"_Report.xlsx";
+    let fileName:string = newData.BatchData.Name+" Report.xlsx";
     XLSX.writeFile(workbook, fileName);
   
 }; 

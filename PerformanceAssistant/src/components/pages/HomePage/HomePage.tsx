@@ -100,8 +100,28 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
     }
   };
 
-  const handleDownload = (index: number) => {
-    convertDataToExcel(0);
+  const handleDownload = async (objectid:string) => {
+    try {
+        const response = await fetch("http://localhost:3000/getSelectedRecord", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ Key: objectid }),
+        });
+  
+        let data: ServerData;
+        data = await response.json();
+        console.log(data);
+  
+        if (response.ok) {
+          convertDataToExcel(data);
+        } else {
+          console.error(`Failed to fetch record with ID ${objectid}`);
+        }
+      } catch (error) {
+        console.error("Error fetching record:", error);
+      }
   };
 
   return (
@@ -248,7 +268,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
                   >
                     <IconButton
                       color="primary"
-                      onClick={() => handleDownload(index)}
+                      onClick={() => handleDownload(data.objectid)}
                     >
                       <DownloadIcon />
                     </IconButton>
