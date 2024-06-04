@@ -114,6 +114,11 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       console.error("Error submitting data:", error);
     }
   };
+
+  const goBack = () => {
+    window.history.back(); // Go back to previous page
+  };
+
   return (
     <div
       style={{
@@ -198,12 +203,20 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
             }}
           >
             <Button
+              onClick={goBack}
+              variant="contained"
+              color="primary"
+              style={{ fontSize: "18px", marginRight: "8px" }}
+            >
+              Back
+            </Button>
+            <Button
               variant="contained"
               color="primary"
               onClick={submitData}
-              style={{ fontSize: "20px" }}
+              style={{ fontSize: "18px" }}
             >
-              Generate Report
+              Evaluate
             </Button>
           </div>
         )}
