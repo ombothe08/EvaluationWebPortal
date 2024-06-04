@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../Navbar";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
 import {
   Box,
   Button,
@@ -113,6 +115,7 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
           variant="contained"
           color="warning"
           sx={{ fontSize: "1.25rem", py: 2, px: 4 }}
+          startIcon={<CloudUploadIcon />}
           onClick={handleUploadClick}
         >
           Upload data to analysis
