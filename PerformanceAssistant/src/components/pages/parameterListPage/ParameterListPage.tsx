@@ -1,5 +1,4 @@
 import { Grid, Checkbox, FormControlLabel, Button, Paper } from "@mui/material";
-// import {UseExcelParametersReturn} from '../uploadFilePage/UseExcelParametersReturn';
 import * as XLSX from "xlsx";
 import {
   BatchAnalysisModel,
@@ -10,25 +9,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 
-const ParameterListPage: React.FC<{ pFileName: File | null }> = ({
-  pFileName: afileName,
+const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
+  parameterFileName: uploadfileName,
 }) => {
   const [parameters, setParameters] = useState<string[]>([]);
   const [selectedParameters, setSelectedParameters] = useState<string[]>([]);
-  const [jsonSheet, setJsonSheet] = useState<any[][]>([]); // Array of arrays representing the JSON sheet data
+  const [jsonSheet, setJsonSheet] = useState<any[][]>([]);
   const [fileName, setFileName] = useState<File | null>(null);
-  // const [apiResponseData, setAPIResponseData] = useState<BatchAnalysisModel|null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Replace with your program flow condition to activate handleFileUpload
-    setFileName(afileName);
-    console.log(" The file is = " + afileName);
-    handleFileUpload(afileName);
+    setFileName(uploadfileName);
+    handleFileUpload(uploadfileName);
   }, []);
 
   const handleFileUpload = (file: File | null) => {
-    console.log("hi");
     if (!file) return;
     const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
 
@@ -42,10 +37,9 @@ const ParameterListPage: React.FC<{ pFileName: File | null }> = ({
       const jsonSheet = XLSX.utils.sheet_to_json<any[]>(worksheet, {
         header: 1,
       });
-      const headers = jsonSheet[0]; // Assuming first row contains headers
-      setParameters(headers.slice(1)); // Exclude the first column (CandidateName)
+      const headers = jsonSheet[0];
+      setParameters(headers.slice(1));
       setJsonSheet(jsonSheet);
-      console.log(jsonSheet);
     };
 
     reader.readAsArrayBuffer(file);
@@ -98,7 +92,6 @@ const ParameterListPage: React.FC<{ pFileName: File | null }> = ({
         fileName.name
       );
       const batchDataModelString = JSON.stringify(batchDataModel);
-      console.log(batchDataModelString);
       console.log(batchDataModel);
 
       const response = await fetch("http://localhost:3000/evaluate", {
@@ -141,10 +134,20 @@ const ParameterListPage: React.FC<{ pFileName: File | null }> = ({
           margin: "auto",
         }}
       >
+        <div
+          style={{
+            fontSize: "50px",
+            fontWeight: "600",
+            marginBottom: "16px",
+            textAlign: "center",
+          }}
+        >
+          Select Parameters
+        </div>
         {parameters.length > 0 && (
           <Paper
             style={{
-              background: "white",
+              background: "aliceblue",
               padding: "24px",
               borderRadius: "8px",
               boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
@@ -152,16 +155,6 @@ const ParameterListPage: React.FC<{ pFileName: File | null }> = ({
               overflowY: "auto",
             }}
           >
-            <h3
-              style={{
-                fontSize: "24px",
-                fontWeight: "600",
-                marginBottom: "16px",
-                textAlign: "center",
-              }}
-            >
-              Select Parameters:
-            </h3>
             <Grid container spacing={4}>
               {parameters.map((param, index) => (
                 <Grid item key={index} xs={12} sm={6} md={4}>
@@ -188,7 +181,7 @@ const ParameterListPage: React.FC<{ pFileName: File | null }> = ({
                           }}
                         />
                       }
-                      label={<span style={{ fontSize: "18px" }}>{param}</span>}
+                      label={<span style={{ fontSize: "25px" }}>{param}</span>}
                     />
                   </Paper>
                 </Grid>
@@ -208,7 +201,7 @@ const ParameterListPage: React.FC<{ pFileName: File | null }> = ({
               variant="contained"
               color="primary"
               onClick={submitData}
-              style={{ fontSize: "18px" }}
+              style={{ fontSize: "20px" }}
             >
               Generate Report
             </Button>

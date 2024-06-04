@@ -33,7 +33,7 @@ const ReportPage: React.FC = () => {
           borderRadius: 2,
           boxShadow: 3,
           m: 5,
-          backgroundColor: "whitesmoke",
+          backgroundColor: "aliceblue",
         }}
       >
         <Typography
@@ -59,8 +59,7 @@ const ReportPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          {/* TODO - update name to Module name */}
-          Module: {apiResponseData?.BatchData.Name}
+          Module: {apiResponseData?.BatchData.Module}
         </Typography>
 
         <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -158,6 +157,7 @@ const ReportPage: React.FC = () => {
                         backgroundColor: "white",
                         border: "1px solid black",
                         padding: "8px",
+                        fontSize: "18px",
                       }}
                     >
                       {candidate.Name}
@@ -167,6 +167,7 @@ const ReportPage: React.FC = () => {
                         backgroundColor: "palegreen",
                         border: "1px solid black",
                         padding: "8px",
+                        fontSize: "18px",
                       }}
                     >
                       {candidate.Strengths.map((strength, idx) => (
@@ -180,6 +181,7 @@ const ReportPage: React.FC = () => {
                         backgroundColor: "pink",
                         border: "1px solid black",
                         padding: "8px",
+                        fontSize: "18px",
                       }}
                     >
                       {candidate.AreasOfImprovement.map((strength, idx) => (
@@ -193,6 +195,7 @@ const ReportPage: React.FC = () => {
                         backgroundColor: "skyblue",
                         border: "1px solid black",
                         padding: "8px",
+                        fontSize: "18px",
                       }}
                     >
                       {candidate.InputForMentors.map((strength, idx) => (
@@ -204,6 +207,21 @@ const ReportPage: React.FC = () => {
                   </TableRow>
                 )
               )}
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>
+                  <br></br>
+                  <center>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      style={{ fontSize: "18px" }}
+                    >
+                      Compare Strengths
+                    </Button>
+                  </center>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>

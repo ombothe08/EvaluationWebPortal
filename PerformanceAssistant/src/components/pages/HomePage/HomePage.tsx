@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../Navbar";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
   Box,
   Button,
@@ -102,28 +102,28 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
     }
   };
 
-  const handleDownload = async (objectid:string) => {
+  const handleDownload = async (objectid: string) => {
     try {
-        const response = await fetch("http://localhost:3000/getSelectedRecord", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ Key: objectid }),
-        });
-  
-        let data: ServerData;
-        data = await response.json();
-        console.log(data);
-  
-        if (response.ok) {
-          convertDataToExcel(data);
-        } else {
-          console.error(`Failed to fetch record with ID ${objectid}`);
-        }
-      } catch (error) {
-        console.error("Error fetching record:", error);
+      const response = await fetch("http://localhost:3000/getSelectedRecord", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Key: objectid }),
+      });
+
+      let data: ServerData;
+      data = await response.json();
+      console.log(data);
+
+      if (response.ok) {
+        convertDataToExcel(data);
+      } else {
+        console.error(`Failed to fetch record with ID ${objectid}`);
       }
+    } catch (error) {
+      console.error("Error fetching record:", error);
+    }
   };
 
   return (
@@ -137,7 +137,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
           startIcon={<CloudUploadIcon />}
           onClick={handleUploadClick}
         >
-          Upload data to analysis
+          Upload File for Analysis
         </Button>
       </Box>
       <input
@@ -154,7 +154,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
           borderRadius: 2,
           boxShadow: 3,
           m: 5,
-          backgroundColor: "whitesmoke",
+          backgroundColor: "aliceblue",
         }}
       >
         <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -167,7 +167,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "30%",
+                    width: "40%",
                   }}
                 >
                   Analysis
@@ -178,7 +178,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "30%",
+                    width: "20%",
                   }}
                 >
                   Date
@@ -189,7 +189,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "20%",
+                    width: "10%",
                   }}
                 >
                   Delete
@@ -200,7 +200,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                     fontSize: 25,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    width: "20%",
+                    width: "10%",
                   }}
                 >
                   Download
@@ -216,6 +216,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                       border: "1px solid black",
                       padding: "8px",
                       cursor: "pointer",
+                      fontSize: "20px",
                     }}
                     onClick={() => handleAnalysisClick(data.objectid)}
                   >
@@ -230,6 +231,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
+                      fontSize: "20px",
                     }}
                   >
                     {data.BatchData.Date}
@@ -239,7 +241,6 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -258,7 +259,6 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-
                       textAlign: "center",
                     }}
                   >
