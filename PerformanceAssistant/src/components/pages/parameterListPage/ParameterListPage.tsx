@@ -78,7 +78,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
     const batchDataModel: BatchDataModel = {
       Name: batchName,
-      //Date: currentDate,
       Data: candidateDataModel,
     };
 
