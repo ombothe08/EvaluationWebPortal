@@ -15,7 +15,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import { UseExcelParametersReturn } from "../uploadFilePage/UseExcelParametersReturn";
-import { useNavigate } from "react-router-dom";<<<<<<< frontend_downloadButton_harish
+import { useNavigate } from "react-router-dom";
 import { Upload } from "@mui/icons-material";
 import { convertDataToExcel } from "../../utils/excelUtils";
 import { ServerData } from "../../../model/evaluationData";
@@ -76,11 +76,6 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
     } catch (error) {
       console.error("Error deleting record:", error);
     }
-  };
-
-  const handleDownload = (index: number) => {
-    console.log(`Download clicked for index ${index}`);
-    // Implement download logic here
   };
 
   const handleAnalysisClick = async (objectid: string) => {
@@ -278,10 +273,4 @@ const HomePage: React.FC<HomePageProps> = ({ useExcelParameters }) => {
   );
 };
  
-export default HomePage;
- 
- 
-
-
-
 export default HomePage;
