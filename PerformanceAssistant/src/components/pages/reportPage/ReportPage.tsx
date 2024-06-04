@@ -1,6 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
+import IconButton from "@mui/material/IconButton";
+import DownloadIcon from "@mui/icons-material/Download";
 import {
   Box,
   Table,
@@ -147,8 +149,8 @@ const ReportPage: React.FC = () => {
                 </TableCell>
               </TableRow>
             </TableHead>
-            {/* <TableBody>
-              {apiResponseData?.BatchData.CandidateAnalysisModel.map(
+            <TableBody>
+              {apiResponseData?.BatchData.AnalysisModel.map(
                 (candidate, index) => (
                   <TableRow key={index}>
                     <TableCell
@@ -202,7 +204,7 @@ const ReportPage: React.FC = () => {
                   </TableRow>
                 )
               )}
-            </TableBody> */}
+            </TableBody>
           </Table>
         </TableContainer>
       </Box>
