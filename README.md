@@ -2,8 +2,11 @@
 
 This is a performance assistant application designed to evaluate input from an Excel file based on criteria such as strengths, areas of improvement, and communication skills. Additionally, it provides instructions to instructors on how they can improve performance.
 
-## Installation and Setup
+## To install OpenAI Package
+Run npm install openai om terminal
+Set api key in your system variable as OAI_API_KEY
 
+## Installation and Setup
 To run this application, follow these steps:
 
 1. Navigate to the `/PerformanceAssistant/src` directory and run the following command to install Vite:
