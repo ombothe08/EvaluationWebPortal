@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../Navbar";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {
   Box,
   Button,
@@ -15,6 +16,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useNavigate } from "react-router-dom";
+import { convertDataToExcel } from "../../utils/excelUtils";
 import { ServerData } from "../../../model/evaluationData";
 
 interface HomePageProps
@@ -79,29 +81,52 @@ const HomePage: React.FC<HomePageProps> = ({onfileName}) => {
     }
   };
 
-  const handleDownload = (index: number) => {
-    console.log(`Download clicked for index ${index}`);
-    // Implement download logic here
-  };
-
   const handleAnalysisClick = async (objectid: string) => {
     try {
-      const response = await fetch("http://localhost:3000/getselectedrecord", {
+      const response = await fetch("http://localhost:3000/getSelectedRecord", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ objectid }),
+        body: JSON.stringify({ Key: objectid }),
       });
+
+      let data: ServerData;
+      data = await response.json();
+      console.log(data);
+
       if (response.ok) {
-        const reportData = await response.json();
-        navigate("/report", { state: { reportData } });
+        navigate("/report", { state: { data } });
       } else {
         console.error(`Failed to fetch record with ID ${objectid}`);
       }
     } catch (error) {
       console.error("Error fetching record:", error);
     }
+  };
+
+  const handleDownload = async (objectid:string) => {
+    try {
+        const response = await fetch("http://localhost:3000/getSelectedRecord", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ Key: objectid }),
+        });
+  
+        let data: ServerData;
+        data = await response.json();
+        console.log(data);
+  
+        if (response.ok) {
+          convertDataToExcel(data);
+        } else {
+          console.error(`Failed to fetch record with ID ${objectid}`);
+        }
+      } catch (error) {
+        console.error("Error fetching record:", error);
+      }
   };
 
   return (
@@ -118,6 +143,7 @@ const HomePage: React.FC<HomePageProps> = ({onfileName}) => {
           variant="contained"
           color="warning"
           sx={{ fontSize: "1.25rem", py: 2, px: 4 }}
+          startIcon={<CloudUploadIcon />}
           onClick={handleUploadClick}
         >
           Upload data to analysis
@@ -222,6 +248,10 @@ const HomePage: React.FC<HomePageProps> = ({onfileName}) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
+
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
                     <IconButton
@@ -231,19 +261,19 @@ const HomePage: React.FC<HomePageProps> = ({onfileName}) => {
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
+
                   <TableCell
                     sx={{
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+
+                      textAlign: "center",
                     }}
                   >
                     <IconButton
                       color="primary"
-                      onClick={() => handleDownload(index)}
+                      onClick={() => handleDownload(data.objectid)}
                     >
                       <DownloadIcon />
                     </IconButton>

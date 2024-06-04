@@ -101,6 +101,7 @@ if(!file) return;
     }
   };
   return (
+   
     <div style={{ minHeight: '100vh', background: 'linear-gradient(to right, #4299E1, #48BB78, #9F7AEA)', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', flexDirection: 'column', maxWidth: 'calc(100% - 20px)', padding: '20px', margin: 'auto' }}>
         {parameters.length > 0 && (
@@ -122,19 +123,27 @@ if(!file) return;
         )}
         {selectedParameters.length > 0 && (
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
+           <Button onClick={goBack} variant="contained" color="primary" style={{ fontSize: '18px', marginRight: '8px' }}>Back</Button>
             <Button
               variant="contained"
               color="primary"
               onClick={submitData}
               style={{ fontSize: '18px' }}
             >
-              Generate Report
+              Evaluate
             </Button>
           </div>
         )}
       </div>
     </div>
-  );
+   );
 };
- 
+
 export default ParameterListPage;
+
+
+
+
+
+
+
