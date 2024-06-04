@@ -1,14 +1,14 @@
-// src/useExcelParameters.ts
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
-import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationData'
+import { BatchDataModel, CandidateDataModel } from '../../../model/evaluationData';
 
 export interface UseExcelParametersReturn {
   parameters: string[];
   selectedParameters: string[];
+  apiData: string[];
   handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  submitData: () => Promise<void>;
+  submitData: () => Promise<boolean>;
 }
 
 const useExcelParameters = (): UseExcelParametersReturn => {
@@ -16,6 +16,7 @@ const useExcelParameters = (): UseExcelParametersReturn => {
   const [selectedParameters, setSelectedParameters] = useState<string[]>([]);
   const [jsonSheet, setJsonSheet] = useState<any[][]>([]); // Array of arrays representing the JSON sheet data
   const [fileName, setFileName] = useState<string>('');
+  const [apiData, setResponseData] = useState<string[]>([]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -67,22 +68,21 @@ const useExcelParameters = (): UseExcelParametersReturn => {
     }));
 
     const batchDataModel: BatchDataModel = {
-      
         Name: batchName,
-        Date: currentDate,
         Data: candidateDataModel,
+        Module: "cpp"
     };
 
     return batchDataModel;
   };
 
-  const submitData = async () => {
+  const submitData = async (): Promise<boolean> => {
     try {
       const batchDataModel: BatchDataModel = transformData(jsonSheet, fileName);
       const batchDataModelString = JSON.stringify(batchDataModel);
       console.log(batchDataModelString);
-      console.log(batchDataModel);
-  
+    console.log(batchDataModel);
+ 
       const response = await fetch('http://localhost:3000/evaluate', {
         method: 'POST',
         headers: {
@@ -97,16 +97,25 @@ const useExcelParameters = (): UseExcelParametersReturn => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log(responseData);
+      setResponseData(responseData); // Set the response data in state
+      console.log("responsedata",apiData );
+      responseData.BatchData.AnalysisModel.forEach((candidate: { Name: any; Strengths: any; AreasOfImprovement: any; InputForMentors: any; }, index: number) => {
+        console.log(`Candidate ${index + 1}: ${candidate.Name}`);
+        console.log("Strengths:", candidate.Strengths);
+        console.log("Areas of Improvement:", candidate.AreasOfImprovement);
+        console.log("Input for Mentors:", candidate.InputForMentors);
+      });
+
+      return true; 
     } catch (error) {
       console.error('Error submitting data:', error);
+      return false;
     }
   };
-  
-
   return {
     parameters,
     selectedParameters,
+    apiData,
     handleFileUpload,
     handleCheckboxChange,
     submitData,
