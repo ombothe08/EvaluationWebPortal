@@ -1,59 +1,56 @@
 import React from "react";
-import Navbar from "../Navbar";
-import {
-  Box,
-  Typography,
-  Paper,
-} from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import Navbar from "../Navbar";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const ReportPage: React.FC = () => {
+const CompareStrengthPage: React.FC = () => {
   const teamName = "Code Monks";
 
-  const generateRandomData = () => {
-    const candidates = [
-      "John Doe",
-      "Jane Smith",
-      "Alice Johnson",
-      "Bob Brown",
-      "Charlie Davis"
-    ];
-    const strengths = [
-      "Leadership",
-      "Communication",
-      "Problem-Solving",
-      "Creativity",
-      "Teamwork",
-      "Adaptability"
-    ];
+  // Sample hardcoded data for demonstration
+  const apiResponseData = [
+    { Name: 'Sonali', CandidateStrengthAnalysis: { Data: [{ Name: 'Sonali', Strength: Math.floor(Math.random() * 100) }] } },
+    { Name: 'Rashmi', CandidateStrengthAnalysis: { Data: [{ Name: 'Rashmi', Strength: Math.floor(Math.random() * 100) }] } }
+  ];
 
-    return candidates.map(candidate => ({
-      name: candidate,
-      strengths: strengths.map(strength => ({
-        parameter: strength,
-        data: Math.floor(Math.random() * 101)
-      }))
-    }));
-  };
+  const generateChartData = () => {
+    if (!apiResponseData || apiResponseData.length === 0) {
+      return {
+        labels: [],
+        datasets: [{
+          label: '',
+          data: [],
+          backgroundColor: '',
+          borderColor: '',
+          borderWidth: 0,
+        }],
+      };
+    }
 
-  const candidates = generateRandomData();
+    const data = {
+      labels: apiResponseData.map((item: any) => item.Name),
+      datasets: [{
+        label: 'Strength',
+        data: apiResponseData.map((item: any) => item.CandidateStrengthAnalysis.Data[0].Strength),
+        backgroundColor: `rgba(54, 162, 235, 0.2)`, // Blue color with opacity
+        borderColor: `rgba(54, 162, 235, 1)`, // Solid blue color
+        borderWidth: 1,
+      }],
+    };
 
-  const data = {
-    labels: candidates.map(candidate => candidate.name),
-    datasets: candidates[0].strengths.map((strength, index) => ({
-      label: strength.parameter,
-      data: candidates.map(candidate => candidate.strengths[index].data),
-      backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.2)`,
-      borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
-      borderWidth: 1,
-    })),
+    return data;
   };
 
   const options = {
     responsive: true,
+    scales: {
+      y: {
+        min: 0,
+        max: 100,
+      },
+    },
     plugins: {
       legend: {
         position: 'top' as const,
@@ -110,70 +107,68 @@ const ReportPage: React.FC = () => {
           Team: {teamName}
         </Typography>
 
-        <Bar data={data} options={options} />
+        <Bar data={generateChartData()} options={options} />
       </Box>
     </Box>
   );
 };
 
-export default ReportPage;
+export default CompareStrengthPage;
 
 
-// import React, { useEffect, useState } from "react";
-// import Navbar from "../Navbar";
+
+
+
+// import React from "react";
 // import { Box, Typography, Paper } from "@mui/material";
 // import { Bar } from "react-chartjs-2";
 // import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-// import axios from 'axios';
+// import { useLocation } from "react-router-dom";
+// import Navbar from "../Navbar";
 
 // ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// const ReportPage: React.FC = () => {
+// const CompareStrengthPage: React.FC = () => {
 //   const teamName = "Code Monks";
-//   const [data, setData] = useState<any>(null);
+//   const location = useLocation();
+//   const apiResponseData = location.state?.apiResponseData || [];
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.post('/evaluate/strengths', {
-//           // Add your payload here. Example:
-//           Name: "Team Strength Analysis",
-//           Strengths: [
-//             { Parameter: "Leadership", Data: "Excellent" },
-//             { Parameter: "Communication", Data: "Very Good" },
-//             { Parameter: "Problem-Solving", Data: "Good" }
-//           ]
-//         });
+//   const generateChartData = () => {
+//     if (!apiResponseData || apiResponseData.length === 0) {
+//       return {
+//         labels: [],
+//         datasets: [{
+//           label: '',
+//           data: [],
+//           backgroundColor: '',
+//           borderColor: '',
+//           borderWidth: 0,
+//         }],
+//       };
+//     }
 
-//         const responseData = JSON.parse(response.data);
-//         setData(responseData);
-//       } catch (error) {
-//         console.error("Error fetching the data", error);
-//       }
+//     const data = {
+//       labels: apiResponseData.map((item: any) => item.Name),
+//       datasets: [{
+//         label: 'Strength',
+//         data: apiResponseData.map((item: any) => item.CandidateStrengthAnalysis.Data.map((strengthItem: any) => strengthItem.Strength)),
+//         backgroundColor: `rgba(54, 162, 235, 0.2)`, // Blue color with opacity
+//         borderColor: `rgba(54, 162, 235, 1)`, // Solid blue color
+//         borderWidth: 1,
+//       }],
 //     };
 
-//     fetchData();
-//   }, []);
-
-//   if (!data) {
-//     return <Typography>Loading...</Typography>;
-//   }
-
-//   const chartData = {
-//     labels: data.Data.map((candidate: any) => candidate.Name),
-//     datasets: [
-//       {
-//         label: 'Strength',
-//         data: data.Data.map((candidate: any) => candidate.Strength),
-//         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-//         borderColor: 'rgba(75, 192, 192, 1)',
-//         borderWidth: 1,
-//       }
-//     ],
+//     return data;
 //   };
 
 //   const options = {
 //     responsive: true,
+//     scales: {
+//       y: {
+//         min: 0,
+//         max: 100,
+//       },
+//     },
 //     plugins: {
 //       legend: {
 //         position: 'top' as const,
@@ -230,10 +225,10 @@ export default ReportPage;
 //           Team: {teamName}
 //         </Typography>
 
-//         <Bar data={chartData} options={options} />
+//         <Bar data={generateChartData()} options={options} />
 //       </Box>
 //     </Box>
 //   );
 // };
 
-// export default ReportPage;
+// export default CompareStrengthPage;
