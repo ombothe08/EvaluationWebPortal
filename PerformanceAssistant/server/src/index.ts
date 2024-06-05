@@ -19,7 +19,7 @@ app.post('/login', async (req: Request, res: Response) => {
   const userCredentials: UserCredentials = req.body;
   
   let result = await authenticator.authenticate(userCredentials);
-  console.log(result);
+ 
   res.send(result);
   
 });
@@ -74,15 +74,9 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/evaluate/strengths', async (req: Request, res: Response) => {
-  // let oaiService = new OpenAIService();
+app.post('/insights', async (req: Request, res: Response) => {
   
-  // oaiService.evaluateStrength(req.body).then((response)=>{
-    
-  //     res.send(response);
-  // }).catch((error)=>{
-  //     res.send(error);
-  // });
+  
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {

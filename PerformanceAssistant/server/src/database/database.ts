@@ -68,7 +68,8 @@ export class Database {
                 Module: batchAnalysis.BatchData.Module,
                 Date: new Date().toISOString(),
                 AnalysisModel: batchAnalysis.BatchData.AnalysisModel,
-                CandidateStrengthAnalysis: batchAnalysis.BatchData.CandidateStrengthAnalysis
+                CandidateStrengthAnalysis: batchAnalysis.BatchData.CandidateStrengthAnalysis,
+                CandidatesSuggestedRole:batchAnalysis.BatchData.CandidatesSuggestedRole
             }
         };
 
@@ -121,7 +122,9 @@ export class Database {
                 Data: input.Data
               }))
              })),
-             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis
+             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis,
+             CandidatesSuggestedRole:report.BatchData.CandidatesSuggestedRole
+
           }
         };
         return batchDbModel;
@@ -165,7 +168,8 @@ export class Database {
                 Data: input.Data
               }))
             })),
-            CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis
+            CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis,
+            CandidatesSuggestedRole:record.BatchData.CandidatesSuggestedRole
          
           }
         }));
