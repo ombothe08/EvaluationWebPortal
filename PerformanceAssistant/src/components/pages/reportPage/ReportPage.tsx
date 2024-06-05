@@ -101,7 +101,7 @@ const ReportPage: React.FC = () => {
         </div>
 
 
-        <TableContainer sx={{ maxHeight: "60vh" }}>
+        <TableContainer sx={{ maxHeight: "55vh" }}>
           <Table stickyHeader>
             <TableHead>
               <TableRow sx={{ backgroundColor: "papayawhip" }}>
@@ -207,7 +207,6 @@ const ReportPage: React.FC = () => {
               <TableRow>
               <TableCell></TableCell>
                 <TableCell>
-                  <br></br>
                   <center>
                     <Button
                       color="primary"

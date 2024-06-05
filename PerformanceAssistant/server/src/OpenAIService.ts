@@ -75,8 +75,6 @@ export class OpenAIService {
                 ],
                 model: "gpt-3.5-turbo",
               }); 
-              console.log("in ai api =");
-              console.log(completionResponse.choices[0].message.content);
             return completionResponse.choices[0].message.content;
 
         } catch (error) {
