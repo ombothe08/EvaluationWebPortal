@@ -44,21 +44,35 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       samList.push(sam);
     })
 
-    oaiService.evaluateStrength(samList).then((response) => {
+    oaiService.evaluateStrength(samList).then(async (response) => {
       //save to database
       const strengthjson = JSON.parse(response);
       const strengthdata = strengthjson as CandidateStrengthAnalysis
       data.BatchData.CandidateStrengthAnalysis = strengthdata;
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+      
       db.connectToDatabase();
-      db.addReport(data);
-
+      
+      let responObjid : Promise<string> ;
+      
+      responObjid = db.addReport(data); 
+      
+      const result: string = await responObjid;
+      
+      let responseData: BatchDbModel | null ;
+      responseData = await db.getReportById(result);
+      console.log("objid = ", result);
+      console.log("type = " , typeof(responseData));
+      console.log("data = ");
+      console.log(responseData);
+      res.send(responseData);
+      
 
     }).catch((error) => {
       res.send(error);
     });
 
-      res.send(data as BatchDbModel);
+  
   }).catch((error)=>{
       res.send(error);
   });

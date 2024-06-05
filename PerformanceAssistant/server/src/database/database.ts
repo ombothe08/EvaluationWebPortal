@@ -50,7 +50,7 @@ export class Database {
     }
   
   }
-  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<BatchDbModel|null> {
+  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<string> {
     if (!this.db) {
       throw new Error('Database connection is not established');
     }
@@ -73,10 +73,11 @@ export class Database {
       };
       await collection.insertOne(batchDbModel);
       console.log('Report added successfully');
-      return batchDbModel;
+      return batchDbModel.objectid;
     } catch (error) {
       console.error('Failed to add report', error);
-      return null;
+        
+       return "";
     }
   }
 
@@ -89,7 +90,7 @@ export class Database {
     const collection: Collection = this.db.collection('reports');
     try {
       const objectId = new ObjectId(reportId); 
-      const report = await collection.findOne({ _id: objectId });
+      const report = await collection.findOne({ "objectid": objectId });
       if (report) {
         
         // Transform the retrieved document to BatchDbModel
