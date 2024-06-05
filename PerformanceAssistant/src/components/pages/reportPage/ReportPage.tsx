@@ -77,7 +77,6 @@ const ReportPage: React.FC = () => {
         >
           Team Performance Report for {data.BatchData.Name}
         </Typography>
-        
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Typography
             variant="h5"
@@ -206,7 +205,7 @@ const ReportPage: React.FC = () => {
                 </TableRow>
               ))}
               <TableRow>
-                <TableCell></TableCell>
+              <TableCell></TableCell>
                 <TableCell>
                   <br></br>
                   <center>

@@ -2,15 +2,9 @@ import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import CCTech from "../images/CCTech.png";
-import { IconButton } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import HomeIcon from '@mui/icons-material/Home';
-import { pink } from "@mui/material/colors";
+import CCTech from "../../images/CCTech.png";
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <AppBar
       position="static"
@@ -36,14 +30,6 @@ const Navbar: React.FC = () => {
         >
           Performance Assistant
         </Typography>
-        <div style={{ marginLeft: 'auto' }}>
-            <IconButton
-            sx={{ color:"white" }}
-              onClick={() => navigate("/homepage")}
-            >
-              <HomeIcon sx={{fontSize:'50px'}}/>
-            </IconButton>
-          </div>
       </Toolbar>
     </AppBar>
   );
