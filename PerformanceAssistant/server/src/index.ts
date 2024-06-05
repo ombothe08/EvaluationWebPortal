@@ -71,23 +71,17 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/getinsights', async (req: Request, res: Response) =>
-   {
-
+app.post('/getinsights', async (req: Request, res: Response) =>{
     let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
-
-    
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {
-
     let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
-    let dbreport =  await db.getReportById(objid); 
-    
+    let dbreport =  await db.getReportById(objid);
     res.send(JSON.stringify(dbreport));
 });
 
