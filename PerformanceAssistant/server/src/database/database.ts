@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
-import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel } from '../Interfaces/Interface';
+import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel , BatchReportDbModel} from '../Interfaces/Interface';
 
 export class Database {
   private uri: string;
@@ -21,19 +21,15 @@ export class Database {
 
   public async verifyUserCredentials(userCredentials: UserCredentials): Promise<boolean | any> {
     if (!this.db) {
-      
       throw new Error('Database connection is not established');
     }
 
     const usersCollection: Collection = this.db.collection('users');
-    
-
+  
     let collection = await usersCollection.find({}).toArray();
     if (collection.length > 0 && Array.isArray(collection[0].users)) 
-    { 
-      
+    {     
       const users: dbuser[] = collection[0].users;
-
       // Extract and log each user's data
       for (const userData of users) {
         const db_username = userData.email;
@@ -44,12 +40,12 @@ export class Database {
         
       }
     return false;
-      
     } else {
       console.log('No users found in the collection');
     }
   
   }
+
   public async addReport(batchAnalysis: BatchAnalysisModel): Promise<string | any> {
     if (!this.db) {
         throw new Error('Database connection is not established');
@@ -68,7 +64,7 @@ export class Database {
                 Module: batchAnalysis.BatchData.Module,
                 Date: new Date().toISOString(),
                 AnalysisModel: batchAnalysis.BatchData.AnalysisModel,
-                CandidateStrengthAnalysis: batchAnalysis.BatchData.CandidateStrengthAnalysis,
+                
                 insight:batchAnalysis.BatchData.insight
             }
         };
@@ -88,55 +84,53 @@ export class Database {
     }
 }
 
-  
-  public async getReportById(reportId: string): Promise<BatchDbModel | null> {
-    if (!this.db) {
-      throw new Error('Database connection is not established');
-    }
-
-    const collection: Collection = this.db.collection('reports');
-    try {
-      const objectId = new ObjectId(reportId); 
-      const report = await collection.findOne({ "objectid": objectId });
-      if (report) {
-        
-        // Transform the retrieved document to BatchDbModel
-        const batchDbModel: BatchDbModel = {
-          objectid: report._id,
-          BatchData: {
-            Name: report.BatchData.Name,
-            Module: report.BatchData.Module,
-            Date: report.BatchData.Date,
-            AnalysisModel: report.BatchData.AnalysisModel.map((data: any) => ({
-              Name: data.Name,
-              Strengths: data.Strengths.map((strength: any) => ({
-                Parameter: strength.Parameter,
-                Data: strength.Data
-              })),
-              AreasOfImprovement: data.AreasOfImprovement.map((improvement: any) => ({
-                Parameter: improvement.Parameter,
-                Data: improvement.Data
-              })),
-              InputForMentors: data.InputForMentors.map((input: any) => ({
-                Parameter: input.Parameter,
-                Data: input.Data
-              }))
-             })),
-             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis,
-             insight:report.BatchData.insight
-
-          }
-        };
-        return batchDbModel;
-      } else {
-        console.log('No report found with the given ID');
-        return null;
-      }
-    } catch (error) {
-      console.error('Failed to get report', error);
-      throw error;
-    }
+public async getReportById(reportId: string): Promise<BatchReportDbModel | null> {
+  if (!this.db) {
+    throw new Error('Database connection is not established');
   }
+
+  const collection: Collection = this.db.collection('reports');
+  try {
+    const objectId = new ObjectId(reportId);
+    const report = await collection.findOne({ "objectid": objectId });
+    if (report) {
+     
+      // Transform the retrieved document to BatchDbModel
+      const batchReportDbModel: BatchReportDbModel = {
+        objectid: report._id,
+        BatchData: {
+          Name: report.BatchData.Name,
+          Module: report.BatchData.Module,
+          Date: report.BatchData.Date,
+          AnalysisModel: report.BatchData.AnalysisModel.map((data: any) => ({
+            Name: data.Name,
+            Strengths: data.Strengths.map((strength: any) => ({
+              Parameter: strength.Parameter,
+              Data: strength.Data
+            })),
+            AreasOfImprovement: data.AreasOfImprovement.map((improvement: any) => ({
+              Parameter: improvement.Parameter,
+              Data: improvement.Data
+            })),
+            InputForMentors: data.InputForMentors.map((input: any) => ({
+              Parameter: input.Parameter,
+              Data: input.Data
+            }))
+           })),
+         
+        }
+      };
+      return batchReportDbModel;
+    } else {
+      console.log('No report found with the given ID');
+      return null;
+    }
+  } catch (error) {
+    console.error('Failed to get report', error);
+    throw error;
+  }
+}
+
 
   public async getAllRecords(collectionName: string): Promise<BatchDbModel[]> {
     if (!this.db) {
@@ -147,7 +141,7 @@ export class Database {
     try {
       const records = await collection.find({}).toArray();
         if (records.length > 0) {
-        const formattedRecords: BatchDbModel[] = records.map(record => ({ 
+        const formattedRecords: BatchReportDbModel[] = records.map(record => ({ 
           objectid: record._id,
           BatchData: {
             Name: record.BatchData.Name, 
@@ -169,8 +163,6 @@ export class Database {
               }))
             })),
             CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis,
-            insight:record.BatchData.insight
-         
           }
         }));
         console.log(`Fetched ${records.length} records from ${collectionName} collection`);
