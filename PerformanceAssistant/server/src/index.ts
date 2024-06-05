@@ -66,11 +66,26 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/getInsights', async (req: Request, res: Response) =>{
+app.post('/getinsights', async (req: Request, res: Response) => {
+  try {
     let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
+
+    // Fetch insights by ID
+    let insights = await db.getInsightsByID(objid);
+    
+    if (insights) {
+      res.status(200).send(insights);
+    } else {
+      res.status(404).send({ message: 'No insights found for the given ID' });
+    }
+  } catch (error) {
+    console.error('Error fetching insights:', error);
+    res.status(500).send({ message: 'Failed to fetch insights' });
+  }
 });
+
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {
     let objid = req.body.Key;
