@@ -65,7 +65,7 @@ const ReportPage: React.FC = () => {
           Module: {data.BatchData.Module || "N/A"}
         </Typography>
 
-        <TableContainer sx={{ maxHeight: "60vh" }}>
+        <TableContainer sx={{ maxHeight: "55vh" }}>
           <Table stickyHeader>
             <TableHead>
               <TableRow sx={{ backgroundColor: "papayawhip" }}>
@@ -171,7 +171,6 @@ const ReportPage: React.FC = () => {
               <TableRow>
                 <TableCell></TableCell>
                 <TableCell>
-                  <br></br>
                   <center>
                     <Button
                       color="primary"
