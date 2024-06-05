@@ -18,12 +18,29 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
   const [jsonSheet, setJsonSheet] = useState<any[][]>([]);
   const [fileName, setFileName] = useState<File | null>(null);
   const navigate = useNavigate();
-  const [showLoader, setShowLoader] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [countdown, setCountdown] = useState(10);
+
 
   useEffect(() => {
     setFileName(uploadfileName);
     handleFileUpload(uploadfileName);
   }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showMessage) {
+      timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev === 1) {
+            navigate("/homepage");
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [showMessage, navigate]);
 
   const handleFileUpload = (file: File | null) => {
     if (!file) return;
@@ -103,18 +120,10 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       }
       const tempresponseData = await response.json();
       let responseData = tempresponseData as ServerData;
-      
-      navigate("/report", { state: { data: responseData } });
-
     } catch (error) {
       console.error("Error submitting data:", error);
     }
   };
-
-  const goBack = () => {
-    window.history.back();
-  };
-
   return (
     <div
       style={{
@@ -135,24 +144,19 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
           margin: "auto",
         }}
       >
-
-
         <div
           style={{
             fontSize: "50px",
             fontWeight: "600",
             marginBottom: "16px",
             textAlign: "center",
+            opacity: showMessage ? 0.5 : 1
           }}
         >
           Select Parameters
         </div>
-        {showLoader && (
-          <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <CircularProgress />
-          </div>
-        )}
-        <div style={{ opacity: showLoader ? 0.5 : 1 }}>
+       
+        <div style={{opacity: showMessage ? 0.5 : 1}}>
         {parameters.length > 0 && (
           <Paper
             style={{
@@ -180,7 +184,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
                     <FormControlLabel
                       control={
                         <Checkbox
-                          disabled={showLoader}
+                          disabled={showMessage}
                           color="primary"
                           onChange={handleCheckboxChange}
                           name={param}
@@ -200,6 +204,35 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
           </Paper>
         )}
         </div>
+
+        {showMessage && (
+          <div style={{ 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            backgroundColor: 'rgba(255, 255, 255, 1)', 
+            textAlign: 'center', 
+            padding: '20px', 
+            fontSize: '2', 
+            color: 'black', 
+            zIndex: 1000,
+            height:'100px'
+          }}>
+           <p>Your file is being evaluated. You are being routed back to homepage in {countdown} seconds.</p>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/homepage")}
+              style={{ fontSize: "16px", marginTop: "10px" }}
+            >
+              Go Back to Homepage 
+            </Button>
+          </div>
+        )}
+
+
+
         {selectedParameters.length > 0 && (
           <div
             style={{
@@ -208,20 +241,13 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               marginTop: "24px",
             }}
           >
+            
             <Button
-              onClick={goBack}
-              variant="contained"
-              color="primary"
-              style={{ fontSize: "18px", marginRight: "8px" }}
-            >
-              Back
-            </Button>
-            <Button
-              disabled={showLoader}
+              disabled={showMessage}
               variant="contained"
               color="primary"
               onClick={() => {
-                setShowLoader(true);
+                setShowMessage(true);
                 submitData();
               }}
               style={{ fontSize: "18px" }}
