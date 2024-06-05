@@ -26,7 +26,9 @@ const ReportPage: React.FC = () => {
 
   const handleCompareStrengths = () => {
     // Redirect to compareStrengthPage
-    navigate("/compare-strengths");
+    navigate("/compare-strengths", { state: { data: data } });
+    
+
   };
   const handleDownload = async (objectid: string|null) => {
     try {
