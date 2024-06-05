@@ -13,8 +13,11 @@ import {
   Typography,
   Paper,
   Button,
+  IconButton,
 } from "@mui/material";
 import { ServerData } from "../../../model/evaluationData";
+import { convertDataToExcel } from "../../utils/excelUtils";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const ReportPage: React.FC = () => {
   const location = useLocation();
@@ -24,6 +27,29 @@ const ReportPage: React.FC = () => {
   const handleCompareStrengths = () => {
     // Redirect to compareStrengthPage
     navigate("/compare-strengths");
+  };
+  const handleDownload = async (objectid: string|null) => {
+    try {
+      const response = await fetch("http://localhost:3000/getSelectedRecord", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Key: objectid }),
+      });
+
+      let data: ServerData;
+      data = await response.json();
+      console.log(data);
+
+      if (response.ok) {
+        convertDataToExcel(data);
+      } else {
+        console.error(`Failed to fetch record with ID ${objectid}`);
+      }
+    } catch (error) {
+      console.error("Error fetching record:", error);
+    }
   };
 
   return (
@@ -51,19 +77,30 @@ const ReportPage: React.FC = () => {
         >
           Team Performance Report for {data.BatchData.Name}
         </Typography>
+        
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              mb: 3,
+              fontFamily: 'sans-serif',
+            }}
+          >
+            Module: {data.BatchData.Module || 'N/A'}
+          </Typography>
+          <div style={{ marginLeft: 'auto' }}>
+            <IconButton
+              color="primary"
+              onClick={() => handleDownload(data.objectid)}
+            >
+              <DownloadIcon style={{ fontSize: '50px' }}/>
+            </IconButton>
+          </div>
+        </div>
 
-        <Typography
-          variant="h5"
-          component="h2"
-          sx={{
-            fontSize: 20,
-            fontWeight: "bold",
-            mb: 3,
-            fontFamily: "sans-serif",
-          }}
-        >
-          Module: {data.BatchData.Module || "N/A"}
-        </Typography>
 
         <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table stickyHeader>
