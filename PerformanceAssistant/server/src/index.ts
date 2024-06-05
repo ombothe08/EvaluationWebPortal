@@ -49,8 +49,6 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       const strengthjson = JSON.parse(response);
       const strengthdata = strengthjson as CandidateStrengthAnalysis
       data.BatchData.CandidateStrengthAnalysis = strengthdata;
-      console.log("in index = "  );
-      console.log(strengthdata);
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
       db.connectToDatabase();
       db.addReport(data);
@@ -60,7 +58,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       res.send(error);
     });
 
-      res.send(response);
+      res.send(data as BatchAnalysisModel);
   }).catch((error)=>{
       res.send(error);
   });
