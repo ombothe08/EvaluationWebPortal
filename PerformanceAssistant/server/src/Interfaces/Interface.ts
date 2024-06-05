@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 //Login credentials
 export interface UserCredentials {
     Email: string;
@@ -12,7 +14,7 @@ export interface UserCredentials {
 
 //Database model
 export interface BatchDbModel {
-  objectid : string | null;
+  objectid : ObjectId;
   BatchData: {
       Name:string;
       Module: string;
