@@ -21,19 +21,15 @@ export class Database {
 
   public async verifyUserCredentials(userCredentials: UserCredentials): Promise<boolean | any> {
     if (!this.db) {
-      
       throw new Error('Database connection is not established');
     }
 
     const usersCollection: Collection = this.db.collection('users');
-    
-
+  
     let collection = await usersCollection.find({}).toArray();
     if (collection.length > 0 && Array.isArray(collection[0].users)) 
-    { 
-      
+    {     
       const users: dbuser[] = collection[0].users;
-
       // Extract and log each user's data
       for (const userData of users) {
         const db_username = userData.email;
@@ -44,12 +40,12 @@ export class Database {
         
       }
     return false;
-      
     } else {
       console.log('No users found in the collection');
     }
   
   }
+
   public async addReport(batchAnalysis: BatchAnalysisModel): Promise<string | any> {
     if (!this.db) {
         throw new Error('Database connection is not established');
@@ -145,7 +141,7 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
     try {
       const records = await collection.find({}).toArray();
         if (records.length > 0) {
-        const formattedRecords: BatchDbModel[] = records.map(record => ({ 
+        const formattedRecords: BatchReportDbModel[] = records.map(record => ({ 
           objectid: record._id,
           BatchData: {
             Name: record.BatchData.Name, 
@@ -167,8 +163,6 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
               }))
             })),
             CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis,
-            insight:record.BatchData.insight
-         
           }
         }));
         console.log(`Fetched ${records.length} records from ${collectionName} collection`);
