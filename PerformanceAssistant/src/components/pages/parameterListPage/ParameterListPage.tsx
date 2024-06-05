@@ -1,12 +1,10 @@
-import { Grid, Checkbox, FormControlLabel, Button, Paper } from "@mui/material";
+import { Grid, Checkbox, FormControlLabel, Button, Paper, CircularProgress } from "@mui/material";
 import * as XLSX from "xlsx";
 import {
   BatchAnalysisModel,
   BatchDataModel,
   CandidateDataModel,
-  ServerData,
 } from "../../../model/evaluationData";
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -80,7 +78,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
     const batchDataModel: BatchDataModel = {
       Name: batchName,
-      Module: '',
       Data: candidateDataModel,
     };
 
@@ -142,6 +139,8 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
           margin: "auto",
         }}
       >
+
+
         <div
           style={{
             fontSize: "50px",
@@ -152,6 +151,12 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         >
           Select Parameters
         </div>
+        {showLoader && (
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <CircularProgress size={80}/>
+          </div>
+        )}
+        <div style={{ opacity: showLoader ? 0.5 : 1 }}>
         {parameters.length > 0 && (
           <Paper
             style={{
@@ -198,6 +203,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
             </Grid>
           </Paper>
         )}
+        </div>
         {selectedParameters.length > 0 && (
           <div
             style={{
