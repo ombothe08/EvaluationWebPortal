@@ -14,7 +14,9 @@ const Navbar: React.FC = () => {
         padding: 0,
       }}
     >
-      <Toolbar sx={{ display: 'flex', alignItems: 'center',minHeight: '64px' }}>
+      <Toolbar
+        sx={{ display: "flex", alignItems: "center", minHeight: "64px" }}
+      >
         <img
           src={CCTech}
           alt="CCTech Logo"
@@ -22,7 +24,7 @@ const Navbar: React.FC = () => {
         />
         <Typography
           variant="h2"
-          sx={{ fontWeight: "bold", fontSize: 30, color: "blue", m: 1  }}
+          sx={{ fontWeight: "bold", fontSize: 30, color: "#2563EB", m: 1 }}
         >
           Performance Assistant
         </Typography>

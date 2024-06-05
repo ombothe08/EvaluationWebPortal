@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
-import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel , BatchReportDbModel} from '../Interfaces/Interface';
+import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel , BatchReportDbModel, BatchInsightDbModel} from '../Interfaces/Interface';
 
 export class Database {
   private uri: string;
@@ -131,7 +131,6 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
   }
 }
 
-
   public async getAllRecords(collectionName: string): Promise<BatchReportDbModel[]> {
     if (!this.db) {
       throw new Error('Database connection is not established');
@@ -176,7 +175,43 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
     }
   }
   
-
+  public async getInsightsByID(reportId: string): Promise<BatchInsightDbModel | null> {
+    if (!this.db) {
+      throw new Error('Database connection is not established');
+    }
+  
+    const collection: Collection = this.db.collection('reports');
+    try {
+      const objectId = new ObjectId(reportId);
+      const report = await collection.findOne({ "objectid": objectId });
+      if (report) {
+        // Ensure the structure matches the new InsightModel interface
+        const batchInsightDbModel: BatchInsightDbModel = {
+          objectid: report._id,
+          BatchData: {
+            insight: {
+              Data: report.BatchData.insight.Data.map((data: any) => ({
+                Name: data.Name,
+                CombineStrength: data.CombineStrength,
+                suggestedRole: data.suggestedRole,
+                insight: data.insight.map((insight: any) => ({
+                  parameter: insight.parameter,
+                  strength: insight.strength
+                }))
+              }))
+            }
+          }
+        };
+        return batchInsightDbModel;
+      } else {
+        console.log('No report found with the given ID');
+        return null;
+      }
+    } catch (error) {
+      console.error('Failed to get insights', error);
+      throw error;
+    }
+  }
   
   public  deleteReportById(reportId: string): any {
     if (!this.db) {

@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import CCTech from "../images/CCTech.png";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +19,9 @@ const Navbar: React.FC = () => {
         padding: 0,
       }}
     >
-      <Toolbar sx={{ display: 'flex', alignItems: 'center', minHeight: '64px' }}>
+      <Toolbar
+        sx={{ display: "flex", alignItems: "center", minHeight: "64px" }}
+      >
         <img
           src={CCTech}
           alt="CCTech Logo"
@@ -27,16 +29,16 @@ const Navbar: React.FC = () => {
         />
         <Typography
           variant="h4"
-          sx={{ fontWeight: "bold", fontSize: 30, color: "blue", m: 1 }}
+          sx={{ fontWeight: "bold", fontSize: 30, color: "#2563EB", m: 1 }}
         >
           Performance Assistant
         </Typography>
-        <div style={{ marginLeft: 'auto' }}>
+        <div style={{ marginLeft: "auto" }}>
           <IconButton
-            sx={{ color: "blue" }}
+            sx={{ color: "#2563EB" }}
             onClick={() => navigate("/homepage")}
           >
-            <HomeIcon sx={{ fontSize: '30px' }} />
+            <HomeIcon sx={{ fontSize: "30px" }} />
           </IconButton>
         </div>
       </Toolbar>

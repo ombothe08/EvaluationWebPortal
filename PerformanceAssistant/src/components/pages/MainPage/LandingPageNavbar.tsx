@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import CCTech from "../../images/CCTech.png";
 
-const Navbar = ({ onLoginClick } : any) => {
+const Navbar = ({ onLoginClick }: any) => {
   const loginButtonRef = useRef(null);
 
   const handleLoginClick = () => {
@@ -15,14 +15,10 @@ const Navbar = ({ onLoginClick } : any) => {
     <nav className="bg-white shadow-lg py-3 fixed w-full z-10 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         <div className="flex-grow flex justify-center items-center">
-          <img
-            src={CCTech}
-            alt="Logo"
-            className="w-16 h-16 "
-          />
+          <img src={CCTech} alt="Logo" className="w-16 h-16 " />
           <div
             className="text-3xl font-extrabold text-blue-600 tracking-wide"
-            style={{ fontSize: 50 }}
+            style={{ fontSize: 50, marginLeft: 15 }}
           >
             Performance Assistant
           </div>
