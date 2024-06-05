@@ -117,6 +117,8 @@ export default CompareStrengthPage;
 
 
 
+
+
 // import React from "react";
 // import { Box, Typography, Paper } from "@mui/material";
 // import { Bar } from "react-chartjs-2";
