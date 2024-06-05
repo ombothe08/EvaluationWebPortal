@@ -47,8 +47,6 @@ export interface BatchInsightDbModel {
 }
 
 
-
-
 //Analysis Mode is the output from OpenAI
 export interface CandidateAnalysisModel {
   Name: string;
