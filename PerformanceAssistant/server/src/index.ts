@@ -1,7 +1,7 @@
 import express, { Request, Response, response } from 'express';
 import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
-import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, CandidateStrengthAnalysis} from './Interfaces/Interface';
+import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, CandidateStrengthAnalysis, BatchDbModel} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
 
@@ -58,7 +58,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       res.send(error);
     });
 
-      res.send(data as BatchAnalysisModel);
+      res.send(data as BatchDbModel);
   }).catch((error)=>{
       res.send(error);
   });
