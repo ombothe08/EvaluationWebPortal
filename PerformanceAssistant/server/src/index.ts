@@ -19,7 +19,6 @@ app.post('/login', async (req: Request, res: Response) => {
   const userCredentials: UserCredentials = req.body;
   
   let result = await authenticator.authenticate(userCredentials);
-  console.log(result);
   res.send(result);
   
 });
@@ -58,8 +57,6 @@ app.post('/evaluate', async (req: Request, res: Response) => {
        let objid = db.addReport(data); 
        let responseData =   db.getReportById(await objid);
        const finaldata :  BatchDbModel | null = await responseData;
-       console.log("data = " );
-       console.log(finaldata);
        
        res.send(finaldata);
       
@@ -92,7 +89,6 @@ app.post("/getSelectedRecord",async(req:Request,res:Response) => {
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
     
-    console.log(dbreport);
     res.send(JSON.stringify(dbreport));
 });
 

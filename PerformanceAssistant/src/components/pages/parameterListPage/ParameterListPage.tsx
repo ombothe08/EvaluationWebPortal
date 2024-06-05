@@ -87,8 +87,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         fileName.name
       );
       const batchDataModelString = JSON.stringify(batchDataModel);
-      console.log(batchDataModel);
-
+      
       const response = await fetch("http://localhost:3000/evaluate", {
         method: "POST",
         headers: {
@@ -104,8 +103,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       }
       const tempresponseData = await response.json();
       let responseData = tempresponseData as ServerData;
-      console.log(responseData);
-
+      
       navigate("/report", { state: { data: responseData } });
     } catch (error) {
       console.error("Error submitting data:", error);
