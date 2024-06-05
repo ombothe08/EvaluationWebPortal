@@ -33,3 +33,8 @@ export interface ServerData {
     AnalysisModel: CandidateAnalysisModel[];
   };
 }
+
+export interface StrengthAnalysisModel {
+  Name: string;
+  Strengths: { Parameter: string, Data: string }[];
+}
