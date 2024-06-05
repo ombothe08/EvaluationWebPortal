@@ -72,9 +72,9 @@ app.post('/evaluate', async (req: Request, res: Response) => {
 });
 
 app.post('/insights', async (req: Request, res: Response) => {
-    //Code for insights
-    let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
-    db.connectToDatabase();
+
+
+    
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {
