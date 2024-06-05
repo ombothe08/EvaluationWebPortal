@@ -25,10 +25,10 @@ const ReportPage: React.FC = () => {
       <Box
         component={Paper}
         sx={{
-          p: 5,
+          p: 4,
           borderRadius: 2,
           boxShadow: 3,
-          m: 5,
+          m: 4,
           backgroundColor: "aliceblue",
         }}
       >
@@ -36,7 +36,7 @@ const ReportPage: React.FC = () => {
           variant="h4"
           component="h1"
           sx={{
-            fontSize: 30,
+            fontSize: 24,
             fontWeight: "bold",
             mb: 1,
             fontFamily: "sans-serif",
@@ -49,23 +49,23 @@ const ReportPage: React.FC = () => {
           variant="h5"
           component="h2"
           sx={{
-            fontSize: 25,
+            fontSize: 20,
             fontWeight: "bold",
-            mb: 4,
+            mb: 3,
             fontFamily: "sans-serif",
           }}
         >
           Module: {data.BatchData.Module || "N/A"}
         </Typography>
 
-        <TableContainer sx={{ maxHeight: "70vh" }}>
+        <TableContainer sx={{ maxHeight: "60vh" }}>
           <Table stickyHeader>
             <TableHead>
               <TableRow sx={{ backgroundColor: "papayawhip" }}>
                 <TableCell
                   sx={{
                     backgroundColor: "papayawhip",
-                    fontSize: 25,
+                    fontSize: 18,
                     fontWeight: "bold",
                     border: "1px solid black",
                   }}
@@ -75,7 +75,7 @@ const ReportPage: React.FC = () => {
                 <TableCell
                   sx={{
                     backgroundColor: "papayawhip",
-                    fontSize: 25,
+                    fontSize: 18,
                     fontWeight: "bold",
                     border: "1px solid black",
                   }}
@@ -85,7 +85,7 @@ const ReportPage: React.FC = () => {
                 <TableCell
                   sx={{
                     backgroundColor: "papayawhip",
-                    fontSize: 25,
+                    fontSize: 18,
                     fontWeight: "bold",
                     border: "1px solid black",
                   }}
@@ -95,7 +95,7 @@ const ReportPage: React.FC = () => {
                 <TableCell
                   sx={{
                     backgroundColor: "papayawhip",
-                    fontSize: 25,
+                    fontSize: 18,
                     fontWeight: "bold",
                     border: "1px solid black",
                   }}
@@ -112,7 +112,7 @@ const ReportPage: React.FC = () => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-                      fontSize: "18px",
+                      fontSize: "15px",
                     }}
                   >
                     {candidate.Name}
@@ -122,7 +122,7 @@ const ReportPage: React.FC = () => {
                       backgroundColor: "palegreen",
                       border: "1px solid black",
                       padding: "8px",
-                      fontSize: "18px",
+                      fontSize: "15px",
                     }}
                   >
                     {candidate.Strengths.map((strength, index) => (
@@ -136,7 +136,7 @@ const ReportPage: React.FC = () => {
                       backgroundColor: "pink",
                       border: "1px solid black",
                       padding: "8px",
-                      fontSize: "18px",
+                      fontSize: "15px",
                     }}
                   >
                     {candidate.AreasOfImprovement.map((improvement, index) => (
@@ -150,7 +150,7 @@ const ReportPage: React.FC = () => {
                       backgroundColor: "skyblue",
                       border: "1px solid black",
                       padding: "8px",
-                      fontSize: "18px",
+                      fontSize: "15px",
                     }}
                   >
                     {candidate.InputForMentors.map((input, index) => (
@@ -169,7 +169,7 @@ const ReportPage: React.FC = () => {
                     <Button
                       color="primary"
                       variant="contained"
-                      style={{ fontSize: "18px" }}
+                      style={{ fontSize: "15px" }}
                     >
                       Compare Strengths
                     </Button>
