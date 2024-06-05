@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LandingPage from "./LandingPage";
-import LoginPage from "../logInPage/LogInPage";
 import HomePage from "../homePage/HomePage";
 import ParameterListPage from "../parameterListPage/ParameterListPage";
 import ReportPage from "../reportPage/ReportPage";
@@ -17,7 +16,6 @@ const AppRouter: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
         <Route
           path="/homepage"
           element={<HomePage onfileName={handleFileName} />}

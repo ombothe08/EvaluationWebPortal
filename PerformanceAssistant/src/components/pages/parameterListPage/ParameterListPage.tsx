@@ -1,12 +1,9 @@
-import { Grid, Checkbox, FormControlLabel, Button, Paper } from "@mui/material";
+import { Grid, Checkbox, FormControlLabel, Button, Paper, CircularProgress } from "@mui/material";
 import * as XLSX from "xlsx";
 import {
-  BatchAnalysisModel,
   BatchDataModel,
   CandidateDataModel,
-  ServerData,
 } from "../../../model/evaluationData";
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -28,7 +25,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
   const handleFileUpload = (file: File | null) => {
     if (!file) return;
-    const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
+    // const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
 
     const reader = new FileReader();
 
@@ -65,11 +62,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
   ): BatchDataModel => {
     const headers = jsonSheet[0];
     const rows = jsonSheet.slice(1);
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-    const date = today.getDate();
-    const currentDate = month + "/" + date + "/" + year;
     const candidateDataModel: CandidateDataModel[] = rows.map((row) => ({
       Name: row[0] as string,
       Data: headers.slice(1).map((header, index) => ({
@@ -80,7 +72,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
     const batchDataModel: BatchDataModel = {
       Name: batchName,
-      Module: '',
+      Module: "",
       Data: candidateDataModel,
     };
 
@@ -110,16 +102,17 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const responseData = await response.json();
+      let responseData: ServerData;
+      responseData = await response.json();
       console.log(responseData);
-      navigate("/report", { state: { apiResponseData: responseData } });
+      navigate("/report", { state: { apiResponseData: { responseData } } });
     } catch (error) {
       console.error("Error submitting data:", error);
     }
   };
 
   const goBack = () => {
-    window.history.back(); // Go back to previous page
+    window.history.back();
   };
 
   return (
@@ -142,6 +135,8 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
           margin: "auto",
         }}
       >
+
+
         <div
           style={{
             fontSize: "50px",
@@ -152,6 +147,12 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         >
           Select Parameters
         </div>
+        {showLoader && (
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <CircularProgress />
+          </div>
+        )}
+        <div style={{ opacity: showLoader ? 0.5 : 1 }}>
         {parameters.length > 0 && (
           <Paper
             style={{
@@ -179,7 +180,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
                     <FormControlLabel
                       control={
                         <Checkbox
-                        disabled={showLoader}
+                          disabled={showLoader}
                           color="primary"
                           onChange={handleCheckboxChange}
                           name={param}
@@ -198,6 +199,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
             </Grid>
           </Paper>
         )}
+        </div>
         {selectedParameters.length > 0 && (
           <div
             style={{
@@ -215,10 +217,10 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               Back
             </Button>
             <Button
-            disabled={showLoader}
+              disabled={showLoader}
               variant="contained"
               color="primary"
-              onClick={()=>{
+              onClick={() => {
                 setShowLoader(true);
                 submitData();
               }}

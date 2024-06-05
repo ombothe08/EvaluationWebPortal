@@ -1,4 +1,3 @@
-
 // input for openai
 export interface CandidateDataModel {
   Name: string;
@@ -38,15 +37,14 @@ export interface ServerData {
     Date: string;
     AnalysisModel: CandidateAnalysisModel[];
     CandidateStrengthAnalysis: CandidateStrengthAnalysis;
-
   };
 }
-//Store strengths 
+//Store strengths
 export interface StrengthAnalysisModel {
   Name: string;
-  Strengths: { Parameter: string, Data: string }[];
+  Strengths: { Parameter: string; Data: string }[];
 }
 
-export interface CandidateStrengthAnalysis{
-  Data : { Name : string , Strength : number}[]
- }
+export interface CandidateStrengthAnalysis {
+  Data: { Name: string; Strength: number }[];
+}

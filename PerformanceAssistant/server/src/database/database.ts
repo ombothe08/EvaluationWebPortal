@@ -50,35 +50,40 @@ export class Database {
     }
   
   }
-  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<BatchDbModel|null> {
+  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<void> {
     if (!this.db) {
-      throw new Error('Database connection is not established');
+        throw new Error('Database connection is not established');
     }
     console.log("Adding report to database now : ");
     const collection: Collection = this.db.collection('reports');
-  
-   
+
     try {
-      let objid = new ObjectId().toHexString() ;
-      const batchDbModel: BatchDbModel = {
-        objectid: objid,
-        
-        BatchData: {
-          Name: batchAnalysis.BatchData.Name,
-          Module: batchAnalysis.BatchData.Module,
-          Date: new Date().toISOString(),
-          AnalysisModel: batchAnalysis.BatchData.AnalysisModel,
-          CandidateStrengthAnalysis : batchAnalysis.BatchData.CandidateStrengthAnalysis
-        }
-      };
-      await collection.insertOne(batchDbModel);
-      console.log('Report added successfully');
-      return batchDbModel;
+        // Create a new ObjectId
+        const objid = new ObjectId();
+        const batchDbModel: BatchDbModel = {
+            objectid: objid,  // Use the same ObjectId for objectid
+
+            BatchData: {
+                Name: batchAnalysis.BatchData.Name,
+                Module: batchAnalysis.BatchData.Module,
+                Date: new Date().toISOString(),
+                AnalysisModel: batchAnalysis.BatchData.AnalysisModel,
+                CandidateStrengthAnalysis: batchAnalysis.BatchData.CandidateStrengthAnalysis
+            }
+        };
+
+        // Insert the document with explicit _id
+        await collection.insertOne({
+            _id: objid,  // Set the _id to the created ObjectId
+            ...batchDbModel
+        });
+
+        console.log('Report added successfully');
+       
     } catch (error) {
-      console.error('Failed to add report', error);
-      return null;
+        console.error('Failed to add report', error);
     }
-  }
+}
 
   
   public async getReportById(reportId: string): Promise<BatchDbModel | null> {
@@ -89,12 +94,12 @@ export class Database {
     const collection: Collection = this.db.collection('reports');
     try {
       const objectId = new ObjectId(reportId); 
-      const report = await collection.findOne({ _id: objectId });
+      const report = await collection.findOne({ "objectid": objectId });
       if (report) {
         
         // Transform the retrieved document to BatchDbModel
         const batchDbModel: BatchDbModel = {
-          objectid: report._id.toString(),
+          objectid: report._id,
           BatchData: {
             Name: report.BatchData.Name,
             Module: report.BatchData.Module,
@@ -138,7 +143,7 @@ export class Database {
       const records = await collection.find({}).toArray();
         if (records.length > 0) {
         const formattedRecords: BatchDbModel[] = records.map(record => ({ 
-          objectid: record._id.toString(),
+          objectid: record._id,
           BatchData: {
             Name: record.BatchData.Name, 
             Module: record.BatchData.Module, 
