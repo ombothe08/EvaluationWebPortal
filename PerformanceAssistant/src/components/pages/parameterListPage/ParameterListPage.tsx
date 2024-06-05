@@ -226,7 +226,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               onClick={() => navigate("/homepage")}
               style={{ fontSize: "16px", marginTop: "10px" }}
             >
-              Go Back to Homepage Now
+              Go Back to Homepage 
             </Button>
           </div>
         )}
