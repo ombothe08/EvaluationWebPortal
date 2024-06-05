@@ -102,12 +102,10 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         throw new Error("Network response was not ok");
       }
       const tempresponseData = await response.json();
-      if(!tempresponseData) return;
       let responseData = tempresponseData as ServerData;
       
       navigate("/report", { state: { data: responseData } });
 
-      navigate("/Homepage");
     } catch (error) {
       console.error("Error submitting data:", error);
     }
