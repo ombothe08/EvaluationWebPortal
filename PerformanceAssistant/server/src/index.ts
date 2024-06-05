@@ -4,6 +4,7 @@ import { Authenticator } from './Authenticator/Authenticator';
 import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, CandidateStrengthAnalysis, BatchDbModel} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
+import { ObjectId } from 'mongodb';
 
 
 
@@ -53,19 +54,14 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       
       db.connectToDatabase();
       
-      let responObjid : Promise<string> ;
       
-      responObjid = db.addReport(data); 
-      
-      const result: string = await responObjid;
-      
-      let responseData: BatchDbModel | null ;
-      responseData = await db.getReportById(result);
-      console.log("objid = ", result);
-      console.log("type = " , typeof(responseData));
-      console.log("data = ");
-      console.log(responseData);
-      res.send(responseData);
+       db.addReport(data); 
+       let responseData   = data as  BatchAnalysisModel;
+       
+       console.log("data = " );
+       console.log(responseData);
+       
+       res.send(responseData);
       
 
     }).catch((error) => {

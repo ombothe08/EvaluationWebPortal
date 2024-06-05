@@ -50,7 +50,7 @@ export class Database {
     }
   
   }
-  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<string> {
+  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<void> {
     if (!this.db) {
         throw new Error('Database connection is not established');
     }
@@ -79,10 +79,9 @@ export class Database {
         });
 
         console.log('Report added successfully');
-        return batchDbModel;
+       
     } catch (error) {
         console.error('Failed to add report', error);
-        return null;
     }
 }
 
