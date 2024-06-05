@@ -103,12 +103,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         throw new Error("Network response was not ok");
       }
       const tempresponseData = await response.json();
-      let apiResponseData = tempresponseData as BatchAnalysisModel;
-
-      let responseData = apiResponseData as ServerData;
-      responseData.BatchData = apiResponseData.BatchData;
-      responseData.BatchData.Date = " ";
-      responseData.objectid = "";
+      let responseData = tempresponseData as ServerData;
       console.log(responseData);
 
       navigate("/report", { state: { data: responseData } });
