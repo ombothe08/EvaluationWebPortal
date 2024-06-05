@@ -52,13 +52,13 @@ export class OpenAIService {
             return "";
         }
    }  
-   public async evaluateStrength(strengthData:StrengthAnalysisModel): Promise<string | any> {
+   public async evaluateStrength(strengthData:StrengthAnalysisModel[]): Promise<string | any> {
 
     const api_key = process.env.OAI_API_KEY;
         try {
             const openai = new OpenAI({apiKey: api_key});
             const prompt = `Here is data for analysis: \n${JSON.stringify(strengthData, null, 2)}
-             and compare the strengths of every candidate and provide their combine strength scale from 0 to 100 in below json form
+             and compare the strengths of every candidate and provide their combine strength scale from 0 to 100 in below json format as specified and don't add any extra descriptive data
             {
               "Data": [
                 {
@@ -74,7 +74,9 @@ export class OpenAIService {
                     { role: "user", content: prompt }
                 ],
                 model: "gpt-3.5-turbo",
-              });
+              }); 
+              console.log("in ai api =");
+              console.log(completionResponse.choices[0].message.content);
             return completionResponse.choices[0].message.content;
 
         } catch (error) {

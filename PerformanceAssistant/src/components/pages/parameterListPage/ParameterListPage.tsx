@@ -19,6 +19,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
   const [jsonSheet, setJsonSheet] = useState<any[][]>([]);
   const [fileName, setFileName] = useState<File | null>(null);
   const navigate = useNavigate();
+  const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
     setFileName(uploadfileName);
@@ -177,6 +178,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
                     <FormControlLabel
                       control={
                         <Checkbox
+                        disabled={showLoader}
                           color="primary"
                           onChange={handleCheckboxChange}
                           name={param}
@@ -212,9 +214,13 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               Back
             </Button>
             <Button
+            disabled={showLoader}
               variant="contained"
               color="primary"
-              onClick={submitData}
+              onClick={()=>{
+                setShowLoader(true);
+                submitData();
+              }}
               style={{ fontSize: "18px" }}
             >
               Evaluate

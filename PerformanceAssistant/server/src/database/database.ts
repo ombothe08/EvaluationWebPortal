@@ -54,19 +54,21 @@ export class Database {
     if (!this.db) {
       throw new Error('Database connection is not established');
     }
-
+    console.log("Adding report to database now : ");
     const collection: Collection = this.db.collection('reports');
   
-    let a = new Date().toISOString();
+   
     try {
+      let objid = new ObjectId().toHexString() ;
       const batchDbModel: BatchDbModel = {
-        objectid: new ObjectId().toHexString(),
+        objectid: objid,
         
         BatchData: {
           Name: batchAnalysis.BatchData.Name,
           Module: batchAnalysis.BatchData.Module,
           Date: new Date().toISOString(),
-          AnalysisModel: batchAnalysis.BatchData.AnalysisModel
+          AnalysisModel: batchAnalysis.BatchData.AnalysisModel,
+          CandidateStrengthAnalysis : batchAnalysis.BatchData.CandidateStrengthAnalysis
         }
       };
       await collection.insertOne(batchDbModel);
@@ -109,7 +111,8 @@ export class Database {
                 Parameter: input.Parameter,
                 Data: input.Data
               }))
-            }))
+             })),
+             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis
           }
         };
         return batchDbModel;
@@ -152,7 +155,9 @@ export class Database {
                 Parameter: input.Parameter,
                 Data: input.Data
               }))
-            }))
+            })),
+            CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis
+         
           }
         }));
         console.log(`Fetched ${records.length} records from ${collectionName} collection`);
