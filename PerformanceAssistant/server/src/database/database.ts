@@ -132,7 +132,7 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
 }
 
 
-  public async getAllRecords(collectionName: string): Promise<BatchDbModel[]> {
+  public async getAllRecords(collectionName: string): Promise<BatchReportDbModel[]> {
     if (!this.db) {
       throw new Error('Database connection is not established');
     }
@@ -162,7 +162,6 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
                 Data: input.Data
               }))
             })),
-            CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis,
           }
         }));
         console.log(`Fetched ${records.length} records from ${collectionName} collection`);
