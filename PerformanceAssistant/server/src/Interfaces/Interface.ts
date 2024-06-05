@@ -72,18 +72,20 @@ export interface CandidateStrengthAnalysis{
 
 
 
-export interface InsightModel{
-  Data : [
-    {
-    Name : string,
-    suggestedRole:string[],
-    insight:[
+  export interface InsightModel{
+    
+    Data : [
       {
-        parameter: string;
-        strength: number;
-      },
-    ]
-},
-]
-}
+      Name : string,
+      CombineStrength:number,
+      suggestedRole:string[],
+      insight:[
+        {
+          parameter: string;
+          strength: number;
+        },
+      ]
+  },
+  ]
+  }
 

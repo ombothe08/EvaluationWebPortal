@@ -29,9 +29,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   oaiService.evaluate(req.body).then((response)=>{
     const json = JSON.parse(response);
     const data = json as BatchAnalysisModel
-
-      
-      
+   
 
     let am = data.BatchData.AnalysisModel; // am = analysis model
 
@@ -44,16 +42,13 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       samList.push(sam);
     })
 
-    oaiService.evaluateStrength(samList).then(async (response) => {
+    oaiService.insights(samList).then(async (response) => {
       //save to database
       const strengthjson = JSON.parse(response);
       const strengthdata = strengthjson as CandidateStrengthAnalysis
       data.BatchData.CandidateStrengthAnalysis = strengthdata;
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
-      
       db.connectToDatabase();
-      
-      
        let objid = db.addReport(data); 
        let responseData =   db.getReportById(await objid);
        const finaldata :  BatchDbModel | null = await responseData;
@@ -71,11 +66,6 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/insights', async (req: Request, res: Response) => {
-
-
-    
-});
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {
 
