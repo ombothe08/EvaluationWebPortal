@@ -19,7 +19,6 @@ app.post('/login', async (req: Request, res: Response) => {
   const userCredentials: UserCredentials = req.body;
   
   let result = await authenticator.authenticate(userCredentials);
-  console.log(result);
   res.send(result);
   
 });
@@ -55,13 +54,11 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       db.connectToDatabase();
       
       
-       db.addReport(data); 
-       let responseData   = data as  BatchAnalysisModel;
+       let objid = db.addReport(data); 
+       let responseData =   db.getReportById(await objid);
+       const finaldata :  BatchDbModel | null = await responseData;
        
-       console.log("data = " );
-       console.log(responseData);
-       
-       res.send(responseData);
+       res.send(finaldata);
       
 
     }).catch((error) => {
@@ -74,15 +71,10 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/evaluate/strengths', async (req: Request, res: Response) => {
-  // let oaiService = new OpenAIService();
-  
-  // oaiService.evaluateStrength(req.body).then((response)=>{
+app.post('/insights', async (req: Request, res: Response) => {
+
+
     
-  //     res.send(response);
-  // }).catch((error)=>{
-  //     res.send(error);
-  // });
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {
@@ -92,7 +84,6 @@ app.post("/getSelectedRecord",async(req:Request,res:Response) => {
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
     
-    console.log(dbreport);
     res.send(JSON.stringify(dbreport));
 });
 

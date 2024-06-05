@@ -21,6 +21,7 @@ export interface BatchDbModel {
       Date:string;
       AnalysisModel: CandidateAnalysisModel[];
       CandidateStrengthAnalysis: CandidateStrengthAnalysis;
+      insight: InsightModel;
 
   }
 }
@@ -40,6 +41,8 @@ export interface BatchAnalysisModel {
     Module: string;
     AnalysisModel: CandidateAnalysisModel[];
     CandidateStrengthAnalysis: CandidateStrengthAnalysis;
+    insight: InsightModel;
+   
   }
 }
 
@@ -63,8 +66,24 @@ export interface StrengthAnalysisModel {
 }
 
 
-
-
 export interface CandidateStrengthAnalysis{
  Data : { Name : string , Strength : number}[]
 }
+
+
+
+export interface InsightModel{
+  Data : [
+    {
+    Name : string,
+    suggestedRole:string[],
+    insight:[
+      {
+        parameter: string;
+        strength: number;
+      },
+    ]
+},
+]
+}
+

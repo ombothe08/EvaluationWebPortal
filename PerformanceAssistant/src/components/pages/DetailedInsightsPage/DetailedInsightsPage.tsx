@@ -2,18 +2,21 @@ import React from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom"; // Import useLocation
 import Navbar from "../Navbar";
+import { ServerData } from "../../../model/evaluationData";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const CompareStrengthPage: React.FC = () => {
-  const teamName = "Code Monks";
-  const location = useLocation();
-  const apiResponseData = location.state?.apiResponseData || [];
+const DetailedInsightsPage: React.FC = () => {
+  const location = useLocation(); // Use useLocation hook to get the data passed from ParameterListPage
+  const { data } = location.state as { data: ServerData };
+
+
+  console.log(data);
 
   const generateChartData = () => {
-    if (!apiResponseData || apiResponseData.length === 0) {
+    if (!data || data.BatchData.CandidateStrengthAnalysis.Data.length === 0) {
       return {
         labels: [],
         datasets: [{
@@ -26,18 +29,21 @@ const CompareStrengthPage: React.FC = () => {
       };
     }
 
-    const data = {
-      labels: apiResponseData.map((item: any) => item.Name),
+    const dataToDisplay = {
+      labels: data.BatchData.CandidateStrengthAnalysis.Data.map((item: any) => item.Name), // Using 'Name' as labels
       datasets: [{
         label: 'Strength',
-        data: apiResponseData.map((item: any) => item.CandidateStrengthAnalysis.Data.map((strengthItem: any) => strengthItem.Strength)),
-        backgroundColor: `rgba(54, 162, 235, 0.2)`, // Blue color with opacity
-        borderColor: `rgba(54, 162, 235, 1)`, // Solid blue color
+        data: data.BatchData.CandidateStrengthAnalysis.Data.map((item: any) => item.Strength), // Using 'Strength' as data values
+        backgroundColor: `rgba(54, 162, 235, 0.2)`,
+        borderColor: `rgba(54, 162, 235, 1)`,
         borderWidth: 1,
       }],
     };
 
-    return data;
+    
+    console.log(dataToDisplay);
+
+    return dataToDisplay;
   };
 
   const options = {
@@ -61,11 +67,7 @@ const CompareStrengthPage: React.FC = () => {
 
   return (
     <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #38ef7d, #11998e)",
-        py: 5,
-      }}
+      
     >
       <Navbar />
       <Box
@@ -75,7 +77,7 @@ const CompareStrengthPage: React.FC = () => {
           borderRadius: 2,
           boxShadow: 3,
           m: 5,
-          backgroundColor: "whitesmoke",
+          backgroundColor: "aliceblue",
         }}
       >
         <Typography
@@ -88,7 +90,7 @@ const CompareStrengthPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Evaluation Report
+          Strength Analysis Report
         </Typography>
 
         <Typography
@@ -101,13 +103,12 @@ const CompareStrengthPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Team: {teamName}
         </Typography>
 
-        <Bar data={generateChartData()} options={options} />
+        <Bar data ={generateChartData()} options={options} />
       </Box>
     </Box>
   );
 };
 
-export default CompareStrengthPage;
+export default DetailedInsightsPage;

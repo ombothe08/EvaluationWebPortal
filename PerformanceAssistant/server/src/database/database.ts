@@ -50,11 +50,11 @@ export class Database {
     }
   
   }
-  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<void> {
+  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<string | any> {
     if (!this.db) {
         throw new Error('Database connection is not established');
     }
-    console.log("Adding report to database now : ");
+    console.log("Adding report to database now ");
     const collection: Collection = this.db.collection('reports');
 
     try {
@@ -68,7 +68,8 @@ export class Database {
                 Module: batchAnalysis.BatchData.Module,
                 Date: new Date().toISOString(),
                 AnalysisModel: batchAnalysis.BatchData.AnalysisModel,
-                CandidateStrengthAnalysis: batchAnalysis.BatchData.CandidateStrengthAnalysis
+                CandidateStrengthAnalysis: batchAnalysis.BatchData.CandidateStrengthAnalysis,
+                insight:batchAnalysis.BatchData.insight
             }
         };
 
@@ -79,9 +80,11 @@ export class Database {
         });
 
         console.log('Report added successfully');
+        return batchDbModel.objectid.toString();
        
     } catch (error) {
         console.error('Failed to add report', error);
+        return "";
     }
 }
 
@@ -119,7 +122,9 @@ export class Database {
                 Data: input.Data
               }))
              })),
-             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis
+             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis,
+             insight:report.BatchData.insight
+
           }
         };
         return batchDbModel;
@@ -163,7 +168,8 @@ export class Database {
                 Data: input.Data
               }))
             })),
-            CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis
+            CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis,
+            insight:record.BatchData.insight
          
           }
         }));
@@ -190,7 +196,7 @@ export class Database {
       const objectId = new ObjectId(reportId); 
       const report =  collection.deleteOne({ _id: objectId }); 
       if (report) {
-        console.log('Report found:', report);
+        console.log('Report Deleted :', report);
         return report;
       } else {
         console.log('No report found with the given ID');
