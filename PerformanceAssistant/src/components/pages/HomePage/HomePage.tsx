@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-//import Navbar from "../Navbar";
 import Navbar from "./HomePageNavbar";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
@@ -26,9 +25,7 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
   const navigate = useNavigate();
-  // const [file, setFile] = useState<string | null>(null);
   const [homepageData, setHomepageData] = useState<ServerData[]>([]);
-  // const [hfileName, setFileName] = useState<string | null>("om");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +37,6 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
