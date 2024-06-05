@@ -42,8 +42,7 @@ const ReportPage: React.FC = () => {
 
       let data: ServerData;
       data = await response.json();
-      console.log(data);
-
+      
       if (response.ok) {
         convertDataToExcel(data);
       } else {
