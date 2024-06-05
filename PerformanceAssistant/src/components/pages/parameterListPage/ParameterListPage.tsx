@@ -153,7 +153,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         </div>
         {showLoader && (
           <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <CircularProgress size={80}/>
+            <CircularProgress />
           </div>
         )}
         <div style={{ opacity: showLoader ? 0.5 : 1 }}>
