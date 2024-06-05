@@ -1,10 +1,10 @@
 import { Grid, Checkbox, FormControlLabel, Button, Paper } from "@mui/material";
 import * as XLSX from "xlsx";
 import {
-  BatchAnalysisModel,
   BatchDataModel,
   CandidateDataModel,
   ServerData,
+  BatchAnalysisModel
 } from "../../../model/evaluationData";
 
 import { useEffect, useState } from "react";
@@ -28,8 +28,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
   const handleFileUpload = (file: File | null) => {
     if (!file) return;
-    const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
-
     const reader = new FileReader();
 
     reader.onload = (e) => {
@@ -75,7 +73,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
     const batchDataModel: BatchDataModel = {
       Name: batchName,
-      Module: '',
+      Module: "",
       Data: candidateDataModel,
     };
 
@@ -107,17 +105,24 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       }
       const tempresponseData = await response.json();
       let sData  = tempresponseData as BatchAnalysisModel ;
-      console.log(sData);
-      let responseData = tempresponseData as ServerData;
-      responseData.objectid = '';
-      navigate("/report", { state: { apiResponseData: responseData } });
+
+  
+      let responseData = sData as ServerData ;
+      console.log(responseData);
+
+       responseData.BatchData = sData.BatchData;
+      //  responseData.BatchData.Date = ' ';
+       responseData.objectid = '';
+       console.log(responseData);
+
+      navigate("/report", { state: { apiResponseData: {responseData} } });
     } catch (error) {
       console.error("Error submitting data:", error);
     }
   };
 
   const goBack = () => {
-    window.history.back(); // Go back to previous page
+    window.history.back();
   };
 
   return (
@@ -177,7 +182,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
                     <FormControlLabel
                       control={
                         <Checkbox
-                        disabled={showLoader}
+                          disabled={showLoader}
                           color="primary"
                           onChange={handleCheckboxChange}
                           name={param}
@@ -213,10 +218,10 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               Back
             </Button>
             <Button
-            disabled={showLoader}
+              disabled={showLoader}
               variant="contained"
               color="primary"
-              onClick={()=>{
+              onClick={() => {
                 setShowLoader(true);
                 submitData();
               }}
