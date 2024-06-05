@@ -4,6 +4,7 @@ import { Authenticator } from './Authenticator/Authenticator';
 import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, CandidateStrengthAnalysis, BatchDbModel} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
+import { ObjectId } from 'mongodb';
 
 
 
@@ -44,21 +45,30 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       samList.push(sam);
     })
 
-    oaiService.evaluateStrength(samList).then((response) => {
+    oaiService.evaluateStrength(samList).then(async (response) => {
       //save to database
       const strengthjson = JSON.parse(response);
       const strengthdata = strengthjson as CandidateStrengthAnalysis
       data.BatchData.CandidateStrengthAnalysis = strengthdata;
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+      
       db.connectToDatabase();
-      db.addReport(data);
-
+      
+      
+       db.addReport(data); 
+       let responseData   = data as  BatchAnalysisModel;
+       
+       console.log("data = " );
+       console.log(responseData);
+       
+       res.send(responseData);
+      
 
     }).catch((error) => {
       res.send(error);
     });
 
-      res.send(data as BatchDbModel);
+  
   }).catch((error)=>{
       res.send(error);
   });
