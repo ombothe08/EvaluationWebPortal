@@ -1,8 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
-import IconButton from "@mui/material/IconButton";
-import DownloadIcon from "@mui/icons-material/Download";
 import {
   Box,
   Table,
@@ -15,13 +13,11 @@ import {
   Paper,
   Button,
 } from "@mui/material";
-import { BatchAnalysisModel } from "../../../model/evaluationData";
+import { ServerData } from "../../../model/evaluationData";
 
 const ReportPage: React.FC = () => {
   const location = useLocation();
-  const { apiResponseData } = location.state as {
-    apiResponseData: BatchAnalysisModel;
-  };
+  const { data } = location.state as { data: ServerData };
 
   return (
     <Box>
@@ -46,7 +42,7 @@ const ReportPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Team Performance Report for {apiResponseData?.BatchData.Name}
+          Team Performance Report for {data.BatchData.Name}
         </Typography>
 
         <Typography
@@ -59,7 +55,7 @@ const ReportPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Module: {apiResponseData?.BatchData.Module}
+          Module: {data.BatchData.Module || "N/A"}
         </Typography>
 
         <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -74,17 +70,7 @@ const ReportPage: React.FC = () => {
                     border: "1px solid black",
                   }}
                 >
-                  <Typography
-                    variant="h4"
-                    component="h1"
-                    sx={{
-                      fontSize: 25,
-                      fontWeight: "bold",
-                      fontFamily: "sans-serif",
-                    }}
-                  >
-                    Candidate Name
-                  </Typography>
+                  Candidate Name
                 </TableCell>
                 <TableCell
                   sx={{
@@ -94,17 +80,7 @@ const ReportPage: React.FC = () => {
                     border: "1px solid black",
                   }}
                 >
-                  <Typography
-                    variant="h4"
-                    component="h1"
-                    sx={{
-                      fontSize: 25,
-                      fontWeight: "bold",
-                      fontFamily: "sans-serif",
-                    }}
-                  >
-                    Strengths
-                  </Typography>
+                  Strengths
                 </TableCell>
                 <TableCell
                   sx={{
@@ -114,17 +90,7 @@ const ReportPage: React.FC = () => {
                     border: "1px solid black",
                   }}
                 >
-                  <Typography
-                    variant="h4"
-                    component="h1"
-                    sx={{
-                      fontSize: 25,
-                      fontWeight: "bold",
-                      fontFamily: "sans-serif",
-                    }}
-                  >
-                    Areas of Improvement
-                  </Typography>
+                  Areas of Improvement
                 </TableCell>
                 <TableCell
                   sx={{
@@ -134,79 +100,67 @@ const ReportPage: React.FC = () => {
                     border: "1px solid black",
                   }}
                 >
-                  <Typography
-                    variant="h4"
-                    component="h1"
-                    sx={{
-                      fontSize: 25,
-                      fontWeight: "bold",
-                      fontFamily: "sans-serif",
-                    }}
-                  >
-                    Input for Mentors
-                  </Typography>
+                  Input for Mentors
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {apiResponseData?.BatchData.AnalysisModel.map(
-                (candidate, index) => (
-                  <TableRow key={index}>
-                    <TableCell
-                      sx={{
-                        backgroundColor: "white",
-                        border: "1px solid black",
-                        padding: "8px",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {candidate.Name}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        backgroundColor: "palegreen",
-                        border: "1px solid black",
-                        padding: "8px",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {candidate.Strengths.map((strength, idx) => (
-                        <div key={idx}>
-                          {strength.Parameter}: {strength.Data}
-                        </div>
-                      ))}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        backgroundColor: "pink",
-                        border: "1px solid black",
-                        padding: "8px",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {candidate.AreasOfImprovement.map((strength, idx) => (
-                        <div key={idx}>
-                          {strength.Parameter}: {strength.Data}
-                        </div>
-                      ))}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        backgroundColor: "skyblue",
-                        border: "1px solid black",
-                        padding: "8px",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {candidate.InputForMentors.map((strength, idx) => (
-                        <div key={idx}>
-                          {strength.Parameter}: {strength.Data}
-                        </div>
-                      ))}
-                    </TableCell>
-                  </TableRow>
-                )
-              )}
+              {data.BatchData.AnalysisModel.map((candidate, index) => (
+                <TableRow key={index}>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "white",
+                      border: "1px solid black",
+                      padding: "8px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {candidate.Name}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "palegreen",
+                      border: "1px solid black",
+                      padding: "8px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {candidate.Strengths.map((strength, index) => (
+                      <div key={index}>
+                        {strength.Parameter}: {strength.Data}
+                      </div>
+                    ))}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "pink",
+                      border: "1px solid black",
+                      padding: "8px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {candidate.AreasOfImprovement.map((improvement, index) => (
+                      <div key={index}>
+                        {improvement.Parameter}: {improvement.Data}
+                      </div>
+                    ))}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: "skyblue",
+                      border: "1px solid black",
+                      padding: "8px",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {candidate.InputForMentors.map((input, index) => (
+                      <div key={index}>
+                        {input.Parameter}: {input.Data}
+                      </div>
+                    ))}
+                  </TableCell>
+                </TableRow>
+              ))}
               <TableRow>
                 <TableCell></TableCell>
                 <TableCell>
