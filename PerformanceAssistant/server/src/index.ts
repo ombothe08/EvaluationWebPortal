@@ -55,13 +55,13 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       db.connectToDatabase();
       
       
-       db.addReport(data); 
-       let responseData   = data as  BatchAnalysisModel;
-       
+       let objid = db.addReport(data); 
+       let responseData =   db.getReportById(await objid);
+       const finaldata :  BatchDbModel | null = await responseData;
        console.log("data = " );
-       console.log(responseData);
+       console.log(finaldata);
        
-       res.send(responseData);
+       res.send(finaldata);
       
 
     }).catch((error) => {
