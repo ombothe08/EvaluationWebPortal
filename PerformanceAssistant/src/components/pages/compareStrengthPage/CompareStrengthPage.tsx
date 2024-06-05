@@ -1,44 +1,19 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../Navbar";
-import {
-  Box,
-  Typography,
-  Paper,
-} from "@mui/material";
+import React from "react";
+import { Box, Typography, Paper } from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { useLocation } from "react-router-dom";
+import Navbar from "../Navbar";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// Assuming your interface definitions are in a file named interfaces.ts
-import { BatchAnalysisModel } from "../../../model/evaluationData";
-
 const CompareStrengthPage: React.FC = () => {
   const teamName = "Code Monks";
+  const location = useLocation();
+  const apiResponseData = location.state?.apiResponseData || [];
 
-  // State to store the fetched data
-  const [analysisData, setAnalysisData] = useState<BatchAnalysisModel | null>(null);
-
-  useEffect(() => {
-    // Simulating fetching data from an API endpoint
-    const fetchData = async () => {
-      try {
-        // Replace this with your actual fetch call
-        const response = await fetch("http://localhost:3000/evaluate");
-        const data: BatchAnalysisModel = await response.json();
-        setAnalysisData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    // Call the fetch function
-    fetchData();
-  }, []);
-
-  // Function to generate chart data from fetched data
   const generateChartData = () => {
-    if (!analysisData || !analysisData.BatchData.CandidateStrengthAnalysis) {
+    if (!apiResponseData || apiResponseData.length === 0) {
       return {
         labels: [],
         datasets: [{
@@ -51,13 +26,11 @@ const CompareStrengthPage: React.FC = () => {
       };
     }
 
-    const candidates = analysisData.BatchData.CandidateStrengthAnalysis.Data;
-    console.log(candidates);
     const data = {
-      labels: candidates.map(candidate => candidate.Name),
+      labels: apiResponseData.map((item: any) => item.Name),
       datasets: [{
         label: 'Strength',
-        data: candidates.map(candidate => candidate.Strength),
+        data: apiResponseData.map((item: any) => item.CandidateStrengthAnalysis.Data.map((strengthItem: any) => strengthItem.Strength)),
         backgroundColor: `rgba(54, 162, 235, 0.2)`, // Blue color with opacity
         borderColor: `rgba(54, 162, 235, 1)`, // Solid blue color
         borderWidth: 1,
@@ -71,8 +44,8 @@ const CompareStrengthPage: React.FC = () => {
     responsive: true,
     scales: {
       y: {
-        min: 0, // Minimum value for y-axis
-        max: 100, // Maximum value for y-axis
+        min: 0,
+        max: 100,
       },
     },
     plugins: {
