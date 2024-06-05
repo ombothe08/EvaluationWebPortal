@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import IconButton from "@mui/material/IconButton";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -19,8 +20,14 @@ import { BatchAnalysisModel } from "../../../model/evaluationData";
 
 const ReportPage: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { apiResponseData } = location.state as {
     apiResponseData: BatchAnalysisModel;
+  };
+
+  const handleCompareStrengths = () => {
+    // Redirect to compareStrengthPage
+    navigate("/compare-strengths");
   };
 
   return (
@@ -216,6 +223,7 @@ const ReportPage: React.FC = () => {
                       color="primary"
                       variant="contained"
                       style={{ fontSize: "18px" }}
+                      onClick={handleCompareStrengths}
                     >
                       Compare Strengths
                     </Button>

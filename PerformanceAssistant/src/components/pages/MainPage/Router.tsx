@@ -5,6 +5,7 @@ import LoginPage from "../logInPage/LogInPage";
 import HomePage from "../homePage/HomePage";
 import ParameterListPage from "../parameterListPage/ParameterListPage";
 import ReportPage from "../reportPage/ReportPage";
+import CompareStrengthPage from "../compareStrengthPage/CompareStrengthPage";
 
 const AppRouter: React.FC = () => {
   const [parameterFileName, setFileName] = useState<File | null>(null);
@@ -26,6 +27,7 @@ const AppRouter: React.FC = () => {
           element={<ParameterListPage parameterFileName={parameterFileName} />}
         />
         <Route path="/report" element={<ReportPage />} />
+        <Route path="/compare-strengths" element={<CompareStrengthPage />} />
       </Routes>
     </Router>
   );
