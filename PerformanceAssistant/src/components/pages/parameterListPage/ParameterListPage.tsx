@@ -33,7 +33,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev === 1) {
-            navigate("/homepage"); // Navigate to homepage after countdown
+            navigate("/homepage");
           }
           return prev - 1;
         });
@@ -120,8 +120,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       }
       const tempresponseData = await response.json();
       let responseData = tempresponseData as ServerData;
-      
-      //navigate("/report", { state: { data: responseData } });
     } catch (error) {
       console.error("Error submitting data:", error);
     }
