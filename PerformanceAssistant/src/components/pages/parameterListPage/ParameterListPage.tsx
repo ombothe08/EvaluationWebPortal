@@ -4,6 +4,7 @@ import {
   BatchDataModel,
   CandidateDataModel,
   ServerData,
+  BatchAnalysisModel,
 } from "../../../model/evaluationData";
 
 import { useEffect, useState } from "react";
@@ -27,8 +28,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
   const handleFileUpload = (file: File | null) => {
     if (!file) return;
-    // const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
-
     const reader = new FileReader();
 
     reader.onload = (e) => {
@@ -104,10 +103,16 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      let responseData: ServerData;
-      responseData = await response.json();
+      const tempresponseData = await response.json();
+      let apiResponseData = tempresponseData as BatchAnalysisModel;
+
+      let responseData = apiResponseData as ServerData;
+      responseData.BatchData = apiResponseData.BatchData;
+      responseData.BatchData.Date = " ";
+      responseData.objectid = "";
       console.log(responseData);
-      navigate("/report", { state: { apiResponseData: { responseData } } });
+
+      navigate("/report", { state: { data: responseData } });
     } catch (error) {
       console.error("Error submitting data:", error);
     }
