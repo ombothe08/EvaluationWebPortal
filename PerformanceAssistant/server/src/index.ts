@@ -71,15 +71,10 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/evaluate/strengths', async (req: Request, res: Response) => {
-  // let oaiService = new OpenAIService();
-  
-  // oaiService.evaluateStrength(req.body).then((response)=>{
-    
-  //     res.send(response);
-  // }).catch((error)=>{
-  //     res.send(error);
-  // });
+app.post('/insights', async (req: Request, res: Response) => {
+    //Code for insights
+    let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+    db.connectToDatabase();
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {

@@ -68,3 +68,4 @@ export interface StrengthAnalysisModel {
 export interface CandidateStrengthAnalysis{
  Data : { Name : string , Strength : number}[]
 }
+
