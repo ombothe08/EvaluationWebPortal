@@ -42,6 +42,7 @@ export interface BatchAnalysisModel {
     Module: string;
     AnalysisModel: CandidateAnalysisModel[];
     CandidateStrengthAnalysis: CandidateStrengthAnalysis;
+    insight: insightmodel;
     CandidatesSuggestedRole:CandidatesSuggestedRole;
   }
 }
@@ -74,5 +75,20 @@ export interface CandidatesSuggestedRole
 {
   Data : {Name : string , SuggestedRoles: string}[], 
   
+}
+
+export interface insights{
+  Data : [
+    {
+    Name : string,
+    suggestedRole:string[],
+    insight:[
+      {
+        parameter: string;
+        strength: number;
+      },
+    ]
+},
+]
 }
 

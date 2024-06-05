@@ -75,8 +75,9 @@ app.post('/evaluate', async (req: Request, res: Response) => {
 });
 
 app.post('/insights', async (req: Request, res: Response) => {
-  
-  
+
+
+    
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {
