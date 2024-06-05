@@ -54,7 +54,7 @@ export class Database {
     if (!this.db) {
         throw new Error('Database connection is not established');
     }
-    console.log("Adding report to database now : ");
+    console.log("Adding report to database now ");
     const collection: Collection = this.db.collection('reports');
 
     try {
