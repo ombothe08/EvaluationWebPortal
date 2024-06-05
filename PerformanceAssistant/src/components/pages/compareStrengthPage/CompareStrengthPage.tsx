@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import {
   Box,
@@ -10,50 +10,71 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const ReportPage: React.FC = () => {
+// Assuming your interface definitions are in a file named interfaces.ts
+import { BatchAnalysisModel } from "../../../model/evaluationData";
+
+const CompareStrengthPage: React.FC = () => {
   const teamName = "Code Monks";
 
-  const generateRandomData = () => {
-    const candidates = [
-      "John Doe",
-      "Jane Smith",
-      "Alice Johnson",
-      "Bob Brown",
-      "Charlie Davis"
-    ];
-    const strengths = [
-      "Leadership",
-      "Communication",
-      "Problem-Solving",
-      "Creativity",
-      "Teamwork",
-      "Adaptability"
-    ];
+  // State to store the fetched data
+  const [analysisData, setAnalysisData] = useState<BatchAnalysisModel | null>(null);
 
-    return candidates.map(candidate => ({
-      name: candidate,
-      strengths: strengths.map(strength => ({
-        parameter: strength,
-        data: Math.floor(Math.random() * 101)
-      }))
-    }));
-  };
+  useEffect(() => {
+    // Simulating fetching data from an API endpoint
+    const fetchData = async () => {
+      try {
+        // Replace this with your actual fetch call
+        const response = await fetch("http://localhost:3000/evaluate");
+        const data: BatchAnalysisModel = await response.json();
+        setAnalysisData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  const candidates = generateRandomData();
+    // Call the fetch function
+    fetchData();
+  }, []);
 
-  const data = {
-    labels: candidates.map(candidate => candidate.name),
-    datasets: candidates[0].strengths.map((strength, index) => ({
-      label: strength.parameter,
-      data: candidates.map(candidate => candidate.strengths[index].data),
-      backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.2)`,
-      borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
-      borderWidth: 1,
-    })),
+  // Function to generate chart data from fetched data
+  const generateChartData = () => {
+    if (!analysisData || !analysisData.BatchData.CandidateStrengthAnalysis) {
+      return {
+        labels: [],
+        datasets: [{
+          label: '',
+          data: [],
+          backgroundColor: '',
+          borderColor: '',
+          borderWidth: 0,
+        }],
+      };
+    }
+
+    const candidates = analysisData.BatchData.CandidateStrengthAnalysis.Data;
+    console.log(candidates);
+    const data = {
+      labels: candidates.map(candidate => candidate.Name),
+      datasets: [{
+        label: 'Strength',
+        data: candidates.map(candidate => candidate.Strength),
+        backgroundColor: `rgba(54, 162, 235, 0.2)`, // Blue color with opacity
+        borderColor: `rgba(54, 162, 235, 1)`, // Solid blue color
+        borderWidth: 1,
+      }],
+    };
+
+    return data;
   };
 
   const options = {
     responsive: true,
+    scales: {
+      y: {
+        min: 0, // Minimum value for y-axis
+        max: 100, // Maximum value for y-axis
+      },
+    },
     plugins: {
       legend: {
         position: 'top' as const,
@@ -110,130 +131,10 @@ const ReportPage: React.FC = () => {
           Team: {teamName}
         </Typography>
 
-        <Bar data={data} options={options} />
+        <Bar data={generateChartData()} options={options} />
       </Box>
     </Box>
   );
 };
 
-export default ReportPage;
-
-
-// import React, { useEffect, useState } from "react";
-// import Navbar from "../Navbar";
-// import { Box, Typography, Paper } from "@mui/material";
-// import { Bar } from "react-chartjs-2";
-// import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-// import axios from 'axios';
-
-// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-// const ReportPage: React.FC = () => {
-//   const teamName = "Code Monks";
-//   const [data, setData] = useState<any>(null);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.post('/evaluate/strengths', {
-//           // Add your payload here. Example:
-//           Name: "Team Strength Analysis",
-//           Strengths: [
-//             { Parameter: "Leadership", Data: "Excellent" },
-//             { Parameter: "Communication", Data: "Very Good" },
-//             { Parameter: "Problem-Solving", Data: "Good" }
-//           ]
-//         });
-
-//         const responseData = JSON.parse(response.data);
-//         setData(responseData);
-//       } catch (error) {
-//         console.error("Error fetching the data", error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   if (!data) {
-//     return <Typography>Loading...</Typography>;
-//   }
-
-//   const chartData = {
-//     labels: data.Data.map((candidate: any) => candidate.Name),
-//     datasets: [
-//       {
-//         label: 'Strength',
-//         data: data.Data.map((candidate: any) => candidate.Strength),
-//         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-//         borderColor: 'rgba(75, 192, 192, 1)',
-//         borderWidth: 1,
-//       }
-//     ],
-//   };
-
-//   const options = {
-//     responsive: true,
-//     plugins: {
-//       legend: {
-//         position: 'top' as const,
-//       },
-//       title: {
-//         display: true,
-//         text: 'Strength Analysis',
-//       },
-//     },
-//   };
-
-//   return (
-//     <Box
-//       sx={{
-//         minHeight: "100vh",
-//         background: "linear-gradient(to right, #38ef7d, #11998e)",
-//         py: 5,
-//       }}
-//     >
-//       <Navbar />
-//       <Box
-//         component={Paper}
-//         sx={{
-//           p: 5,
-//           borderRadius: 2,
-//           boxShadow: 3,
-//           m: 5,
-//           backgroundColor: "whitesmoke",
-//         }}
-//       >
-//         <Typography
-//           variant="h4"
-//           component="h1"
-//           sx={{
-//             fontSize: 30,
-//             fontWeight: "bold",
-//             mb: 1,
-//             fontFamily: "sans-serif",
-//           }}
-//         >
-//           Evaluation Report
-//         </Typography>
-
-//         <Typography
-//           variant="h5"
-//           component="h2"
-//           sx={{
-//             fontSize: 25,
-//             fontWeight: "bold",
-//             mb: 4,
-//             fontFamily: "sans-serif",
-//           }}
-//         >
-//           Team: {teamName}
-//         </Typography>
-
-//         <Bar data={chartData} options={options} />
-//       </Box>
-//     </Box>
-//   );
-// };
-
-// export default ReportPage;
+export default CompareStrengthPage;

@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import {
   Box,
@@ -18,6 +19,12 @@ import { ServerData } from "../../../model/evaluationData";
 const ReportPage: React.FC = () => {
   const location = useLocation();
   const { data } = location.state as { data: ServerData };
+  const navigate = useNavigate();
+
+  const handleCompareStrengths = () => {
+    // Redirect to compareStrengthPage
+    navigate("/compare-strengths");
+  };
 
   return (
     <Box>
@@ -170,6 +177,7 @@ const ReportPage: React.FC = () => {
                       color="primary"
                       variant="contained"
                       style={{ fontSize: "15px" }}
+                      onClick={handleCompareStrengths}
                     >
                       Compare Strengths
                     </Button>
