@@ -66,7 +66,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/getinsights', async (req: Request, res: Response) =>{
+app.post('/getInsights', async (req: Request, res: Response) =>{
     let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();

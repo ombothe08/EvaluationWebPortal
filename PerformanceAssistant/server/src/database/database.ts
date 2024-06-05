@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
-import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel } from '../Interfaces/Interface';
+import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel,BatchReportDbModel } from '../Interfaces/Interface';
 
 export class Database {
   private uri: string;
@@ -134,7 +134,7 @@ export class Database {
     }
   }
 
-  public async getAllRecords(collectionName: string): Promise<BatchDbModel[]> {
+  public async getAllRecords(collectionName: string): Promise<BatchReportDbModel[]> {
     if (!this.db) {
       throw new Error('Database connection is not established');
     }
@@ -143,7 +143,7 @@ export class Database {
     try {
       const records = await collection.find({}).toArray();
         if (records.length > 0) {
-        const formattedRecords: BatchDbModel[] = records.map(record => ({ 
+        const formattedRecords: BatchReportDbModel[] = records.map(record => ({ 
           objectid: record._id,
           BatchData: {
             Name: record.BatchData.Name, 
@@ -165,8 +165,6 @@ export class Database {
               }))
             })),
             CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis,
-            insight:record.BatchData.insight
-         
           }
         }));
         console.log(`Fetched ${records.length} records from ${collectionName} collection`);
