@@ -25,9 +25,9 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
   const navigate = useNavigate();
-  const [file, setFile] = useState<string | null>(null);
+  // const [file, setFile] = useState<string | null>(null);
   const [homepageData, setHomepageData] = useState<ServerData[]>([]);
-  const [hfileName, setFileName] = useState<string | null>("om");
+  // const [hfileName, setFileName] = useState<string | null>("om");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +57,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
     }
   };
 
-  const handleDelete = async (objectid: string) => {
+  const handleDelete = async (objectid: string|null) => {
     try {
       const response = await fetch(`http://localhost:3000/delete/${objectid}`, {
         method: "DELETE",
@@ -75,7 +75,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
     }
   };
 
-  const handleAnalysisClick = async (objectid: string) => {
+  const handleAnalysisClick = async (objectid: string|null) => {
     try {
       const response = await fetch("http://localhost:3000/getSelectedRecord", {
         method: "POST",
@@ -99,7 +99,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
     }
   };
 
-  const handleDownload = async (objectid: string) => {
+  const handleDownload = async (objectid: string|null) => {
     try {
       const response = await fetch("http://localhost:3000/getSelectedRecord", {
         method: "POST",
