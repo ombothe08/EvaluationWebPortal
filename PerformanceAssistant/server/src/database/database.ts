@@ -64,7 +64,7 @@ export class Database {
                 Module: batchAnalysis.BatchData.Module,
                 Date: new Date().toISOString(),
                 AnalysisModel: batchAnalysis.BatchData.AnalysisModel,
-                CandidateStrengthAnalysis: batchAnalysis.BatchData.CandidateStrengthAnalysis,
+                
                 insight:batchAnalysis.BatchData.insight
             }
         };
@@ -118,7 +118,7 @@ export class Database {
                 Data: input.Data
               }))
              })),
-             CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis,
+            
              insight:report.BatchData.insight
 
           }
