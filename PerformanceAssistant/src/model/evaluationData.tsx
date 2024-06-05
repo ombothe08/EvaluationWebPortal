@@ -12,6 +12,7 @@ export interface BatchAnalysisModel {
   BatchData: {
     Name: string;
     Module: string;
+    Date: string;
     AnalysisModel: CandidateAnalysisModel[];
   };
 }

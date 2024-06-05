@@ -4,7 +4,9 @@ import {
   BatchAnalysisModel,
   BatchDataModel,
   CandidateDataModel,
+  ServerData,
 } from "../../../model/evaluationData";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -77,7 +79,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
     const batchDataModel: BatchDataModel = {
       Name: batchName,
-      Date: currentDate,
       Data: candidateDataModel,
     };
 
