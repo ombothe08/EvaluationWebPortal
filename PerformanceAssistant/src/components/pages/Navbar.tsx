@@ -37,13 +37,13 @@ const Navbar: React.FC = () => {
           Performance Assistant
         </Typography>
         <div style={{ marginLeft: 'auto' }}>
-            <IconButton
-            sx={{ color:"white" }}
-              onClick={() => navigate("/homepage")}
-            >
-              <HomeIcon sx={{fontSize:'50px'}}/>
-            </IconButton>
-          </div>
+          <IconButton
+            sx={{ color: "white" }}
+            onClick={() => navigate("/homepage")}
+          >
+            <HomeIcon sx={{ fontSize: '50px' }} />
+          </IconButton>
+        </div>
       </Toolbar>
     </AppBar>
   );
