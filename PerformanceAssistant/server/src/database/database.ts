@@ -69,7 +69,7 @@ export class Database {
                 Date: new Date().toISOString(),
                 AnalysisModel: batchAnalysis.BatchData.AnalysisModel,
                 CandidateStrengthAnalysis: batchAnalysis.BatchData.CandidateStrengthAnalysis,
-                CandidatesSuggestedRole:batchAnalysis.BatchData.CandidatesSuggestedRole
+                insight:batchAnalysis.BatchData.insight
             }
         };
 
@@ -123,7 +123,7 @@ export class Database {
               }))
              })),
              CandidateStrengthAnalysis: report.BatchData.CandidateStrengthAnalysis,
-             CandidatesSuggestedRole:report.BatchData.CandidatesSuggestedRole
+             insight:report.BatchData.insight
 
           }
         };
@@ -169,7 +169,7 @@ export class Database {
               }))
             })),
             CandidateStrengthAnalysis: record.BatchData.CandidateStrengthAnalysis,
-            CandidatesSuggestedRole:record.BatchData.CandidatesSuggestedRole
+            insight:record.BatchData.insight
          
           }
         }));
