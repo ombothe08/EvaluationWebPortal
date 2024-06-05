@@ -1,12 +1,11 @@
-import { Grid, Checkbox, FormControlLabel, Button, Paper } from "@mui/material";
+import { Grid, Checkbox, FormControlLabel, Button, Paper, CircularProgress } from "@mui/material";
 import * as XLSX from "xlsx";
 import {
   BatchDataModel,
   CandidateDataModel,
   ServerData,
-  BatchAnalysisModel
+  BatchAnalysisModel,
 } from "../../../model/evaluationData";
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -88,8 +87,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         fileName.name
       );
       const batchDataModelString = JSON.stringify(batchDataModel);
-      console.log(batchDataModel);
-
+      
       const response = await fetch("http://localhost:3000/evaluate", {
         method: "POST",
         headers: {
@@ -104,18 +102,9 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         throw new Error("Network response was not ok");
       }
       const tempresponseData = await response.json();
-      let sData  = tempresponseData as BatchAnalysisModel ;
-
-  
-      let responseData = sData as ServerData ;
-      console.log(responseData);
-
-       responseData.BatchData = sData.BatchData;
-      //  responseData.BatchData.Date = ' ';
-       responseData.objectid = '';
-       console.log(responseData);
-
-      navigate("/report", { state: { apiResponseData: {responseData} } });
+      let responseData = tempresponseData as ServerData;
+      
+      navigate("/report", { state: { data: responseData } });
     } catch (error) {
       console.error("Error submitting data:", error);
     }
@@ -145,6 +134,8 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
           margin: "auto",
         }}
       >
+
+
         <div
           style={{
             fontSize: "50px",
@@ -155,6 +146,12 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         >
           Select Parameters
         </div>
+        {showLoader && (
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <CircularProgress />
+          </div>
+        )}
+        <div style={{ opacity: showLoader ? 0.5 : 1 }}>
         {parameters.length > 0 && (
           <Paper
             style={{
@@ -201,6 +198,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
             </Grid>
           </Paper>
         )}
+        </div>
         {selectedParameters.length > 0 && (
           <div
             style={{

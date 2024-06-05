@@ -1,44 +1,22 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../Navbar";
-import {
-  Box,
-  Typography,
-  Paper,
-} from "@mui/material";
+import React from "react";
+import { Box, Typography, Paper } from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import Navbar from "../Navbar";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-// Assuming your interface definitions are in a file named interfaces.ts
-import { BatchAnalysisModel } from "../../../model/evaluationData";
 
 const CompareStrengthPage: React.FC = () => {
   const teamName = "Code Monks";
 
-  // State to store the fetched data
-  const [analysisData, setAnalysisData] = useState<BatchAnalysisModel | null>(null);
+  // Sample hardcoded data for demonstration
+  const apiResponseData = [
+    { Name: 'Sonali', CandidateStrengthAnalysis: { Data: [{ Name: 'Sonali', Strength: Math.floor(Math.random() * 100) }] } },
+    { Name: 'Rashmi', CandidateStrengthAnalysis: { Data: [{ Name: 'Rashmi', Strength: Math.floor(Math.random() * 100) }] } }
+  ];
 
-  useEffect(() => {
-    // Simulating fetching data from an API endpoint
-    const fetchData = async () => {
-      try {
-        // Replace this with your actual fetch call
-        const response = await fetch("http://localhost:3000/evaluate");
-        const data: BatchAnalysisModel = await response.json();
-        setAnalysisData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    // Call the fetch function
-    fetchData();
-  }, []);
-
-  // Function to generate chart data from fetched data
   const generateChartData = () => {
-    if (!analysisData || !analysisData.BatchData.CandidateStrengthAnalysis) {
+    if (!apiResponseData || apiResponseData.length === 0) {
       return {
         labels: [],
         datasets: [{
@@ -51,13 +29,11 @@ const CompareStrengthPage: React.FC = () => {
       };
     }
 
-    const candidates = analysisData.BatchData.CandidateStrengthAnalysis.Data;
-    console.log(candidates);
     const data = {
-      labels: candidates.map(candidate => candidate.Name),
+      labels: apiResponseData.map((item: any) => item.Name),
       datasets: [{
         label: 'Strength',
-        data: candidates.map(candidate => candidate.Strength),
+        data: apiResponseData.map((item: any) => item.CandidateStrengthAnalysis.Data[0].Strength),
         backgroundColor: `rgba(54, 162, 235, 0.2)`, // Blue color with opacity
         borderColor: `rgba(54, 162, 235, 1)`, // Solid blue color
         borderWidth: 1,
@@ -71,8 +47,8 @@ const CompareStrengthPage: React.FC = () => {
     responsive: true,
     scales: {
       y: {
-        min: 0, // Minimum value for y-axis
-        max: 100, // Maximum value for y-axis
+        min: 0,
+        max: 100,
       },
     },
     plugins: {
@@ -138,3 +114,121 @@ const CompareStrengthPage: React.FC = () => {
 };
 
 export default CompareStrengthPage;
+
+
+
+
+
+// import React from "react";
+// import { Box, Typography, Paper } from "@mui/material";
+// import { Bar } from "react-chartjs-2";
+// import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+// import { useLocation } from "react-router-dom";
+// import Navbar from "../Navbar";
+
+// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+// const CompareStrengthPage: React.FC = () => {
+//   const teamName = "Code Monks";
+//   const location = useLocation();
+//   const apiResponseData = location.state?.apiResponseData || [];
+
+//   const generateChartData = () => {
+//     if (!apiResponseData || apiResponseData.length === 0) {
+//       return {
+//         labels: [],
+//         datasets: [{
+//           label: '',
+//           data: [],
+//           backgroundColor: '',
+//           borderColor: '',
+//           borderWidth: 0,
+//         }],
+//       };
+//     }
+
+//     const data = {
+//       labels: apiResponseData.map((item: any) => item.Name),
+//       datasets: [{
+//         label: 'Strength',
+//         data: apiResponseData.map((item: any) => item.CandidateStrengthAnalysis.Data.map((strengthItem: any) => strengthItem.Strength)),
+//         backgroundColor: `rgba(54, 162, 235, 0.2)`, // Blue color with opacity
+//         borderColor: `rgba(54, 162, 235, 1)`, // Solid blue color
+//         borderWidth: 1,
+//       }],
+//     };
+
+//     return data;
+//   };
+
+//   const options = {
+//     responsive: true,
+//     scales: {
+//       y: {
+//         min: 0,
+//         max: 100,
+//       },
+//     },
+//     plugins: {
+//       legend: {
+//         position: 'top' as const,
+//       },
+//       title: {
+//         display: true,
+//         text: 'Strength Analysis',
+//       },
+//     },
+//   };
+
+//   return (
+//     <Box
+//       sx={{
+//         minHeight: "100vh",
+//         background: "linear-gradient(to right, #38ef7d, #11998e)",
+//         py: 5,
+//       }}
+//     >
+//       <Navbar />
+//       <Box
+//         component={Paper}
+//         sx={{
+//           p: 5,
+//           borderRadius: 2,
+//           boxShadow: 3,
+//           m: 5,
+//           backgroundColor: "whitesmoke",
+//         }}
+//       >
+//         <Typography
+//           variant="h4"
+//           component="h1"
+//           sx={{
+//             fontSize: 30,
+//             fontWeight: "bold",
+//             mb: 1,
+//             fontFamily: "sans-serif",
+//           }}
+//         >
+//           Evaluation Report
+//         </Typography>
+
+//         <Typography
+//           variant="h5"
+//           component="h2"
+//           sx={{
+//             fontSize: 25,
+//             fontWeight: "bold",
+//             mb: 4,
+//             fontFamily: "sans-serif",
+//           }}
+//         >
+//           Team: {teamName}
+//         </Typography>
+
+//         <Bar data={generateChartData()} options={options} />
+//       </Box>
+//     </Box>
+//   );
+// };
+
+// export default CompareStrengthPage;

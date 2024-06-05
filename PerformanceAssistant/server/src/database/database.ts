@@ -50,11 +50,11 @@ export class Database {
     }
   
   }
-  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<void> {
+  public async addReport(batchAnalysis: BatchAnalysisModel): Promise<string | any> {
     if (!this.db) {
         throw new Error('Database connection is not established');
     }
-    console.log("Adding report to database now : ");
+    console.log("Adding report to database now ");
     const collection: Collection = this.db.collection('reports');
 
     try {
@@ -79,9 +79,11 @@ export class Database {
         });
 
         console.log('Report added successfully');
+        return batchDbModel.objectid.toString();
        
     } catch (error) {
         console.error('Failed to add report', error);
+        return "";
     }
 }
 
@@ -190,7 +192,7 @@ export class Database {
       const objectId = new ObjectId(reportId); 
       const report =  collection.deleteOne({ _id: objectId }); 
       if (report) {
-        console.log('Report found:', report);
+        console.log('Report Deleted :', report);
         return report;
       } else {
         console.log('No report found with the given ID');

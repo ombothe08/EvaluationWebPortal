@@ -11,14 +11,25 @@ export const convertDataToExcel = (newData:any) => {
     let oneCandidate:string[] = [];
     oneCandidate.push(record[i].Name);// .CandidateName);
 
-    let strengthCell:string =record[i].Strengths[0].Parameter +":"+  record[i].Strengths[0].Data+";\n";
-    strengthCell += record[i].Strengths[1].Parameter + ":"+ record[i].Strengths[1].Data;
+    let strengthCell:string = "";
+    for(var j:number = 0; j < record[i].Strengths.length; j++)
+      {
+        strengthCell += record[i].Strengths[j].Parameter + ":" +  record[i].Strengths[j].Data + ";    ";
+      }
     oneCandidate.push(strengthCell);
 
-    let improvCell:string = record[i].AreasOfImprovement[0].Parameter + ":"+record[i].AreasOfImprovement[0].Data;
+    let improvCell:string = "";
+    for(var k:number = 0; k < record[i].AreasOfImprovement.length; k++)
+      {
+        improvCell += record[i].AreasOfImprovement[k].Parameter + ":" + record[i].AreasOfImprovement[k].Data + ";    ";
+      }
     oneCandidate.push(improvCell);
 
-    let notesCell:string = record[i].InputForMentors[0].Parameter+":"+ record[i].InputForMentors[0].Data;
+    let notesCell:string = "";
+    for(var l:number = 0; l < record[i].InputForMentors.length; l++)
+      {
+        notesCell += record[i].InputForMentors[l].Parameter + ":" + record[i].InputForMentors[l].Data + ";    ";
+      }
     oneCandidate.push(notesCell);
 
     let rowNum:number = i+2;
