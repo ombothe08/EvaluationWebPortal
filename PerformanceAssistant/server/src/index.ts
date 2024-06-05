@@ -51,9 +51,9 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       db.connectToDatabase();
        let objid = db.addReport(data); 
        let responseData =   db.getReportById(await objid);
-       const finaldata :  BatchDbModel | null = await responseData;
+      //  const finaldata :  BatchDbModel | null = await responseData;
        
-       res.send(finaldata);
+       res.send(true);
       
 
     }).catch((error) => {
@@ -66,24 +66,19 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/getinsights', async (req: Request, res: Response) =>
-   {
-
+app.post('/getInsights', async (req: Request, res: Response) =>{
     let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
-
-    
 });
 
 app.post("/getSelectedRecord",async(req:Request,res:Response) => {
-
     let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
     
-    res.send(JSON.stringify(dbreport));
+    res.send(dbreport);
 });
 
 

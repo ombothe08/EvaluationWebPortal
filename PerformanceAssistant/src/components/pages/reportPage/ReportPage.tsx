@@ -64,6 +64,7 @@ const ReportPage: React.FC = () => {
           boxShadow: 3,
           m: 4,
           backgroundColor: alpha("#1976D2", 0.1),
+          maxWidth: "100vw",
         }}
       >
         <Typography
@@ -109,7 +110,7 @@ const ReportPage: React.FC = () => {
           </div>
         </div>
 
-        <TableContainer sx={{ maxHeight: "55vh" }}>
+        <TableContainer sx={{ maxHeight: "55vh", maxWidth: "99vw" }}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>
