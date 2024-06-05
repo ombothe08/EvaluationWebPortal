@@ -14,8 +14,6 @@ export interface UserCredentials {
     password: string;
   }
 
-
-
 //Database model how data will be stored in database
 export interface BatchDbModel {
   objectid : ObjectId;
@@ -29,8 +27,6 @@ export interface BatchDbModel {
   }
 }
 
-
-
 //Report model only contains report data will be fetched from getdallrecords
 export interface BatchReportDbModel {
   objectid : ObjectId;
@@ -39,19 +35,14 @@ export interface BatchReportDbModel {
       Module: string;
       Date:string;
       AnalysisModel: CandidateAnalysisModel[];
-      
-
   }
 }
-
-
 
 //Insight model will used when insights is called
 export interface BatchInsightDbModel {
   objectid : ObjectId;
   BatchData: {
     insight: InsightModel;
-
   }
 }
 
