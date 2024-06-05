@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
         </div>
         <div
           className="hidden md:flex space-x-8"
-          style={{ marginRight: "-300px" }}
+          style={{ marginRight: "-100px" }}
         >
           <Link
             to="/login"
