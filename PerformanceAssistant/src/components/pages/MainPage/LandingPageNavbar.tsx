@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import CCTech from "../../images/CCTech.png";
 
-const Navbar = ({ onLoginClick }) => {
+const Navbar = ({ onLoginClick } : any) => {
   const loginButtonRef = useRef(null);
 
   const handleLoginClick = () => {
