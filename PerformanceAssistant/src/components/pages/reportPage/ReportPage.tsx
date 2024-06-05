@@ -15,12 +15,12 @@ import {
   Paper,
   Button,
 } from "@mui/material";
-import { BatchAnalysisModel } from "../../../model/evaluationData";
+import { BatchAnalysisModel, ServerData } from "../../../model/evaluationData";
 
 const ReportPage: React.FC = () => {
   const location = useLocation();
   const { apiResponseData } = location.state as {
-    apiResponseData: BatchAnalysisModel;
+    apiResponseData: ServerData;
   };
 
   return (

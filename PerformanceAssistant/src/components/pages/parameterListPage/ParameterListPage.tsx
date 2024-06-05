@@ -65,11 +65,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
   ): BatchDataModel => {
     const headers = jsonSheet[0];
     const rows = jsonSheet.slice(1);
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-    const date = today.getDate();
-    const currentDate = month + "/" + date + "/" + year;
     const candidateDataModel: CandidateDataModel[] = rows.map((row) => ({
       Name: row[0] as string,
       Data: headers.slice(1).map((header, index) => ({
@@ -110,8 +105,11 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const responseData = await response.json();
-      console.log(responseData);
+      const tempresponseData = await response.json();
+      let sData  = tempresponseData as BatchAnalysisModel ;
+      console.log(sData);
+      let responseData = tempresponseData as ServerData;
+      responseData.objectid = '';
       navigate("/report", { state: { apiResponseData: responseData } });
     } catch (error) {
       console.error("Error submitting data:", error);

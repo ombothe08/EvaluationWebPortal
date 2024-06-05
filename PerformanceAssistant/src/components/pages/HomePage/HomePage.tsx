@@ -25,9 +25,7 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
   const navigate = useNavigate();
-  // const [file, setFile] = useState<string | null>(null);
   const [homepageData, setHomepageData] = useState<ServerData[]>([]);
-  // const [hfileName, setFileName] = useState<string | null>("om");
 
   useEffect(() => {
     const fetchData = async () => {
