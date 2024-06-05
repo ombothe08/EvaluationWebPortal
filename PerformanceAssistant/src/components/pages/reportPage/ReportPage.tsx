@@ -24,9 +24,8 @@ const ReportPage: React.FC = () => {
   const { data } = location.state as { data: ServerData };
   const navigate = useNavigate();
 
-  const handleCompareStrengths = () => {
-    // Redirect to compareStrengthPage
-    navigate("/compare-strengths", { state: { data: data } });
+  const handleDetailedInsights = () => {
+    navigate("/detailed-insights", { state: { data: data } });
     
 
   };
@@ -213,9 +212,9 @@ const ReportPage: React.FC = () => {
                       color="primary"
                       variant="contained"
                       style={{ fontSize: "15px" }}
-                      onClick={handleCompareStrengths}
+                      onClick={handleDetailedInsights}
                     >
-                      Compare Strengths
+                      Detailed Insights
                     </Button>
                   </center>
                 </TableCell>

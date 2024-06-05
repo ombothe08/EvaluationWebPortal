@@ -8,10 +8,9 @@ import { ServerData } from "../../../model/evaluationData";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const CompareStrengthPage: React.FC = () => {
+const DetailedInsightsPage: React.FC = () => {
   const location = useLocation(); // Use useLocation hook to get the data passed from ParameterListPage
   const { data } = location.state as { data: ServerData };
-  // const apiResponseData = location.state ? location.state.data.BatchData.AnalysisModel : [];
 
 
   console.log(data);
@@ -68,11 +67,7 @@ const CompareStrengthPage: React.FC = () => {
 
   return (
     <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #38ef7d, #11998e)",
-        py: 5,
-      }}
+      
     >
       <Navbar />
       <Box
@@ -82,7 +77,7 @@ const CompareStrengthPage: React.FC = () => {
           borderRadius: 2,
           boxShadow: 3,
           m: 5,
-          backgroundColor: "whitesmoke",
+          backgroundColor: "aliceblue",
         }}
       >
         <Typography
@@ -116,4 +111,4 @@ const CompareStrengthPage: React.FC = () => {
   );
 };
 
-export default CompareStrengthPage;
+export default DetailedInsightsPage;
