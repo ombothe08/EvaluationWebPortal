@@ -237,10 +237,12 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               height: "100px",
             }}
           >
-            <p>
+            <b>
+              <p style={{fontSize : 25 }}>
               Your file is being evaluated. You are being routed back to
               homepage in {countdown} seconds.
-            </p>
+              </p>
+            </b>
             <Button
               variant="contained"
               color="primary"
