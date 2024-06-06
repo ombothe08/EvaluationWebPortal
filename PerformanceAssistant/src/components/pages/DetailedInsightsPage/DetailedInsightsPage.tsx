@@ -209,7 +209,6 @@ const DetailedInsightsPage: React.FC = () => {
           </Table>
         </TableContainer>
       </Box>
-      
     </Box>
 
   );
