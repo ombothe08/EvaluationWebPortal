@@ -122,7 +122,7 @@ const DetailedInsightsPage: React.FC = () => {
 
         <Bar data={generateChartData()} options={options} />
       </Box>
-      {/* <Box><ParameterGraphInsights data={data.BatchData.insight}/></Box> */}
+      <Box><ParameterGraphInsights data={data}/></Box>
     </Box>
   );
 };
