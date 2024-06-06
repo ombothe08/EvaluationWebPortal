@@ -42,18 +42,10 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
   useEffect(() => {
     if (jsonSheet.length > 0) {
-      // Extract headers from the first row of jsonSheet
       const headers = jsonSheet[0];
-      // Exclude the first element (assumed to be the name) and set the rest as selected parameters
       setSelectedParameters(headers.slice(1));
     }
   }, [jsonSheet]);
-
-  // useEffect(() => {
-  //   if (parameters.length > 0) {
-  //     setSelectedParameters(parameters.slice(1)); // Exclude the first element (assumed to be the name)
-  //   }
-  // }, [parameters]);
 
   const handleFileUpload = (file: File | null) => {
     if (!file) return;
@@ -117,7 +109,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         fileName.name
       );
       const batchDataModelString = JSON.stringify(batchDataModel);
-      
+
       const response = await fetch("http://localhost:3000/evaluate", {
         method: "POST",
         headers: {
@@ -204,14 +196,18 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
                             onChange={handleCheckboxChange}
                             name={param}
                             checked={selectedParameters.includes(param)}
-                          style={{
+                            style={{
                               color: selectedParameters.includes(param)
                                 ? "#FFFFFF"
                                 : "#FFFFFF",
                             }}
                           />
                         }
-                        label={<span style={{ fontSize: "20px", color: "#FFFFFF" }}>{param}</span>}
+                        label={
+                          <span style={{ fontSize: "20px", color: "#FFFFFF" }}>
+                            {param}
+                          </span>
+                        }
                       />
                     </Paper>
                   </Grid>
@@ -238,9 +234,9 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
             }}
           >
             <b>
-              <p style={{fontSize : 25 }}>
-              Your file is being evaluated. You are being routed back to
-              homepage in {countdown} seconds.
+              <p style={{ fontSize: 25 }}>
+                Your file is being evaluated. You are being routed back to
+                homepage in {countdown} seconds.
               </p>
             </b>
             <Button
@@ -249,7 +245,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               onClick={() => navigate("/homepage")}
               style={{ fontSize: "16px", marginTop: "10px" }}
             >
-              Go Back to Homepage 
+              Go Back to Homepage
             </Button>
           </div>
         )}
