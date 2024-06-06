@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./LandingPageNavbar";
 import LoginPage from "../logInPage/LogInPage";
 import big from "../../images/bigpicture.jpg";
- 
+
 const LandingPage = () => {
   const [showLogin, setShowLogin] = useState(false);
- 
+
   const [typedText, setTypedText] = useState("");
   const [lineBreakIndex, setLineBreakIndex] = useState(0);
   const fullText = "Unleashing\nExcellence Through\nDetailed Insights";
   const typingSpeed = 150;
- 
+
   useEffect(() => {
     let currentIndex = 0;
     const typingInterval = setInterval(() => {
@@ -33,16 +33,16 @@ const LandingPage = () => {
         clearInterval(typingInterval);
       }
     }, typingSpeed);
- 
+
     return () => clearInterval(typingInterval);
   }, []);
- 
+
   const handleLoginClick = () => {
     setShowLogin(true);
   };
- 
+
   return (
-    <div className="min-h-screen bg-gradient-to-r from-green-400 via-blue-500 to-purple-600">
+    <div className="min-h-screen bg-gradient-to-r from-teal-400 via-blue-500 to-purple-700">
       <Navbar onLoginClick={handleLoginClick} />
       <div className="flex items-center justify-center h-screen">
         <div className="w-1/2 flex flex-col items-center justify-center text-white p-8">
@@ -59,14 +59,8 @@ const LandingPage = () => {
           />
         </div>
       </div>
-       {/* {showLogin && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <LoginPage closeLogin={() => setShowLogin(false)} />
-        </div>
-      )} */}
     </div>
   );
 };
- 
+
 export default LandingPage;
- 
