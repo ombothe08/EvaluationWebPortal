@@ -250,7 +250,10 @@ const ReportPage: React.FC = () => {
           </Table>
         </TableContainer>
       </Box>
+      <Box>
+      </Box>
     </Box>
+
   );
 };
 

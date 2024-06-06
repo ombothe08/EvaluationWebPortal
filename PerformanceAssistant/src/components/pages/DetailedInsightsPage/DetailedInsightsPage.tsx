@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom"; // Import useLocation
 import Navbar from "../Navbar";
 import { ServerData } from "../../../model/evaluationData";
 
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const DetailedInsightsPage: React.FC = () => {
@@ -40,7 +41,7 @@ const DetailedInsightsPage: React.FC = () => {
       }],
     };
 
-    
+
     console.log(dataToDisplay);
 
     return dataToDisplay;
@@ -66,9 +67,7 @@ const DetailedInsightsPage: React.FC = () => {
   };
 
   return (
-    <Box
-      
-    >
+    <Box>
       <Navbar />
       <Box
         component={Paper}
@@ -105,9 +104,10 @@ const DetailedInsightsPage: React.FC = () => {
         >
         </Typography>
 
-        <Bar data ={generateChartData()} options={options} />
+        <Bar data={generateChartData()} options={options} />
       </Box>
-    </Box>
+     </Box>
+
   );
 };
 
