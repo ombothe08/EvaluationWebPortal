@@ -121,8 +121,7 @@ const DetailedInsightsPage: React.FC = () => {
 
         <Bar data={generateChartData()} options={options} />
       </Box>
-
-
+      
       <Box
         component={Paper}
         sx={{
@@ -144,7 +143,7 @@ const DetailedInsightsPage: React.FC = () => {
             fontFamily: "sans-serif",
           }}
         >
-          Candidate Report for Role Suggestion
+          Strength-Oriented Role Recommendation Report
         </Typography>
         <div style={{ display: "flex", alignItems: "center" }}>
 
@@ -158,20 +157,22 @@ const DetailedInsightsPage: React.FC = () => {
               <TableRow>
                 <TableCell
                   sx={{
-                    backgroundColor: alpha("#fffacd", 1),
+                    backgroundColor: alpha("#2196F3", 0.9),
                     fontSize: 18,
                     fontWeight: "bold",
                     border: "1px solid black",
+                    color: "#ffffff"
                   }}
                 >
                   Name
                 </TableCell>
                 <TableCell
                   sx={{
-                    backgroundColor: alpha("#2196F3", 1),
+                    backgroundColor: alpha("#2196F3", 0.9),
                     fontSize: 18,
                     fontWeight: "bold",
                     border: "1px solid black",
+                    color: "#ffffff"
                   }}
                 >
                   Role
@@ -181,10 +182,10 @@ const DetailedInsightsPage: React.FC = () => {
 
             <TableBody>
               {data.BatchData.insight.Data.map((candidate, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} >
                   <TableCell
                     sx={{
-                      backgroundColor: alpha("#fffacd", 0.7),
+                      backgroundColor: index % 2 === 0 ? "white" : "skyblue",
                       border: "1px solid black",
                       padding: "8px",
                       fontSize: "15px",
@@ -194,7 +195,7 @@ const DetailedInsightsPage: React.FC = () => {
                   </TableCell>
                   <TableCell
                     sx={{
-                      backgroundColor: alpha("##2196F3", 0.2),
+                      backgroundColor: index % 2 === 0 ? "white" : "skyblue",
                       border: "1px solid black",
                       padding: "8px",
                       fontSize: "15px",
