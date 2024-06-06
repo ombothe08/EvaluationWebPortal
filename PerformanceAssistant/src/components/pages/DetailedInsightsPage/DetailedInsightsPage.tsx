@@ -1,5 +1,4 @@
-import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, alpha, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 import { BatchInsightModel } from "../../../model/evaluationData";
 
@@ -58,7 +57,7 @@ const DetailedInsightsPage: React.FC = () => {
       ],
     };
 
-    
+
     console.log(dataToDisplay);
 
     return dataToDisplay;
@@ -122,7 +121,94 @@ const DetailedInsightsPage: React.FC = () => {
 
         <Bar data={generateChartData()} options={options} />
       </Box>
-     </Box>
+
+
+      <Box
+        component={Paper}
+        sx={{
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+          m: 4,
+          backgroundColor: alpha("#1976D2", 0.1),
+          maxWidth: "100vw",
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{
+            fontSize: 24,
+            fontWeight: "bold",
+            mb: 1,
+            fontFamily: "sans-serif",
+          }}
+        >
+          Candidate Report for Role Suggestion
+        </Typography>
+        <div style={{ display: "flex", alignItems: "center" }}>
+
+          <div style={{ marginLeft: "auto" }}>
+          </div>
+        </div>
+
+        <TableContainer sx={{ maxHeight: "55vh", maxWidth: "99vw" }}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    backgroundColor: alpha("#fffacd", 1),
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                  }}
+                >
+                  Name
+                </TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: alpha("#2196F3", 1),
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    border: "1px solid black",
+                  }}
+                >
+                  Role
+                </TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {data.BatchData.insight.Data.map((candidate, index) => (
+                <TableRow key={index}>
+                  <TableCell
+                    sx={{
+                      backgroundColor: alpha("#fffacd", 0.7),
+                      border: "1px solid black",
+                      padding: "8px",
+                      fontSize: "15px",
+                    }}
+                  >
+                    {candidate.Name}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: alpha("##2196F3", 0.2),
+                      border: "1px solid black",
+                      padding: "8px",
+                      fontSize: "15px",
+                    }}
+                  >
+                    {candidate.suggestedRole}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Box>
 
   );
 };
