@@ -2,9 +2,7 @@ import { Grid, Checkbox, FormControlLabel, Button, Paper } from "@mui/material";
 import * as XLSX from "xlsx";
 import {
   BatchDataModel,
-  BatchInsightModel,
   CandidateDataModel,
-  ServerData,
 } from "../../../model/evaluationData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -43,18 +41,12 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
   useEffect(() => {
     if (jsonSheet.length > 0) {
-      // Extract headers from the first row of jsonSheet
       const headers = jsonSheet[0];
-      // Exclude the first element (assumed to be the name) and set the rest as selected parameters
       setSelectedParameters(headers.slice(1));
     }
   }, [jsonSheet]);
 
-  // useEffect(() => {
-  //   if (parameters.length > 0) {
-  //     setSelectedParameters(parameters.slice(1)); // Exclude the first element (assumed to be the name)
-  //   }
-  // }, [parameters]);
+
 
   const handleFileUpload = (file: File | null) => {
     if (!file) return;
@@ -129,9 +121,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
           transformedData: batchDataModelString,
         }),
       });
-      let insightsData: ServerData;
-      insightsData = await response.json();
-
+    
       if (!response.status) {
         throw new Error("Network response was not ok");
       }
