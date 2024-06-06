@@ -43,8 +43,8 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 5000); // Fetch data every 5 seconds
-    return () => clearInterval(interval); // Clean up the interval on component unmount
+    const interval = setInterval(fetchData, 5000); 
+    return () => clearInterval(interval); 
   }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
