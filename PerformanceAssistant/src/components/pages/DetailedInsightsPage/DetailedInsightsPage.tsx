@@ -121,7 +121,9 @@ const DetailedInsightsPage: React.FC = () => {
 
         <Bar data={generateChartData()} options={options} />
       </Box>
+
       <Box><ParameterGraphInsights data={data}/></Box>
+
       <Box
         component={Paper}
         sx={{
