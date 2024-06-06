@@ -25,6 +25,21 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
     handleFileUpload(uploadfileName);
   }, []);
 
+  useEffect(() => {
+    if (jsonSheet.length > 0) {
+      // Extract headers from the first row of jsonSheet
+      const headers = jsonSheet[0];
+      // Exclude the first element (assumed to be the name) and set the rest as selected parameters
+      setSelectedParameters(headers.slice(1));
+    }
+  }, [jsonSheet]);
+
+  // useEffect(() => {
+  //   if (parameters.length > 0) {
+  //     setSelectedParameters(parameters.slice(1)); // Exclude the first element (assumed to be the name)
+  //   }
+  // }, [parameters]);
+
   const handleFileUpload = (file: File | null) => {
     if (!file) return;
     const reader = new FileReader();
@@ -183,6 +198,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
                           color="primary"
                           onChange={handleCheckboxChange}
                           name={param}
+                          checked={selectedParameters.includes(param)}
                           style={{
                             color: selectedParameters.includes(param)
                               ? "#000000"
