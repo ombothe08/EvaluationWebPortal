@@ -1,4 +1,15 @@
-import { Box, Typography, Paper, alpha, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  alpha,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -46,18 +57,19 @@ const DetailedInsightsPage: React.FC = () => {
     }
 
     const dataToDisplay = {
-      labels: data.BatchData.insight.Data.map((item: any) => item.Name), 
+      labels: data.BatchData.insight.Data.map((item: any) => item.Name),
       datasets: [
         {
           label: "Strength",
-          data: data.BatchData.insight.Data.map((item: any) => item.CombineStrength), 
+          data: data.BatchData.insight.Data.map(
+            (item: any) => item.CombineStrength
+          ),
           backgroundColor: `rgba(54, 162, 235, 0.2)`,
           borderColor: `rgba(54, 162, 235, 1)`,
           borderWidth: 1,
         },
       ],
     };
-
 
     console.log(dataToDisplay);
 
@@ -121,7 +133,11 @@ const DetailedInsightsPage: React.FC = () => {
 
         <Bar data={generateChartData()} options={options} />
       </Box>
-      <Box><ParameterGraphInsights data={data}/></Box>
+
+      <Box>
+        <ParameterGraphInsights data={data} />
+      </Box>
+
       <Box
         component={Paper}
         sx={{
@@ -145,11 +161,6 @@ const DetailedInsightsPage: React.FC = () => {
         >
           Strength-Oriented Role Recommendation Report
         </Typography>
-        <div style={{ display: "flex", alignItems: "center" }}>
-
-          <div style={{ marginLeft: "auto" }}>
-          </div>
-        </div>
 
         <TableContainer sx={{ maxHeight: "55vh", maxWidth: "99vw" }}>
           <Table stickyHeader>
@@ -161,7 +172,7 @@ const DetailedInsightsPage: React.FC = () => {
                     fontSize: 18,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    color: "#ffffff"
+                    color: "#ffffff",
                   }}
                 >
                   Name
@@ -172,7 +183,7 @@ const DetailedInsightsPage: React.FC = () => {
                     fontSize: 18,
                     fontWeight: "bold",
                     border: "1px solid black",
-                    color: "#ffffff"
+                    color: "#ffffff",
                   }}
                 >
                   Role
@@ -182,7 +193,7 @@ const DetailedInsightsPage: React.FC = () => {
 
             <TableBody>
               {data.BatchData.insight.Data.map((candidate, index) => (
-                <TableRow key={index} >
+                <TableRow key={index}>
                   <TableCell
                     sx={{
                       backgroundColor: index % 2 === 0 ? "white" : "skyblue",
@@ -210,7 +221,6 @@ const DetailedInsightsPage: React.FC = () => {
         </TableContainer>
       </Box>
     </Box>
-
   );
 };
 
