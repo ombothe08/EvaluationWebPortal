@@ -3,7 +3,6 @@ import * as XLSX from "xlsx";
 import {
   BatchDataModel,
   CandidateDataModel,
-  ServerData,
 } from "../../../model/evaluationData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -277,3 +276,4 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 };
 
 export default ParameterListPage;
+

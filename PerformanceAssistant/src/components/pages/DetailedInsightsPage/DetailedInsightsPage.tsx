@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, styled, TextField } from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -22,7 +22,23 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.common.white,
+  fontWeight: "bold",
+}));
 
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+  "&:hover": {
+    backgroundColor: theme.palette.action.selected,
+  },
+}));
 const DetailedInsightsPage: React.FC = () => {
   const location = useLocation();
   const { data } = location.state as { data: BatchInsightModel };
@@ -122,7 +138,7 @@ const DetailedInsightsPage: React.FC = () => {
         <Bar data={generateChartData()} options={options} />
       </Box>
     </Box>
-    
+
   );
 };
 
