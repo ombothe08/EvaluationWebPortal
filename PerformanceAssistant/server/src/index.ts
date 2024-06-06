@@ -1,7 +1,7 @@
 import express, { Request, Response, response } from 'express';
 import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
-import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, CandidateStrengthAnalysis, BatchDbModel} from './Interfaces/Interface';
+import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, BatchDbModel, InsightModel} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
 import { ObjectId } from 'mongodb';
@@ -29,9 +29,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   oaiService.evaluate(req.body).then((response)=>{
     const json = JSON.parse(response);
     const data = json as BatchAnalysisModel
-
-      
-      
+   
 
     let am = data.BatchData.AnalysisModel; // am = analysis model
 
@@ -44,21 +42,18 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       samList.push(sam);
     })
 
-    oaiService.evaluateStrength(samList).then(async (response) => {
+    oaiService.insights(samList).then(async (response) => {
       //save to database
-      const strengthjson = JSON.parse(response);
-      const strengthdata = strengthjson as CandidateStrengthAnalysis
-      data.BatchData.CandidateStrengthAnalysis = strengthdata;
+      const insightsjson = JSON.parse(response);
+      const insightsdata = insightsjson as InsightModel
+      data.BatchData.insight = insightsdata;
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
-      
       db.connectToDatabase();
-      
-      
        let objid = db.addReport(data); 
        let responseData =   db.getReportById(await objid);
-       const finaldata :  BatchDbModel | null = await responseData;
+      //  const finaldata :  BatchDbModel | null = await responseData;
        
-       res.send(finaldata);
+       res.send(true);
       
 
     }).catch((error) => {
@@ -71,25 +66,34 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   });
 });
 
-app.post('/evaluate/strengths', async (req: Request, res: Response) => {
-  // let oaiService = new OpenAIService();
-  
-  // oaiService.evaluateStrength(req.body).then((response)=>{
+app.post('/getinsights', async (req: Request, res: Response) => {
+  try {
+    let objid = req.body.Key;
+    let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+    db.connectToDatabase();
+
+    // Fetch insights by ID
+    let insights = await db.getInsightsByID(objid);
     
-  //     res.send(response);
-  // }).catch((error)=>{
-  //     res.send(error);
-  // });
+    if (insights) {
+      res.status(200).send(insights);
+    } else {
+      res.status(404).send({ message: 'No insights found for the given ID' });
+    }
+  } catch (error) {
+    console.error('Error fetching insights:', error);
+    res.status(500).send({ message: 'Failed to fetch insights' });
+  }
 });
 
-app.post("/getSelectedRecord",async(req:Request,res:Response) => {
 
+app.post("/getSelectedRecord",async(req:Request,res:Response) => {
     let objid = req.body.Key;
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
     
-    res.send(JSON.stringify(dbreport));
+    res.send(dbreport);
 });
 
 

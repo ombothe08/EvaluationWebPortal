@@ -52,25 +52,33 @@ export class OpenAIService {
             return "";
         }
    }  
-   public async evaluateStrength(strengthData:StrengthAnalysisModel[]): Promise<string | any> {
+   public async insights(strengthData:StrengthAnalysisModel[]): Promise<string | any> {
 
     const api_key = process.env.OAI_API_KEY;
         try {
             const openai = new OpenAI({apiKey: api_key});
             const prompt = `Here is data for analysis: \n${JSON.stringify(strengthData, null, 2)}
-             and compare the strengths of every candidate and provide their combine strength scale from 0 to 100 in below json format as specified and don't add any extra descriptive data
-            {
+             and compare the strengths of every candidate and provide their combine strength as well as individual strength scale from 0 to 100 in below json format as specified and don't add any extra descriptive data
+             {
               "Data": [
                 {
                   "Name": "string",
-                  "Strength":Integer
+                  "CombineStrength": "number",
+                  "suggestedRole": ["string"],
+                  "insight": [
+                    {
+                      "parameter": "string",
+                      "strength": "number"
+                    }
+                  ]
                 }
               ]
-            }`;
+            }
+            `;
 
             const completionResponse = await openai.chat.completions.create({
                 messages: [
-                    { role: "system", content: "You have to compare the data of strengths from each candidate and provide strengths scale from 0 to 100." },
+                    { role: "system", content: "You are a evaluator which evaluates and compares the strengths for each candidate on basis of different parameters individually and with combined parameters and also provide role for each candidate" },
                     { role: "user", content: prompt }
                 ],
                 model: "gpt-3.5-turbo",

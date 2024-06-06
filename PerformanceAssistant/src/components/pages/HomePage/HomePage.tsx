@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-//import Navbar from "../Navbar";
 import Navbar from "./HomePageNavbar";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 import {
   Box,
   Button,
@@ -13,9 +13,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Link,
+  ListItemIcon,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
+import LaunchIcon from "@mui/icons-material/Launch"; // Import Link icon
 import { useNavigate } from "react-router-dom";
 import { convertDataToExcel } from "../../utils/excelUtils";
 import { ServerData } from "../../../model/evaluationData";
@@ -26,9 +29,7 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
   const navigate = useNavigate();
-  // const [file, setFile] = useState<string | null>(null);
   const [homepageData, setHomepageData] = useState<ServerData[]>([]);
-  // const [hfileName, setFileName] = useState<string | null>("om");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +41,6 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -58,7 +58,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
     }
   };
 
-  const handleDelete = async (objectid: string|null) => {
+  const handleDelete = async (objectid: string | null) => {
     try {
       const response = await fetch(`http://localhost:3000/delete/${objectid}`, {
         method: "DELETE",
@@ -76,7 +76,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
     }
   };
 
-  const handleAnalysisClick = async (objectid: string|null) => {
+  const handleAnalysisClick = async (objectid: string | null) => {
     try {
       const response = await fetch("http://localhost:3000/getSelectedRecord", {
         method: "POST",
@@ -88,7 +88,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
 
       let data: ServerData;
       data = await response.json();
-      
+
       if (response.ok) {
         navigate("/report", { state: { data } });
       } else {
@@ -99,7 +99,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
     }
   };
 
-  const handleDownload = async (objectid: string|null) => {
+  const handleDownload = async (objectid: string | null) => {
     try {
       const response = await fetch("http://localhost:3000/getSelectedRecord", {
         method: "POST",
@@ -111,7 +111,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
 
       let data: ServerData;
       data = await response.json();
-      
+
       if (response.ok) {
         convertDataToExcel(data);
       } else {
@@ -122,18 +122,39 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
     }
   };
 
+  const formatDate = (dateString: string) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <Box>
       <Navbar />
       <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
         <Button
           variant="contained"
-          color="warning"
-          sx={{ fontSize: "1.25rem", py: 2, px: 4 }}
+          sx={{
+            fontSize: "1.25rem",
+            py: 0.3,
+            px: 5,
+            borderRadius: "30px",
+            backgroundColor: "#2196F3",
+            color: "white",
+            transition: "background-color 0.3s, box-shadow 0.3s",
+            "&:hover": {
+              backgroundColor: "#1976D2",
+            },
+          }}
           startIcon={<CloudUploadIcon />}
           onClick={handleUploadClick}
         >
-          Upload File for Analysis
+          Upload File
         </Button>
       </Box>
       <input
@@ -216,12 +237,33 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                     }}
                     onClick={() => handleAnalysisClick(data.objectid)}
                   >
-                    <span
-                      style={{ textDecoration: "underline", color: "blue" }}
+                    <Link
+                      component="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleAnalysisClick(data.objectid);
+                      }}
+                      href="#variants"
+                      sx={{
+                        color: "black", // Set text color to black
+                        textDecoration: "none",
+                        display: "flex", // Align icon and text horizontally
+                        alignItems: "center", // Center align vertically
+                        "&:hover": {
+                          textDecoration: "underline",
+                        },
+                      }}
                     >
                       {data.BatchData.Name}
-                    </span>
+                      <ListItemIcon
+                        sx={{ color: "blue", marginLeft: "0.5rem" }}
+                      >
+                        {" "}
+                        <LaunchIcon />
+                      </ListItemIcon>
+                    </Link>
                   </TableCell>
+
                   <TableCell
                     sx={{
                       backgroundColor: "white",
@@ -230,7 +272,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                       fontSize: "20px",
                     }}
                   >
-                    {data.BatchData.Date}
+                    {formatDate(data.BatchData.Date)}
                   </TableCell>
                   <TableCell
                     sx={{

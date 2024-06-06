@@ -5,8 +5,7 @@ import Typography from "@mui/material/Typography";
 import CCTech from "../images/CCTech.png";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import HomeIcon from '@mui/icons-material/Home';
-import { pink } from "@mui/material/colors";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -15,35 +14,33 @@ const Navbar: React.FC = () => {
     <AppBar
       position="static"
       sx={{
-        bgcolor:
-          "linear-gradient(to right, #38ef7d, #11998e, #667eea, #764ba2)",
+        bgcolor: "white",
         margin: 0,
         padding: 0,
       }}
     >
-      <Toolbar>
-        <div style={{ marginTop: 10, marginBottom: -10 }}>
-          <img
-            src={CCTech}
-            alt="CCTech Logo"
-            className="mb-8"
-            style={{ width: "60px", height: "60px" }}
-          />
-        </div>
+      <Toolbar
+        sx={{ display: "flex", alignItems: "center", minHeight: "64px" }}
+      >
+        <img
+          src={CCTech}
+          alt="CCTech Logo"
+          style={{ width: "50px", height: "50px", marginRight: "10px" }}
+        />
         <Typography
-          variant="h2"
-          sx={{ fontWeight: "bold", fontSize: 50, color: "white", m: 1 }}
+          variant="h4"
+          sx={{ fontWeight: "bold", fontSize: 30, color: "#2563EB", m: 1 }}
         >
           Performance Assistant
         </Typography>
-        <div style={{ marginLeft: 'auto' }}>
-            <IconButton
-            sx={{ color:"white" }}
-              onClick={() => navigate("/homepage")}
-            >
-              <HomeIcon sx={{fontSize:'50px'}}/>
-            </IconButton>
-          </div>
+        <div style={{ marginLeft: "auto" }}>
+          <IconButton
+            sx={{ color: "#2563EB" }}
+            onClick={() => navigate("/homepage")}
+          >
+            <HomeIcon sx={{ fontSize: "30px" }} />
+          </IconButton>
+        </div>
       </Toolbar>
     </AppBar>
   );
