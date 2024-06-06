@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import React from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import { Bar } from "react-chartjs-2";
@@ -128,4 +126,3 @@ const DetailedInsightsPage: React.FC = () => {
 };
 
 export default DetailedInsightsPage;
->>>>>>> 4186e22eaa024652e5e639977cb75bc84a9e1eee
