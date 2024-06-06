@@ -46,8 +46,6 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
     }
   }, [jsonSheet]);
 
-
-
   const handleFileUpload = (file: File | null) => {
     if (!file) return;
     const reader = new FileReader();
@@ -205,7 +203,11 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
                             }}
                           />
                         }
-                        label={<span style={{ fontSize: "20px", color: "#FFFFFF" }}>{param}</span>}
+                        label={
+                          <span style={{ fontSize: "20px", color: "#FFFFFF" }}>
+                            {param}
+                          </span>
+                        }
                       />
                     </Paper>
                   </Grid>
@@ -231,10 +233,12 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               height: "100px",
             }}
           >
-            <p>
-              Your file is being evaluated. You are being routed back to
-              homepage in {countdown} seconds.
-            </p>
+            <b>
+              <p style={{ fontSize: 25 }}>
+                Your file is being evaluated. You are being routed back to
+                homepage in {countdown} seconds.
+              </p>
+            </b>
             <Button
               variant="contained"
               color="primary"
