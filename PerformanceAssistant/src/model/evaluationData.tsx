@@ -17,10 +17,10 @@ export interface BatchAnalysisModel {
     Module: string;
     Date: string;
     AnalysisModel: CandidateAnalysisModel[];
-    CandidateStrengthAnalysis: CandidateStrengthAnalysis;
   };
 }
 
+// output from openai
 export interface CandidateAnalysisModel {
   Name: string;
   Strengths: { Parameter: string; Data: string }[];
@@ -36,15 +36,34 @@ export interface ServerData {
     Module: string;
     Date: string;
     AnalysisModel: CandidateAnalysisModel[];
-    CandidateStrengthAnalysis: CandidateStrengthAnalysis;
   };
 }
+
 //Store strengths
 export interface StrengthAnalysisModel {
   Name: string;
   Strengths: { Parameter: string; Data: string }[];
 }
 
-export interface CandidateStrengthAnalysis {
-  Data: { Name: string; Strength: number }[];
+export interface BatchInsightModel {
+  objectid: string;
+  BatchData: {
+    insight: InsightModel;
+  };
+}
+
+export interface InsightModel {
+  Data: [
+    {
+      Name: string;
+      CombineStrength: number;
+      suggestedRole: string[];
+      insight: [
+        {
+          parameter: string;
+          strength: number;
+        }
+      ];
+    }
+  ];
 }

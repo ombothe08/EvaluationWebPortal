@@ -1,47 +1,64 @@
 import React from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { useLocation } from "react-router-dom"; // Import useLocation
 import Navbar from "../Navbar";
-import { ServerData } from "../../../model/evaluationData";
+import { BatchInsightModel } from "../../../model/evaluationData";
 
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const DetailedInsightsPage: React.FC = () => {
-  const location = useLocation(); // Use useLocation hook to get the data passed from ParameterListPage
-  const { data } = location.state as { data: ServerData };
-
+  const location = useLocation();
+  const { data } = location.state as { data: BatchInsightModel };
 
   console.log(data);
 
   const generateChartData = () => {
-    if (!data || data.BatchData.CandidateStrengthAnalysis.Data.length === 0) {
+    if (!data) {
       return {
         labels: [],
-        datasets: [{
-          label: '',
-          data: [],
-          backgroundColor: '',
-          borderColor: '',
-          borderWidth: 0,
-        }],
+        datasets: [
+          {
+            label: "",
+            data: [],
+            backgroundColor: "",
+            borderColor: "",
+            borderWidth: 0,
+          },
+        ],
       };
     }
 
     const dataToDisplay = {
-      labels: data.BatchData.CandidateStrengthAnalysis.Data.map((item: any) => item.Name), // Using 'Name' as labels
-      datasets: [{
-        label: 'Strength',
-        data: data.BatchData.CandidateStrengthAnalysis.Data.map((item: any) => item.Strength), // Using 'Strength' as data values
-        backgroundColor: `rgba(54, 162, 235, 0.2)`,
-        borderColor: `rgba(54, 162, 235, 1)`,
-        borderWidth: 1,
-      }],
+      labels: data.BatchData.insight.Data.map((item: any) => item.Name), // Using 'Name' as labels
+      datasets: [
+        {
+          label: "Strength",
+          data: data.BatchData.insight.Data.map((item: any) => item.Strength), // Using 'Strength' as data values
+          backgroundColor: `rgba(54, 162, 235, 0.2)`,
+          borderColor: `rgba(54, 162, 235, 1)`,
+          borderWidth: 1,
+        },
+      ],
     };
 
-
+    
     console.log(dataToDisplay);
 
     return dataToDisplay;
@@ -57,11 +74,11 @@ const DetailedInsightsPage: React.FC = () => {
     },
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: "top" as const,
       },
       title: {
         display: true,
-        text: 'Strength Analysis',
+        text: "Strength Analysis",
       },
     },
   };
@@ -101,8 +118,7 @@ const DetailedInsightsPage: React.FC = () => {
             mb: 4,
             fontFamily: "sans-serif",
           }}
-        >
-        </Typography>
+        ></Typography>
 
         <Bar data={generateChartData()} options={options} />
       </Box>
