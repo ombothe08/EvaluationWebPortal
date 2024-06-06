@@ -1,130 +1,61 @@
-import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { useLocation } from "react-router-dom"; // Import useLocation
-import Navbar from "../Navbar";
+import * as React from 'react';
+import { BarChart } from '@mui/x-charts/BarChart';
 import { BatchInsightModel } from "../../../model/evaluationData";
-import ParameterGraphInsights from "./ParameterGraphInsigths";
+import { useEffect, useState } from 'react';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+const chartSetting = {
+  yAxis: [
+    {
+      label: 'Candidates',
+    },
+  ],
+  width: 500,
+  height: 400,
+};
 
-const DetailedInsightsPage: React.FC = () => {
-  const location = useLocation();
-  const { data } = location.state as { data: BatchInsightModel };
+const valueFormatter = (value: number | null) => `${value}`;
 
-  console.log(data);
+const ParameterGraphInsights: React.FC<{ data: BatchInsightModel }> = ({ data }) => {
+  const [formattedData, setFormattedData] = useState<any[]>([]);
 
-  const generateChartData = () => {
-    if (!data) {
+  useEffect(() => {
+    const insights = data.BatchData.insight.Data;
+    const allParameters = Array.from(new Set(insights.flatMap(item => item.insight.map(i => i.parameter))));
+
+    const transformedData = allParameters.map(parameter => {
+      const candidatesData = insights.map(candidate => {
+        const parameterData = candidate.insight.find(insight => insight.parameter === parameter);
+        return {
+          Name: candidate.Name,
+          [parameter]: parameterData ? parameterData.strength : 0,
+        };
+      });
       return {
-        labels: [],
-        datasets: [
-          {
-            label: "",
-            data: [],
-            backgroundColor: "",
-            borderColor: "",
-            borderWidth: 0,
-          },
-        ],
+        parameter,
+        candidatesData
       };
-    }
+    });
 
-    const dataToDisplay = {
-      labels: data.BatchData.insight.Data.map((item: any) => item.Name), // Using 'Name' as labels
-      datasets: [
-        {
-          label: "Strength",
-          data: data.BatchData.insight.Data.map((item: any) => item.Strength), // Using 'Strength' as data values
-          backgroundColor: `rgba(54, 162, 235, 0.2)`,
-          borderColor: `rgba(54, 162, 235, 1)`,
-          borderWidth: 1,
-        },
-      ],
-    };
-
-    console.log(dataToDisplay);
-
-    return dataToDisplay;
-  };
-
-  const options = {
-    responsive: true,
-    scales: {
-      y: {
-        min: 0,
-        max: 100,
-      },
-    },
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Strength Analysis",
-      },
-    },
-  };
+    setFormattedData(transformedData);
+  }, [data]);
 
   return (
-    <Box>
-      <Navbar />
-      <Box
-        component={Paper}
-        sx={{
-          p: 5,
-          borderRadius: 2,
-          boxShadow: 3,
-          m: 5,
-          backgroundColor: "aliceblue",
-        }}
-      >
-        <Typography
-          variant="h4"
-          component="h1"
-          sx={{
-            fontSize: 30,
-            fontWeight: "bold",
-            mb: 1,
-            fontFamily: "sans-serif",
-          }}
-        >
-          Strength Analysis Report
-        </Typography>
-
-        <Typography
-          variant="h5"
-          component="h2"
-          sx={{
-            fontSize: 25,
-            fontWeight: "bold",
-            mb: 4,
-            fontFamily: "sans-serif",
-          }}
-        ></Typography>
-
-        <Bar data={generateChartData()} options={options} />
-      </Box>
-      {/* <Box><ParameterGraphInsights data={data.BatchData.insight}/></Box> */}
-    </Box>
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
+      {formattedData.map(({ parameter, candidatesData }) => (
+        <div key={parameter} style={{ width: '50%', marginBottom: '20px' }}>
+          <h3>{parameter} Graph</h3>
+          <BarChart
+            dataset={candidatesData}
+            xAxis={[{ scaleType: 'band', dataKey: 'Name'}]}
+            series={[{ dataKey: parameter, label: `${parameter} strength`, valueFormatter }]}
+            layout="vertical"
+            grid={{ vertical: false }}
+            {...chartSetting}
+          />
+        </div>
+      ))}
+    </div>
   );
 };
 
-export default DetailedInsightsPage;
+export default ParameterGraphInsights;
