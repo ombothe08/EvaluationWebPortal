@@ -4,19 +4,19 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { useLocation } from "react-router-dom"; // Import useLocation
 import Navbar from "../Navbar";
-import { ServerData } from "../../../model/evaluationData";
+import { BatchInsightModel, InsightModel, ServerData } from "../../../model/evaluationData";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const DetailedInsightsPage: React.FC = () => {
   const location = useLocation(); // Use useLocation hook to get the data passed from ParameterListPage
-  const { data } = location.state as { data: ServerData };
+  const { data } = location.state as { data: BatchInsightModel };
 
 
   console.log(data);
 
   const generateChartData = () => {
-    if (!data || data.BatchData.CandidateStrengthAnalysis.Data.length === 0) {
+    if (!data) {
       return {
         labels: [],
         datasets: [{
@@ -30,10 +30,10 @@ const DetailedInsightsPage: React.FC = () => {
     }
 
     const dataToDisplay = {
-      labels: data.BatchData.CandidateStrengthAnalysis.Data.map((item: any) => item.Name), // Using 'Name' as labels
+      labels: data.BatchData.insight.Data.map((item: any) => item.Name), // Using 'Name' as labels
       datasets: [{
         label: 'Strength',
-        data: data.BatchData.CandidateStrengthAnalysis.Data.map((item: any) => item.Strength), // Using 'Strength' as data values
+        data: data.BatchData.insight.Data.map((item: any) => item.Strength), // Using 'Strength' as data values
         backgroundColor: `rgba(54, 162, 235, 0.2)`,
         borderColor: `rgba(54, 162, 235, 1)`,
         borderWidth: 1,

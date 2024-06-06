@@ -18,17 +18,33 @@ import {
   List,
   ListItem,
 } from "@mui/material";
-import { ServerData } from "../../../model/evaluationData";
+import { BatchInsightModel, ServerData } from "../../../model/evaluationData";
 import { convertDataToExcel } from "../../utils/excelUtils";
 import DownloadIcon from "@mui/icons-material/Download";
+import { json } from "body-parser";
 
 const ReportPage: React.FC = () => {
   const location = useLocation();
   const { data } = location.state as { data: ServerData };
   const navigate = useNavigate();
 
-  const handleDetailedInsights = () => {
-    navigate("/detailed-insights", { state: { data: data } });
+  const handleDetailedInsights = async (objectid: string | null) => {
+    try {
+      
+      const response = await fetch("http://localhost:3000/getinsights", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Key : objectid}),
+      });
+      let insightData: BatchInsightModel;
+      insightData = await response.json();
+
+      navigate("/detailed-insights", { state: { data: insightData } });
+    } catch (error) {
+      console.error("Error fetching record:", error);
+    }
   };
   const handleDownload = async (objectid: string | null) => {
     try {
@@ -97,7 +113,7 @@ const ReportPage: React.FC = () => {
               color="primary"
               variant="contained"
               style={{ fontSize: "15px", marginRight: "20px" }}
-              onClick={handleDetailedInsights}
+              onClick={() =>handleDetailedInsights(data.objectid)}
             >
               Detailed Insights
             </Button>

@@ -116,8 +116,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const tempresponseData = await response.json();
-      let responseData = tempresponseData as ServerData;
+      
     } catch (error) {
       console.error("Error submitting data:", error);
     }

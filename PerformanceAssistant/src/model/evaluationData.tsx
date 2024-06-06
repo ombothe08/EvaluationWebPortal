@@ -36,8 +36,35 @@ export interface ServerData {
     Module: string;
     Date: string;
     AnalysisModel: CandidateAnalysisModel[];
-    CandidateStrengthAnalysis: CandidateStrengthAnalysis;
+    // insight: InsightModel;
+    // // CandidateStrengthAnalysis: CandidateStrengthAnalysis;
   };
+}
+
+//Insight model will used when insights is called
+export interface BatchInsightModel {
+  objectid : string;
+  BatchData: {
+    insight: InsightModel;
+  }
+}
+
+// Insight model for insight API 
+export interface InsightModel{
+    
+  Data : [
+    {
+    Name : string,
+    CombineStrength:number,
+    suggestedRole:string[],
+    insight:[
+      {
+        parameter: string;
+        strength: number;
+      },
+    ]
+},
+]
 }
 //Store strengths
 export interface StrengthAnalysisModel {
@@ -48,3 +75,4 @@ export interface StrengthAnalysisModel {
 export interface CandidateStrengthAnalysis {
   Data: { Name: string; Strength: number }[];
 }
+
