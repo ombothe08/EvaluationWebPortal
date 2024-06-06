@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { ServerData } from "../../../model/evaluationData";
-import { useLocation } from "react-router-dom"; // Import useLocation
+// import { useLocation } from "react-router-dom"; // Import useLocation
+
 import { useEffect, useState } from 'react';
 
 const chartSetting = {
@@ -102,34 +103,14 @@ const dataset = [
 
 const valueFormatter = (value: number | null) => `${value}mm`;
 
-const ParameterGraphInsights: React.FC = () => {
-    //const location = useLocation();
-    //const { data } = location.state as { data: ServerData };
-    
-    const [graphData, setGraphData] = useState<ServerData[]>([]);
-    const objectid:string = "66606f3fd0f976236fdd70d5";
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-            const response = await fetch("http://localhost:3000/getSelectedRecord", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ Key: objectid }),
-            });
-      
-            let data: ServerData;
-            data = await response.json();
-            setGraphData([data]);
-           }   catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      fetchData();
-    }, []);
+interface ParameterGraphInsightsProps {
+  data: ServerData;
+}
+const ParameterGraphInsights: React.FC<ParameterGraphInsightsProps> = ({ data }) => {
 
     
+  const parameters = data.BatchData?.AnalysisModel[0]?.parameters || [];
+
 
   return (
     <div>
@@ -153,7 +134,7 @@ const ParameterGraphInsights: React.FC = () => {
     </div>
 
 
-
+{/* 
 
 <div>
           {graphData[0].BatchData.AnalysisModel[0]
@@ -204,7 +185,7 @@ const ParameterGraphInsights: React.FC = () => {
               </Grid>
             </Paper>
           )}
-        </div>
+        </div> */}
 
         </div>
   );
