@@ -43,8 +43,8 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 5000); 
-    return () => clearInterval(interval); 
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +126,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
   };
 
   const formatDate = (dateString: string) => {
-    const options = {
+    const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -246,12 +246,11 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                         event.stopPropagation();
                         handleAnalysisClick(data.objectid);
                       }}
-                      href="#variants"
                       sx={{
-                        color: "black", // Set text color to black
+                        color: "black",
                         textDecoration: "none",
-                        display: "flex", // Align icon and text horizontally
-                        alignItems: "center", // Center align vertically
+                        display: "flex",
+                        alignItems: "center",
                         "&:hover": {
                           textDecoration: "underline",
                         },
@@ -261,7 +260,6 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                       <ListItemIcon
                         sx={{ color: "blue", marginLeft: "0.5rem" }}
                       >
-                        {" "}
                         <LaunchIcon />
                       </ListItemIcon>
                     </Link>
