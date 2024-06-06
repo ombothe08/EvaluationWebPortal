@@ -12,6 +12,7 @@ import {
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 import { BatchInsightModel } from "../../../model/evaluationData";
+import ParameterGraphInsights from "./ParameterGraphInsigths";
 
 ChartJS.register(
   CategoryScale,
@@ -136,7 +137,9 @@ const DetailedInsightsPage: React.FC = () => {
 
         <Bar data={generateChartData()} options={options} />
       </Box>
-      
+
+      <Box><ParameterGraphInsights data={data}/></Box>
+
       <Box
         component={Paper}
         sx={{
