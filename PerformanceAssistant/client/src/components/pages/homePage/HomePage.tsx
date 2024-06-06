@@ -14,9 +14,11 @@ import {
   TableHead,
   TableRow,
   Link,
+  ListItemIcon,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
+import LaunchIcon from "@mui/icons-material/Launch"; // Import Link icon
 import { useNavigate } from "react-router-dom";
 import { convertDataToExcel } from "../../utils/excelUtils";
 import { ServerData } from "../../../model/evaluationData";
@@ -29,17 +31,20 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
   const navigate = useNavigate();
   const [homepageData, setHomepageData] = useState<ServerData[]>([]);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/getAllRecords");
+      const data: ServerData[] = await response.json();
+      setHomepageData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/getAllRecords");
-        const data: ServerData[] = await response.json();
-        setHomepageData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchData();
+    const interval = setInterval(fetchData, 5000); 
+    return () => clearInterval(interval); 
   }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -243,14 +248,22 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                       }}
                       href="#variants"
                       sx={{
-                        color: "blue",
+                        color: "black", // Set text color to black
                         textDecoration: "none",
+                        display: "flex", // Align icon and text horizontally
+                        alignItems: "center", // Center align vertically
                         "&:hover": {
                           textDecoration: "underline",
                         },
                       }}
                     >
                       {data.BatchData.Name}
+                      <ListItemIcon
+                        sx={{ color: "blue", marginLeft: "0.5rem" }}
+                      >
+                        {" "}
+                        <LaunchIcon />
+                      </ListItemIcon>
                     </Link>
                   </TableCell>
 
