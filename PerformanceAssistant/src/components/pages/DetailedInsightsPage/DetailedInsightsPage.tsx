@@ -203,7 +203,8 @@ const DetailedInsightsPage: React.FC = () => {
                       fontSize: "15px",
                     }}
                   >
-                    {candidate.suggestedRole}
+                    {/* {candidate.suggestedRole} */}
+                    {candidate.suggestedRole.join(", ")}
                   </TableCell>
                 </TableRow>
               ))}
