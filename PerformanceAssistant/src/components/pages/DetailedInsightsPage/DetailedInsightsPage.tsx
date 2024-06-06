@@ -46,11 +46,11 @@ const DetailedInsightsPage: React.FC = () => {
     }
 
     const dataToDisplay = {
-      labels: data.BatchData.insight.Data.map((item: any) => item.Name), // Using 'Name' as labels
+      labels: data.BatchData.insight.Data.map((item: any) => item.Name), 
       datasets: [
         {
           label: "Strength",
-          data: data.BatchData.insight.Data.map((item: any) => item.Strength), // Using 'Strength' as data values
+          data: data.BatchData.insight.Data.map((item: any) => item.CombineStrength), 
           backgroundColor: `rgba(54, 162, 235, 0.2)`,
           borderColor: `rgba(54, 162, 235, 1)`,
           borderWidth: 1,
@@ -77,7 +77,6 @@ const DetailedInsightsPage: React.FC = () => {
       },
       title: {
         display: true,
-        text: "Strength Analysis",
       },
     },
   };
