@@ -122,6 +122,7 @@ const DetailedInsightsPage: React.FC = () => {
         <Bar data={generateChartData()} options={options} />
       </Box>
     </Box>
+    
   );
 };
 

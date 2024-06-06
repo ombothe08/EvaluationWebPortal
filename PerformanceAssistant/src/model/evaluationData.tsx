@@ -39,12 +39,6 @@ export interface ServerData {
   };
 }
 
-//Store strengths
-export interface StrengthAnalysisModel {
-  Name: string;
-  Strengths: { Parameter: string; Data: string }[];
-}
-
 export interface BatchInsightModel {
   objectid: string;
   BatchData: {
