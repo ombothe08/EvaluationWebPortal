@@ -269,9 +269,7 @@ const ReportPage: React.FC = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
-      <Box>
-      </Box>
+      </Box>      
     </Box>
 
   );
