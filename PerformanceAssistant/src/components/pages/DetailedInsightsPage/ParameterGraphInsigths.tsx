@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { ServerData } from "../../../model/evaluationData";
+import { BatchInsightModel, ServerData } from "../../../model/evaluationData";
 // import { useLocation } from "react-router-dom"; // Import useLocation
 
 import { useEffect, useState } from 'react';
@@ -102,15 +102,8 @@ const dataset = [
 ];
 
 const valueFormatter = (value: number | null) => `${value}mm`;
-
-interface ParameterGraphInsightsProps {
-  data: ServerData;
-}
-const ParameterGraphInsights: React.FC<ParameterGraphInsightsProps> = ({ data }) => {
-
-    
-  const parameters = data.BatchData?.AnalysisModel[0]?.parameters || [];
-
+const ParameterGraphInsights: React.FC<{ data: BatchInsightModel }> = ({ data }) => {
+  const parameters = data.AnalysisModel[0]?.parameters || [];
 
   return (
     <div>
