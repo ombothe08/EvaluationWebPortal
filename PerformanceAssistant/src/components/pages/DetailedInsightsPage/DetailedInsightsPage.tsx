@@ -1,4 +1,4 @@
-import { Box, Typography, Paper, alpha, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { Box, Typography, Paper, alpha, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, styled } from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,

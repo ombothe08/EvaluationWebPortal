@@ -2,7 +2,9 @@ import { Grid, Checkbox, FormControlLabel, Button, Paper } from "@mui/material";
 import * as XLSX from "xlsx";
 import {
   BatchDataModel,
+  BatchInsightModel,
   CandidateDataModel,
+  ServerData,
 } from "../../../model/evaluationData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -116,7 +118,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
         fileName.name
       );
       const batchDataModelString = JSON.stringify(batchDataModel);
-      
+
       const response = await fetch("http://localhost:3000/evaluate", {
         method: "POST",
         headers: {
@@ -127,12 +129,16 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
           transformedData: batchDataModelString,
         }),
       });
-      if (!response.ok) {
+      let insightsData: ServerData;
+      insightsData = await response.json();
+
+      if (!response.status) {
         throw new Error("Network response was not ok");
       }
-      
+
     } catch (error) {
       console.error("Error submitting data:", error);
+
     }
   };
 
@@ -202,7 +208,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
                             onChange={handleCheckboxChange}
                             name={param}
                             checked={selectedParameters.includes(param)}
-                          style={{
+                            style={{
                               color: selectedParameters.includes(param)
                                 ? "#FFFFFF"
                                 : "#FFFFFF",
@@ -245,7 +251,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
               onClick={() => navigate("/homepage")}
               style={{ fontSize: "16px", marginTop: "10px" }}
             >
-              Go Back to Homepage 
+              Go Back to Homepage
             </Button>
           </div>
         )}
