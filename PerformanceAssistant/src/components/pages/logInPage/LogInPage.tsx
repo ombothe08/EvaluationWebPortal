@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CCTech from "../../images/CCTech.png";
-
+ 
 const LoginPage = ({ closeLogin }) => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+ 
   const handleLogin = async () => {
     try {
       const response = await fetch("http://localhost:3000/login", {
@@ -17,9 +17,9 @@ const LoginPage = ({ closeLogin }) => {
         },
         body: JSON.stringify({ Email, Password }),
       });
-
+ 
       const data = await response.json();
-
+ 
       if (data) {
         navigate("/homepage");
         closeLogin();
@@ -30,7 +30,7 @@ const LoginPage = ({ closeLogin }) => {
       console.error("Error submitting data:", error);
     }
   };
-
+ 
   return (
     <div className="flex flex-col justify-center items-center bg-white p-8 rounded-lg">
       <button onClick={closeLogin} className="self-end px-4 py-2 text-lg">
@@ -67,5 +67,5 @@ const LoginPage = ({ closeLogin }) => {
     </div>
   );
 };
-
+ 
 export default LoginPage;
