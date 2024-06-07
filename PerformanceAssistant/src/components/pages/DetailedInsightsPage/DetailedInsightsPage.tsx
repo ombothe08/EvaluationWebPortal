@@ -9,6 +9,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  TextField,
 } from "@mui/material";
 import { Bar } from "react-chartjs-2";
 import {
@@ -24,6 +25,7 @@ import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 import { BatchInsightModel } from "../../../model/evaluationData";
 import ParameterGraphInsights from "./ParameterGraphInsigths";
+import { useState } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -37,6 +39,7 @@ ChartJS.register(
 const DetailedInsightsPage: React.FC = () => {
   const location = useLocation();
   const { data } = location.state as { data: BatchInsightModel };
+  const [searchQuery, setSearchQuery] = useState("");
 
   console.log(data);
 
@@ -70,9 +73,7 @@ const DetailedInsightsPage: React.FC = () => {
         },
       ],
     };
-
     console.log(dataToDisplay);
-
     return dataToDisplay;
   };
 
@@ -93,6 +94,18 @@ const DetailedInsightsPage: React.FC = () => {
       },
     },
   };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredData = data.BatchData.insight.Data.filter(
+    (candidate) =>
+      candidate.Name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      candidate.suggestedRole.some((role) =>
+        role.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+  );
 
   return (
     <Box>
@@ -134,7 +147,9 @@ const DetailedInsightsPage: React.FC = () => {
         <Bar data={generateChartData()} options={options} />
       </Box>
 
-      <Box><ParameterGraphInsights data={data}/></Box>
+      <Box>
+        <ParameterGraphInsights data={data} />
+      </Box>
 
       <Box
         component={Paper}
@@ -144,22 +159,35 @@ const DetailedInsightsPage: React.FC = () => {
           boxShadow: 3,
           m: 4,
           backgroundColor: alpha("#1976D2", 0.1),
-          maxWidth: "100vw",
         }}
       >
-        <Typography
-          variant="h4"
-          component="h1"
-          sx={{
-            fontSize: 24,
-            fontWeight: "bold",
-            mb: 1,
-            fontFamily: "sans-serif",
-          }}
-        >
-          Strength-Oriented Role Recommendation Report
-        </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{
+              fontSize: 24,
+              fontWeight: "bold",
+              fontFamily: "sans-serif",
+            }}
+          >
+            Strength-Oriented Role Recommendation Report
+          </Typography>
 
+          <TextField
+            label="Search by Name or Role"
+            variant="outlined"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            size="small"
+            sx={{ mb: 2, width: "500px" }}
+            InputLabelProps={{
+              sx: {
+                fontSize: "14px",
+              },
+            }}
+          />
+        </Box>
         <TableContainer sx={{ maxHeight: "55vh", maxWidth: "99vw" }}>
           <Table stickyHeader>
             <TableHead>
@@ -190,7 +218,7 @@ const DetailedInsightsPage: React.FC = () => {
             </TableHead>
 
             <TableBody>
-              {data.BatchData.insight.Data.map((candidate, index) => (
+              {filteredData.map((candidate, index) => (
                 <TableRow key={index}>
                   <TableCell
                     sx={{
@@ -210,7 +238,7 @@ const DetailedInsightsPage: React.FC = () => {
                       fontSize: "15px",
                     }}
                   >
-                    {candidate.suggestedRole}
+                    {candidate.suggestedRole.join(", ")}
                   </TableCell>
                 </TableRow>
               ))}
