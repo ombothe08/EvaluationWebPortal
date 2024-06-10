@@ -7,7 +7,7 @@ REM Get the directory of the currently running script
 set SCRIPT_DIR=%~dp0
 
 REM Change to frontend directory relative to the script's location
-cd /d "%SCRIPT_DIR%\src"
+cd /d "%SCRIPT_DIR%\client\src"
 IF %ERRORLEVEL% NEQ 0 (
     echo Failed to change directory to frontend. Please check the path.
     pause
