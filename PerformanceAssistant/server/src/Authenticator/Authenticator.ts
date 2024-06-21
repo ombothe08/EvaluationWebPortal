@@ -1,5 +1,5 @@
 import { UserCredentials } from "../Interfaces/Interface";
-import { Database } from "../database/database";
+import { Database } from '../Database/database';
 
 // Authenticator.ts
 export class Authenticator {
@@ -12,5 +12,5 @@ export class Authenticator {
 
     let result = await this.database.verifyUserCredentials(userCredentials);
     return result;
-   }  
+  }
 }
