@@ -9,7 +9,7 @@ export class OpenAIService {
         try {
             const openai = new OpenAI({apiKey: api_key});
             const prompt = `Here is data for analysis: \n${JSON.stringify(batchData)}
-             Provide a detailed analysis and recommendation for mentors for the following batch data in the JSON format as specified:
+             Provide a detailed analysis and recommendation for mentors for the following batch data in the JSON format as specified and don't add any extra descriptive data:
              {
                 "BatchData": {
                   "Name": "string",
