@@ -1,10 +1,6 @@
 import { Grid, Checkbox, FormControlLabel, Button, Paper } from "@mui/material";
 import * as XLSX from "xlsx";
-import {
-  BatchDataModel,
-  CandidateDataModel,
-  ServerData,
-} from "../../../model/evaluationData";
+import { BatchDataModel, CandidateDataModel } from "../../../model/evaluationData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -19,6 +15,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
   const navigate = useNavigate();
   const [showMessage, setShowMessage] = useState(false);
   const [countdown, setCountdown] = useState(10);
+  const [module, setModule] = useState<string>('');
 
   useEffect(() => {
     setFileName(uploadfileName);
@@ -42,8 +39,8 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
   useEffect(() => {
     if (jsonSheet.length > 0) {
-      const headers = jsonSheet[0];
-      setSelectedParameters(headers.slice(1));
+      const headers = jsonSheet[1];
+      setSelectedParameters(headers.slice(0));
     }
   }, [jsonSheet]);
 
@@ -59,9 +56,13 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       const jsonSheet = XLSX.utils.sheet_to_json<any[]>(worksheet, {
         header: 1,
       });
-      const headers = jsonSheet[0];
+      const headers = jsonSheet[1];
       setParameters(headers.slice(1));
       setJsonSheet(jsonSheet);
+      // Assuming module name is in the first cell of the first row
+      if (jsonSheet.length > 0) {
+        setModule(jsonSheet[0][1]);
+      }
     };
 
     reader.readAsArrayBuffer(file);
@@ -80,10 +81,11 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
   const transformData = (
     jsonSheet: any[][],
-    batchName: string
+    batchName: string,
+    moduleName: string
   ): BatchDataModel => {
-    const headers = jsonSheet[0];
-    const rows = jsonSheet.slice(1);
+    const headers = jsonSheet[1];
+    const rows = jsonSheet.slice(2);
     const candidateDataModel: CandidateDataModel[] = rows.map((row) => ({
       Name: row[0] as string,
       Data: headers.slice(1).map((header, index) => ({
@@ -94,10 +96,10 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
 
     const batchDataModel: BatchDataModel = {
       Name: batchName,
-      Module: "",
+      Module: moduleName,
       Data: candidateDataModel,
     };
-
+    console.log(batchDataModel);
     return batchDataModel;
   };
 
@@ -106,7 +108,8 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       if (!fileName) return;
       const batchDataModel: BatchDataModel = transformData(
         jsonSheet,
-        fileName.name
+        fileName.name,
+        module
       );
       const batchDataModelString = JSON.stringify(batchDataModel);
 
@@ -120,11 +123,11 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
           transformedData: batchDataModelString,
         }),
       });
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const tempresponseData = await response.json();
-      let responseData = tempresponseData as ServerData;
+
     } catch (error) {
       console.error("Error submitting data:", error);
     }
@@ -139,7 +142,7 @@ const ParameterListPage: React.FC<{ parameterFileName: File | null }> = ({
       }}
     >
       <div>
-        <Navbar></Navbar>
+        <Navbar />
       </div>
       <div
         style={{
