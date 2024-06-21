@@ -48,7 +48,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       const insightsdata = insightsjson as InsightModel
       data.BatchData.insight = insightsdata;
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
-      db.connectToDatabase();
+       db.connectToDatabase();
        let objid = db.addReport(data); 
        let responseData =   db.getReportById(await objid);
       
