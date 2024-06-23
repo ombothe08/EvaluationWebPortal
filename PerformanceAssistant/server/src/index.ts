@@ -50,9 +50,9 @@ app.post('/evaluate', async (req: Request, res: Response) => {
       let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
       db.connectToDatabase();
        let objid = db.addReport(data); 
-       //let responseData =   db.getReportById(await objid);
-      //  const finaldata :  BatchDbModel | null = await responseData;
-       
+       let responseData =   db.getReportById(await objid);
+      
+       //Sends true only if we get a
        res.send(true);
       
 

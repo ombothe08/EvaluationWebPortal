@@ -9,7 +9,7 @@ export class OpenAIService {
         try {
             const openai = new OpenAI({apiKey: api_key});
             const prompt = `Here is data for analysis: \n${JSON.stringify(batchData)}
-             Provide a detailed analysis and recommendation for mentors for the following batch data only in the JSON format as specified and dont add any extra description:
+             Provide a detailed analysis and recommendation for mentors for the following batch data in the JSON Format without any other data just json format as specified below:
              {
                 "BatchData": {
                   "Name": "string",
@@ -58,7 +58,7 @@ export class OpenAIService {
         try {
             const openai = new OpenAI({apiKey: api_key});
             const prompt = `Here is data for analysis: \n${JSON.stringify(strengthData, null, 2)}
-             and compare the strengths of every candidate and provide their combine strength as well as individual strength scale from 0 to 100 only in below json format as specified and don't add any extra descriptive data
+             and compare the strengths of every candidate and provide their combine strength as well as individual strength scale from 0 to 100 in below json format and dont add any extra data just json format as specified below:
              {
               "Data": [
                 {
