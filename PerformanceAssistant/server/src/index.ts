@@ -1,7 +1,7 @@
 import express, { Request, Response, response } from 'express';
 import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
-import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, BatchDbModel, InsightModel} from './Interfaces/Interface';
+import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, BatchDbModel, InsightModel, CandidateDataModel} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
 import { ObjectId } from 'mongodb';
@@ -24,46 +24,61 @@ app.post('/login', async (req: Request, res: Response) => {
 });
 
 app.post('/evaluate', async (req: Request, res: Response) => {
-  let oaiService = new OpenAIService();
+  let json
+  let data:any
+  let record : BatchAnalysisModel ;
+  let samList: StrengthAnalysisModel[] = [];
+  let request = req.body.transformedData
+  const parsedJson = JSON.parse(request)
+  const cData : CandidateDataModel[]  = parsedJson.Data
   
-  oaiService.evaluate(req.body).then((response)=>{
-    const json = JSON.parse(response);
-    const data = json as BatchAnalysisModel
-   
 
-    let am = data.BatchData.AnalysisModel; // am = analysis model
-
-    let samList: StrengthAnalysisModel[] = []; // samList = strenght analysis model
-    am.forEach((cam: CandidateAnalysisModel) => { // cam = candidate analysis model
-      let sam :StrengthAnalysisModel = {
-        Name: cam.Name,
-        Strengths: cam.Strengths
-      }
-      samList.push(sam);
-    })
-
-    oaiService.insights(samList).then(async (response) => {
+  let oaiService = new OpenAIService();
+  oaiService.startEvaluation(cData).then((cAnalysisData)=>{
+    console.log(typeof(cAnalysisData))
+    
+    record.BatchData.AnalysisModel = cAnalysisData ;
+    oaiService.insights(cAnalysisData).then(async (response) => {
       //save to database
       const insightsjson = JSON.parse(response);
       const insightsdata = insightsjson as InsightModel
-      data.BatchData.insight = insightsdata;
-      let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
-       db.connectToDatabase();
-       let objid = db.addReport(data); 
+  //    data.BatchData.insight = insightsdata;
+      record.BatchData.insight = insightsdata;
+  let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
+      db.connectToDatabase();
+       let objid = db.addReport(record);
        let responseData =   db.getReportById(await objid);
-      
+     
        //Sends true only if we get a
        res.send(true);
-      
-
+     
+ 
     }).catch((error) => {
       res.send(error);
     });
+     
+  })
 
+
+
+  // oaiService.evaluate(req.body).then((response)=>{
+  //   const json = JSON.parse(response);
+  //   const data = json as BatchAnalysisModel
+   
+
+  //   let am = data.BatchData.AnalysisModel; // am = analysis model
+
+  //   let samList: StrengthAnalysisModel[] = []; // samList = strenght analysis model
+  //   am.forEach((cam: CandidateAnalysisModel) => { // cam = candidate analysis model
+  //     let sam :StrengthAnalysisModel = {
+  //       Name: cam.Name,
+  //       Strengths: cam.Strengths
+  //     }
+  //     samList.push(sam);
+  //   })
+
+   
   
-  }).catch((error)=>{
-      res.send(error);
-  });
 });
 
 app.post('/getinsights', async (req: Request, res: Response) => {
