@@ -37,7 +37,10 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   oaiService.startEvaluation(cData).then((cAnalysisData)=>{
     console.log(typeof(cAnalysisData))
     
-    record.BatchData.AnalysisModel = cAnalysisData ;
+    record.BatchData.AnalysisModel = cAnalysisData as CandidateAnalysisModel[] ;
+
+    // const cam = cAnalysisData as CandidateAnalysisModel[] ;
+    // record.BatchData.AnalysisModel = cam;
     oaiService.insights(cAnalysisData).then(async (response) => {
       //save to database
       const insightsjson = JSON.parse(response);

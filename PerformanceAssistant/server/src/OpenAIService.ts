@@ -3,7 +3,7 @@ import { BatchDataModel, CandidateAnalysisModel, CandidateDataModel, StrengthAna
 
 export class OpenAIService {
 
-  public async startEvaluation(cData: CandidateDataModel[]): Promise<CandidateAnalysisModel[] | any> {
+  public async startEvaluation(cData: CandidateDataModel[]): Promise<CandidateAnalysisModel[]> {
     let cAnalysis: CandidateAnalysisModel[] = [];
   
     for (const candidate of cData) {
