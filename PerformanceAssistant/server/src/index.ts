@@ -1,7 +1,7 @@
 import express, { Request, Response, response } from 'express';
 import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
-import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, BatchDbModel, InsightModel, CandidateDataModel} from './Interfaces/Interface';
+import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, BatchDbModel, InsightModel, CandidateDataModel, BatchDataModel} from './Interfaces/Interface';
 import cors from "cors";
 import { Database } from './Database/database';
 import { ObjectId } from 'mongodb';
@@ -23,61 +23,44 @@ app.post('/login', async (req: Request, res: Response) => {
   
 });
 
-app.post('/evaluate', async (req: Request, res: Response) => {
+app.post('/evaluate', async (req: Request, res: Response) => {try {
+  const request = req.body.transformedData;
+  const parsedJson = JSON.parse(request);
+  const cData: CandidateDataModel[] = parsedJson.Data;
+  const batchata: BatchDataModel = parsedJson as BatchDataModel;
 
-  let record : BatchAnalysisModel ;
-  let request = req.body.transformedData
-  const parsedJson = JSON.parse(request)
-  const cData : CandidateDataModel[]  = parsedJson.Data
-  
+  // Initialize record with default values for all required properties
+  let record: BatchAnalysisModel = {
+    BatchData: {
+      Name: batchata.Name,
+      Module: batchata.Module,
+      AnalysisModel: [],
+      insight: {} as InsightModel
+    }
+  };
 
   let oaiService = new OpenAIService();
-  oaiService.startEvaluation(cData).then((cAnalysisData)=>{
-    console.log(typeof(cAnalysisData))
-    
-    //record.BatchData.AnalysisModel = cAnalysisData ;
-    oaiService.insights(cAnalysisData).then(async (response) => {
-      //save to database
-      const insightsjson = JSON.parse(response);
-      const insightsdata = insightsjson as InsightModel
-  //    data.BatchData.insight = insightsdata;
-      //record.BatchData.insight = insightsdata;
+  const cAnalysisData = await oaiService.startEvaluation(batchata);
+
+  // Deep clone the cAnalysisData into record.BatchData.AnalysisModel
+  record.BatchData.AnalysisModel = JSON.parse(JSON.stringify(cAnalysisData));
+
+  const response = await oaiService.insights(cAnalysisData);
+  const insightsjson = JSON.parse(JSON.stringify(response));
+  const insightsdata = insightsjson as InsightModel;
+
+  record.BatchData.insight = insightsdata;
+
   let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
-      db.connectToDatabase();
-       let objid = db.addReport(record);
-       let responseData =   db.getReportById(await objid);
-     
-       //Sends true only if we get a
-       res.send(true);
-     
- 
-    }).catch((error) => {
-      res.send(error);
-    });
-     
-  })
+  await db.connectToDatabase();
+  let objid = await db.addReport(record);
+  let responseData = await db.getReportById(objid);
 
-
-
-  // oaiService.evaluate(req.body).then((response)=>{
-  //   const json = JSON.parse(response);
-  //   const data = json as BatchAnalysisModel
-   
-
-  //   let am = data.BatchData.AnalysisModel; // am = analysis model
-
-  //   let samList: StrengthAnalysisModel[] = []; // samList = strenght analysis model
-  //   am.forEach((cam: CandidateAnalysisModel) => { // cam = candidate analysis model
-  //     let sam :StrengthAnalysisModel = {
-  //       Name: cam.Name,
-  //       Strengths: cam.Strengths
-  //     }
-  //     samList.push(sam);
-  //   })
-
-   
-  
-});
+  res.send(responseData);
+} catch (error) {
+  console.error('Error processing data:', error);
+  res.status(500).send({ message: 'Failed to evaluate data' });
+}});
 
 app.post('/getinsights', async (req: Request, res: Response) => {
   try {

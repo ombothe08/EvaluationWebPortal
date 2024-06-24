@@ -1,11 +1,13 @@
 import OpenAI from 'openai';
-import { BatchDataModel, CandidateAnalysisModel, CandidateDataModel, StrengthAnalysisModel } from './Interfaces/Interface';
+import { BatchAnalysisModel, BatchDataModel, CandidateAnalysisModel, CandidateDataModel, StrengthAnalysisModel } from './Interfaces/Interface';
 
 export class OpenAIService {
 
-  public async startEvaluation(cData: CandidateDataModel[]): Promise<CandidateAnalysisModel[] | any> {
+  public async startEvaluation(Data: BatchDataModel): Promise<CandidateAnalysisModel[]> {
     let cAnalysis: CandidateAnalysisModel[] = [];
-  
+    
+    
+    let cData =  Data.Data ;
     for (const candidate of cData) {
       try {
         // Wait for the evaluate function to resolve
