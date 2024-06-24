@@ -24,10 +24,8 @@ app.post('/login', async (req: Request, res: Response) => {
 });
 
 app.post('/evaluate', async (req: Request, res: Response) => {
-  let json
-  let data:any
+
   let record : BatchAnalysisModel ;
-  let samList: StrengthAnalysisModel[] = [];
   let request = req.body.transformedData
   const parsedJson = JSON.parse(request)
   const cData : CandidateDataModel[]  = parsedJson.Data
@@ -37,16 +35,13 @@ app.post('/evaluate', async (req: Request, res: Response) => {
   oaiService.startEvaluation(cData).then((cAnalysisData)=>{
     console.log(typeof(cAnalysisData))
     
-    record.BatchData.AnalysisModel = cAnalysisData as CandidateAnalysisModel[] ;
-
-    // const cam = cAnalysisData as CandidateAnalysisModel[] ;
-    // record.BatchData.AnalysisModel = cam;
+    //record.BatchData.AnalysisModel = cAnalysisData ;
     oaiService.insights(cAnalysisData).then(async (response) => {
       //save to database
       const insightsjson = JSON.parse(response);
       const insightsdata = insightsjson as InsightModel
   //    data.BatchData.insight = insightsdata;
-      record.BatchData.insight = insightsdata;
+      //record.BatchData.insight = insightsdata;
   let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
       db.connectToDatabase();
        let objid = db.addReport(record);
