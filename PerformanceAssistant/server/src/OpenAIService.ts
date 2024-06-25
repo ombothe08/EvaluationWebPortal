@@ -5,23 +5,19 @@ export class OpenAIService {
 
   public async startEvaluation(Data: BatchDataModel): Promise<CandidateAnalysisModel[]> {
     let cAnalysis: CandidateAnalysisModel[] = [];
-    
-    
+
     let cData =  Data.Data ;
     for (const candidate of cData) {
       try {
         // Wait for the evaluate function to resolve
         let answer =  this.evaluate(candidate);
         let candidateAnalysis = await answer
-        let cAnalysisData = candidateAnalysis as CandidateAnalysisModel
-
+        let cAnalysisData = candidateAnalysis as CandidateAnalysisModel;
         cAnalysis.push(cAnalysisData);
-      } catch (error) {
-        
+      } catch (error) { 
         console.error(`Error evaluating candidate: ${candidate}`, error);
       }
     }
-  
     return cAnalysis;
   }
   
@@ -122,7 +118,6 @@ public async insights(strengthData: CandidateAnalysisModel[]): Promise<string | 
       } else {
           throw new Error('JSON not found in response');
       }
-
   } catch (error) {
       console.error('OpenAI Function exception:', error);
       return "";

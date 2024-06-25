@@ -6,8 +6,6 @@ export interface UserCredentials {
     Password: string;
   }
 
-  
-
 //Db user Credentials
   export interface dbuser {
     email: string;
@@ -46,9 +44,6 @@ export interface BatchInsightDbModel {
   }
 }
 
-
-
-
 //Analysis Mode is the output from OpenAI
 export interface CandidateAnalysisModel {
   Name: string;
@@ -66,8 +61,6 @@ export interface BatchAnalysisModel {
    
   }
 }
-
-
 
 // DataModel is the input for analysis 
 export interface CandidateDataModel {

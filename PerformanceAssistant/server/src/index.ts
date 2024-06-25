@@ -3,10 +3,8 @@ import {OpenAIService} from "./OpenAIService";
 import { Authenticator } from './Authenticator/Authenticator';
 import { BatchAnalysisModel, UserCredentials,StrengthAnalysisModel,CandidateAnalysisModel, BatchDbModel, InsightModel, CandidateDataModel, BatchDataModel} from './Interfaces/Interface';
 import cors from "cors";
-import { Database } from './Database/database';
+import { Database } from './Database/Database';
 import { ObjectId } from 'mongodb';
-
-
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,10 +15,8 @@ app.use(cors<Request>());
 app.post('/login', async (req: Request, res: Response) => {
   const authenticator = new Authenticator();
   const userCredentials: UserCredentials = req.body;
-  
   let result = await authenticator.authenticate(userCredentials);
-  res.send(result);
-  
+  res.send(result);  
 });
 
 app.post('/evaluate', async (req: Request, res: Response) => {try {
@@ -88,7 +84,6 @@ app.post("/getSelectedRecord",async(req:Request,res:Response) => {
     let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
     db.connectToDatabase();
     let dbreport =  await db.getReportById(objid); 
-    
     res.send(dbreport);
 });
 
