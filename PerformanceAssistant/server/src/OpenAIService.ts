@@ -34,8 +34,7 @@ export class OpenAIService {
     
     cInsight = cInsight.slice(0, -1); // Remove trailing comma
     cInsight += ']'; // Close the JSON array
-    console.log("before : ",cInsight);
-    console.log("\n");
+   
     let cInsightData : InsightModel = this.convertToInsightModel(cInsight);
     result.BatchData.AnalysisModel = cAnalysis; //
     result.BatchData.insight = cInsightData; // Parse concatenated insights as JSON array
