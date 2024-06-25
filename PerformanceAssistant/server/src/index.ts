@@ -41,7 +41,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {try {
   // Deep clone the cAnalysisData into record.BatchData.AnalysisModel
   record.BatchData.AnalysisModel = JSON.parse(JSON.stringify(cAnalysisData));
 
-  const response = await oaiService.insights(cAnalysisData);
+ // const response = await oaiService.insights(cAnalysisData);
   const insightsjson = JSON.parse(JSON.stringify(response));
   const insightsdata = insightsjson as InsightModel;
 
