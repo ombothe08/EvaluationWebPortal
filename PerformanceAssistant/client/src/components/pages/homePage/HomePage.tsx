@@ -280,9 +280,7 @@ const HomePage: React.FC<HomePageProps> = ({ onfileName }) => {
                       backgroundColor: "white",
                       border: "1px solid black",
                       padding: "8px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      textAlign: "center",
                     }}
                   >
                     <IconButton

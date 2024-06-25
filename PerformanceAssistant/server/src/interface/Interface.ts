@@ -83,7 +83,6 @@ export interface StrengthAnalysisModel {
 
 // Insight model for insight API 
 export interface InsightModel{
-    
     Data : [
       {
       Name : string,

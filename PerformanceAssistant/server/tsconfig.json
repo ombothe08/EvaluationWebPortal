@@ -9,6 +9,6 @@
       "forceConsistentCasingInFileNames": true,
       "jsx": "react"
     },
-    "include": ["src/**/*.ts", "src/Authenticator/Authenticator.ts"],
+    "include": ["src/**/*.ts", "src/authenticators/Authenticator.ts"],
     "exclude": ["node_modules"],
   }
