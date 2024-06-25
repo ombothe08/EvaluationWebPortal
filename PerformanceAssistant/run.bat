@@ -27,9 +27,4 @@ if errorlevel 1 (
     exit /b 1
 )
 
-:: If everything was successful, delete the batch file
-echo Deleting the batch file...
-del "%~f0"
-
-echo Batch file deleted successfully.
 endlocal
