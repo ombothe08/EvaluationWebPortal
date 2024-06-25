@@ -59,14 +59,18 @@ const DetailedInsightsPage: React.FC = () => {
       };
     }
 
+    const d = data.BatchData.insight.Data.map(
+      (item: any) => (item && item.CombineStrength) ?? 0
+    )
+
+    console.log("data:", d);
+
     const dataToDisplay = {
       labels: data.BatchData.insight.Data.map((item: any) => item.Name),
       datasets: [
         {
           label: "Strength",
-          data: data.BatchData.insight.Data.map(
-            (item: any) => item.CombineStrength
-          ),
+          data: d,
           backgroundColor: `rgba(54, 162, 235, 0.2)`,
           borderColor: `rgba(54, 162, 235, 1)`,
           borderWidth: 1,

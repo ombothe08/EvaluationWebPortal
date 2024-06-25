@@ -104,15 +104,15 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
           AnalysisModel: report.BatchData.AnalysisModel.map((data: any) => ({
             Name: data.Name,
             Strengths: data.Strengths.map((strength: any) => ({
-              Parameter: strength.Parameter,
+              Parameter: strength.Parameter ?? strength["parameter"],
               Data: strength.Data
             })),
             AreasOfImprovement: data.AreasOfImprovement.map((improvement: any) => ({
-              Parameter: improvement.Parameter,
+              Parameter: improvement.Parameter ?? improvement["parameter"],
               Data: improvement.Data
             })),
             InputForMentors: data.InputForMentors.map((input: any) => ({
-              Parameter: input.Parameter,
+              Parameter: input.Parameter ?? input["parameter"],
               Data: input.Data
             }))
            })),
@@ -194,7 +194,7 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
                 CombineStrength: data.CombineStrength,
                 suggestedRole: data.suggestedRole,
                 insight: data.insight.map((insight: any) => ({
-                  parameter: insight.parameter,
+                  parameter: insight.parameter ?? insight["Parameter"],
                   strength: insight.strength
                 }))
               }))
