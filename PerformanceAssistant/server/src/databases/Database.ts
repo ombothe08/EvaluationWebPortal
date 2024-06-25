@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
-import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel , BatchReportDbModel, BatchInsightDbModel} from '../Interfaces/Interface';
+import { UserCredentials,dbuser,BatchAnalysisModel,BatchDbModel , BatchReportDbModel, BatchInsightDbModel} from '../interface/Interface';
 
 export class Database {
   private uri: string;

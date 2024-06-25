@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { BatchAnalysisModel, BatchDataModel, CandidateAnalysisModel, CandidateDataModel, InsightModel, StrengthAnalysisModel } from './Interfaces/Interface';
+import { BatchAnalysisModel, BatchDataModel, CandidateAnalysisModel, CandidateDataModel, InsightModel, StrengthAnalysisModel } from './interface/Interface';
 
 export class OpenAIService {
 
@@ -126,8 +126,7 @@ public async insights(strengthData: CandidateAnalysisModel): Promise<string | an
       });
 
       const responseContent = completionResponse.choices[0].message.content;
-      console.log("Response Content: ", responseContent);
-
+     
       // Extract JSON from the response using regex
       const jsonMatch = responseContent!!.match(/```json([\s\S]*?)```/);
       if (jsonMatch && jsonMatch[1]) {
