@@ -26,26 +26,21 @@ app.post('/evaluate', async (req: Request, res: Response) => {try {
   const batchata: BatchDataModel = parsedJson as BatchDataModel;
 
   // Initialize record with default values for all required properties
-  let record: BatchAnalysisModel = {
-    BatchData: {
-      Name: batchata.Name,
-      Module: batchata.Module,
-      AnalysisModel: [],
-      insight: {} as InsightModel
-    }
-  };
+  
 
   let oaiService = new OpenAIService();
-  const cAnalysisData = await oaiService.startEvaluation(batchata);
-
+  let record :BatchAnalysisModel = await oaiService.startEvaluation(batchata);
+  
   // Deep clone the cAnalysisData into record.BatchData.AnalysisModel
-  record.BatchData.AnalysisModel = JSON.parse(JSON.stringify(cAnalysisData));
 
- // const response = await oaiService.insights(cAnalysisData);
-  const insightsjson = JSON.parse(JSON.stringify(response));
-  const insightsdata = insightsjson as InsightModel;
 
-  record.BatchData.insight = insightsdata;
+  //record.BatchData.AnalysisModel = JSON.parse(JSON.stringify(cAnalysisData));
+
+  // const response = await oaiService.insights(cAnalysisData);
+  // const insightsjson = JSON.parse(JSON.stringify(response));
+  // const insightsdata = insightsjson as InsightModel;
+
+  // record.BatchData.insight = insightsdata;
 
   let db = new Database('mongodb://localhost:27017', 'PerformanceAssistance_DB');
   await db.connectToDatabase();
@@ -54,7 +49,7 @@ app.post('/evaluate', async (req: Request, res: Response) => {try {
 
   res.send(responseData);
 } catch (error) {
-  console.error('Error processing data:', error);
+    console.error('Error processing data:', error);
   res.status(500).send({ message: 'Failed to evaluate data' });
 }});
 
