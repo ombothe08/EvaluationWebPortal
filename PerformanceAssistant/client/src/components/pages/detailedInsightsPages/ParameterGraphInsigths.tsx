@@ -23,15 +23,26 @@ const ParameterGraphInsights: React.FC<{ data: BatchInsightModel }> = ({
 
   useEffect(() => {
     const insights = data.BatchData.insight.Data;
+    console.log("insights:", insights);
     const allParameters = Array.from(
-      new Set(insights.flatMap((item) => item.insight.map((i) => i.parameter)))
+      new Set(insights.flatMap(
+        (item) => 
+          item.insight.map((i, index) => {
+            console.log("index:", index);
+            console.log("i.parameter:", i.parameter);
+            return i.parameter})))
     );
+
+    console.log("allParameters:", allParameters);
 
     const transformedData = allParameters.map((parameter) => {
       const candidatesData = insights.map((candidate) => {
         const parameterData = candidate.insight.find(
           (insight) => insight.parameter === parameter
         );
+
+        
+
         return {
           Name: candidate.Name,
           [parameter]: parameterData ? parameterData.strength : 0,
@@ -42,6 +53,8 @@ const ParameterGraphInsights: React.FC<{ data: BatchInsightModel }> = ({
         candidatesData,
       };
     });
+
+    console.log("transformedData:", transformedData);
 
     setFormattedData(transformedData);
   }, [data]);
@@ -66,8 +79,8 @@ const ParameterGraphInsights: React.FC<{ data: BatchInsightModel }> = ({
           marginRight: "150px",
         }}
       >
-        {formattedData.map(({ parameter, candidatesData }) => (
-          <Box key={parameter} sx={{ width: "50%", marginBottom: "20px" }}>
+        {formattedData.map(({ parameter, candidatesData }, index) => (
+          <Box key={index} sx={{ width: "50%", marginBottom: "20px" }}>
             <b> {parameter} Graph</b>
             <BarChart
               dataset={candidatesData}
