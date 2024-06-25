@@ -36,8 +36,7 @@ export class Database {
         const db_password = userData.password;
         if (db_username === userCredentials.Email && db_password === userCredentials.Password) {
           return true;
-        }
-        
+        } 
       }
     return false;
     } else {
