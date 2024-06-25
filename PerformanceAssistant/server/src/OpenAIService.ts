@@ -3,28 +3,46 @@ import { BatchAnalysisModel, BatchDataModel, CandidateAnalysisModel, CandidateDa
 
 export class OpenAIService {
 
-  public async startEvaluation(Data: BatchDataModel): Promise<CandidateAnalysisModel[]> {
+  public async startEvaluation(Data: BatchDataModel): Promise<BatchAnalysisModel> {
     let cAnalysis: CandidateAnalysisModel[] = [];
-    let cInsight : InsightModel ;
-    
-    let cData =  Data.Data ;
+    let cInsight = '[';
+    let result: BatchAnalysisModel = {
+      BatchData: {
+        Name: Data.Name,
+        Module: Data.Module,
+        AnalysisModel: [],
+        insight: {} as InsightModel
+      }
+    };
+
+    let cData = Data.Data;
     for (const candidate of cData) {
       try {
         // Wait for the evaluate function to resolve
-        let answer =  this.evaluate(candidate);
-        let candidateAnalysis = await answer
-        let cAnalysisData = candidateAnalysis as CandidateAnalysisModel
-        let cInsightsData = this.insights(cAnalysisData);
+        let answer = this.evaluate(candidate);
+        let candidateAnalysis = await answer;
+        let cAnalysisData = candidateAnalysis as CandidateAnalysisModel;
+        let cInsightsData = await this.insights(cAnalysisData);
 
-        cInsight.Data.push(cInsightsData);
+        cInsight += JSON.stringify(cInsightsData); // Concatenate cInsightsData JSON string to cInsight
+        cInsight += ',';
         cAnalysis.push(cAnalysisData);
-      } catch (error) { 
+      } catch (error) {
         console.error(`Error evaluating candidate: ${candidate}`, error);
       }
     }
-    return cAnalysis;
+    
+    cInsight = cInsight.slice(0, -1); // Remove trailing comma
+    cInsight += ']'; // Close the JSON array
+    console.log("before : ",cInsight);
+    console.log("\n");
+    let cInsightData : InsightModel = this.convertToInsightModel(cInsight);
+    result.BatchData.AnalysisModel = cAnalysis; //
+    result.BatchData.insight = cInsightData; // Parse concatenated insights as JSON array
+
+    return result;
   }
-  
+
 
   public async evaluate(batchData: CandidateDataModel): Promise<string | any> {
     const api_key = process.env.OAI_API_KEY;
@@ -84,23 +102,19 @@ public async insights(strengthData: CandidateAnalysisModel): Promise<string | an
   try {
       const openai = new OpenAI({ apiKey: api_key });
       const prompt = `Here is data for analysis: \n${JSON.stringify(strengthData, null, 2)}
-      and compare the strengths of every candidate and provide their combined strength as well as individual strength scale from 0 to 100 in just the below JSON format only:
+      and give me the strengths of candidate and provide their combined strength as well as individual strength scale from 0 to 100 in just the below JSON format only:
       \`\`\`json
       {
-        "Data": [
-          {
-            "Name": "string",
-            "CombineStrength": "number",
-            "suggestedRole": ["string"],
-            "insight": [
-              {
-                "parameter": "string",
-                "strength": "number"
-              }
-            ]
-          }
-        ]
-      }
+        "Name" : "string",
+        "CombineStrength":"number",
+        "suggestedRole":["string"],
+        "insight":[
+        {
+            "parameter": "string";
+            "strength": "number";
+        },
+       ]
+    }
       \`\`\``;
 
       const completionResponse = await openai.chat.completions.create({
@@ -127,4 +141,25 @@ public async insights(strengthData: CandidateAnalysisModel): Promise<string | an
       return "";
   }
 }
+
+public convertToInsightModel(insightString: string): InsightModel {
+  try {
+    // Remove extra escape characters
+    const cleanedInsightString = insightString.replace(/\\\"/g, '"').replace(/\"/g, '"');
+   
+    // Parse the cleaned string into a JSON object
+    const parsedInsight = JSON.parse(cleanedInsightString);
+    
+    // Ensure the parsed object matches the InsightModel structure
+    const insightModel: InsightModel = {
+      Data: parsedInsight
+    };
+    
+    return insightModel;
+  } catch (error) {
+    console.error('Error converting insight string to InsightModel:', error);
+    throw new Error('Conversion to InsightModel failed');
+  }
 }
+}
+
