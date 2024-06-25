@@ -4,7 +4,7 @@ import LandingPage from "./LandingPage";
 import HomePage from "../homePage/HomePage";
 import ParameterListPage from "../parameterListPage/ParameterListPage";
 import ReportPage from "../reportPage/ReportPage";
-import DetailedInsightsPage from "../detailedInsightsPages/DetailedInsightsPage";
+import DetailedInsightsPage from "../detailedInsightsPage/DetailedInsightsPage";
 
 const AppRouter: React.FC = () => {
   const [parameterFileName, setFileName] = useState<File | null>(null);

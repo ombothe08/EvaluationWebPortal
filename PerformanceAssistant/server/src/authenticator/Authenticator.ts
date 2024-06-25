@@ -1,5 +1,5 @@
 import { UserCredentials } from "../interface/Interface";
-import { Database } from '../databases/Database';
+import { Database } from '../database/Database';
 
 // Authenticator.ts
 export class Authenticator {
