@@ -18,12 +18,10 @@ export class OpenAIService {
 
         cInsight.Data.push(cInsightsData);
         cAnalysis.push(cAnalysisData);
-      } catch (error) {
-        
+      } catch (error) { 
         console.error(`Error evaluating candidate: ${candidate}`, error);
       }
     }
-  
     return cAnalysis;
   }
   
@@ -124,7 +122,6 @@ public async insights(strengthData: CandidateAnalysisModel): Promise<string | an
       } else {
           throw new Error('JSON not found in response');
       }
-
   } catch (error) {
       console.error('OpenAI Function exception:', error);
       return "";
