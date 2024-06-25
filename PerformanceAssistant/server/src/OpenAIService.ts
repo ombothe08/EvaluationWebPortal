@@ -1,11 +1,11 @@
 import OpenAI from 'openai';
-import { BatchAnalysisModel, BatchDataModel, CandidateAnalysisModel, CandidateDataModel, StrengthAnalysisModel } from './Interfaces/Interface';
+import { BatchAnalysisModel, BatchDataModel, CandidateAnalysisModel, CandidateDataModel, InsightModel, StrengthAnalysisModel } from './Interfaces/Interface';
 
 export class OpenAIService {
 
   public async startEvaluation(Data: BatchDataModel): Promise<CandidateAnalysisModel[]> {
     let cAnalysis: CandidateAnalysisModel[] = [];
-    
+    let cInsight : InsightModel ;
     
     let cData =  Data.Data ;
     for (const candidate of cData) {
@@ -14,7 +14,9 @@ export class OpenAIService {
         let answer =  this.evaluate(candidate);
         let candidateAnalysis = await answer
         let cAnalysisData = candidateAnalysis as CandidateAnalysisModel
+        let cInsightsData = this.insights(cAnalysisData);
 
+        cInsight.Data.push(cInsightsData);
         cAnalysis.push(cAnalysisData);
       } catch (error) {
         
@@ -79,7 +81,7 @@ export class OpenAIService {
         return "";
     }
 }
-public async insights(strengthData: CandidateAnalysisModel[]): Promise<string | any> {
+public async insights(strengthData: CandidateAnalysisModel): Promise<string | any> {
   const api_key = process.env.OAI_API_KEY;
   try {
       const openai = new OpenAI({ apiKey: api_key });
