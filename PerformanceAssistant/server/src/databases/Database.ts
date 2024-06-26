@@ -148,15 +148,15 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
             AnalysisModel: record.BatchData.AnalysisModel.map((data: any) => ({
               Name: data.Name,
               Strengths: data.Strengths.map((strength: any) => ({
-                Parameter: strength.Parameter,
+                Parameter: strength.Parameter ?? strength["parameter"],
                 Data: strength.Data
               })),
               AreasOfImprovement: data.AreasOfImprovement.map((improvement: any) => ({
-                Parameter: improvement.Parameter,
-                Data: improvement.Data
+                Parameter: improvement.Parameter ?? improvement["parameter"],
+                Data: improvement.Data ?? improvement["data"]
               })),
               InputForMentors: data.InputForMentors.map((input: any) => ({
-                Parameter: input.Parameter,
+                Parameter: input.Parameter ?? input["parameter"],
                 Data: input.Data
               }))
             })),
