@@ -195,7 +195,7 @@ public async getReportById(reportId: string): Promise<BatchReportDbModel | null>
                 suggestedRole: data.suggestedRole,
                 insight: data.insight.map((insight: any) => ({
                   parameter: insight.parameter ?? insight["Parameter"],
-                  strength: insight.strength
+                  strength: insight.strength ?? insight["Strength"],
                 }))
               }))
             }

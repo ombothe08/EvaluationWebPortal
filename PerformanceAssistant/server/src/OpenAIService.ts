@@ -88,6 +88,7 @@ export class OpenAIService {
             const jsonString = jsonMatch[1].trim();
             return JSON.parse(jsonString);
         } else {
+            console.log(responseContent);
             throw new Error('JSON not found in response');
         }
 
